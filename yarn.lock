@@ -667,6 +667,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@migra/core@workspace:apps/core":
+  version: 0.0.0-use.local
+  resolution: "@migra/core@workspace:apps/core"
+  dependencies:
+    "@migra/shared": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"@migra/electron@workspace:apps/electron":
+  version: 0.0.0-use.local
+  resolution: "@migra/electron@workspace:apps/electron"
+  dependencies:
+    "@migra/shared": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"@migra/shared@workspace:*, @migra/shared@workspace:packages/shared":
+  version: 0.0.0-use.local
+  resolution: "@migra/shared@workspace:packages/shared"
+  languageName: unknown
+  linkType: soft
+
 "@nodelib/fs.scandir@npm:2.1.5":
   version: 2.1.5
   resolution: "@nodelib/fs.scandir@npm:2.1.5"
@@ -2900,6 +2922,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"jotai@npm:^2.4.2":
+  version: 2.4.2
+  resolution: "jotai@npm:2.4.2"
+  peerDependencies:
+    "@types/react": ">=17.0.0"
+    react: ">=17.0.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    react:
+      optional: true
+  checksum: b0f77afa692435ae922c8ad25f8642b98759127d686c6b3a6e8944b64f351be63e08b14bbcf7f6d2becdf68f2f5c1005b19c853271fc22052db783a2bce25efc
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -3151,6 +3188,7 @@ __metadata:
     eslint: ^8.49.0
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-react-refresh: ^0.4.3
+    jotai: ^2.4.2
     react: ^18.2.0
     react-dom: ^18.2.0
     typescript: ^5.2.2

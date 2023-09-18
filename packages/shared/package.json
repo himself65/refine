@@ -1,0 +1,4 @@
+{
+  "name": "@migra/shared",
+  "types": "./src/electron-env.d.ts"
+}

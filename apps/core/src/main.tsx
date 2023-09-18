@@ -1,12 +1,16 @@
 import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
+import { createRoot } from 'react-dom/client'
+import { App } from './App'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const div = document.getElementById('root')
+if (!div) throw new Error('Root element not found')
+
+const root = createRoot(div)
+root.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+    <App/>
+  </React.StrictMode>
 )
 
 // Remove Preload scripts loading

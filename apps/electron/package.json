@@ -1,0 +1,6 @@
+{
+  "name": "@migra/electron",
+  "dependencies": {
+    "@migra/shared": "workspace:*"
+  }
+}

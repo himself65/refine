@@ -1,0 +1,6 @@
+{
+  "name": "@migra/core",
+  "dependencies": {
+    "@migra/shared": "workspace:*"
+  }
+}

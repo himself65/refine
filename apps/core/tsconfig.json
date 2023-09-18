@@ -1,0 +1,23 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src/",
+    "outDir": "./dist/src",
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "lib": [
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "@migra/shared"
+    ]
+  },
+  "include": [
+    "./src"
+  ],
+  "references": [
+    {
+      "path": "../../packages/shared/tsconfig.json"
+    }
+  ]
+}

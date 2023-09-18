@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src/",
+    "outDir": "./dist/preload/src",
+    "tsBuildInfoFile": "./dist/preload/.tsbuildinfo",
+    "lib": [
+      "DOM",
+      "DOM.Iterable"
+    ]
+  },
+  "include": [
+    "src/preload.ts"
+  ]
+}

@@ -2,13 +2,19 @@
   "name": "migra",
   "private": true,
   "version": "0.0.0",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
     "dev": "vite",
+    "typecheck": "tsc -b tsconfig.json --diagnostics",
     "build": "tsc && vite build && electron-builder",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
+    "jotai": "^2.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

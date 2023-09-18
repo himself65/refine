@@ -1,0 +1,26 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src/",
+    "outDir": "./dist/main/src",
+    "tsBuildInfoFile": "./dist/main/.tsbuildinfo",
+    "types": [
+      "node",
+      "@migra/shared"
+    ]
+  },
+  "include": [
+    "./src"
+  ],
+  "exclude": [
+    "./src/preload.ts"
+  ],
+  "references": [
+    {
+      "path": "../../packages/shared/tsconfig.json"
+    },
+    {
+      "path": "./tsconfig.preload.json"
+    }
+  ]
+}
