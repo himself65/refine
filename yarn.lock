@@ -135,9 +135,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@blocksuite/store@patch:@blocksuite/store@npm%3A0.0.0-20230917124854-21f7463c-nightly#./.yarn/patches/@blocksuite-store-npm-0.0.0-20230917124854-21f7463c-nightly-3b316a603e.patch::locator=migra%40workspace%3A.":
+"@blocksuite/store@patch:@blocksuite/store@npm%3A0.0.0-20230917124854-21f7463c-nightly#./.yarn/patches/@blocksuite-store-npm-0.0.0-20230917124854-21f7463c-nightly-3b316a603e.patch::locator=mini-affine%40workspace%3A.":
   version: 0.0.0-20230917124854-21f7463c-nightly
-  resolution: "@blocksuite/store@patch:@blocksuite/store@npm%3A0.0.0-20230917124854-21f7463c-nightly#./.yarn/patches/@blocksuite-store-npm-0.0.0-20230917124854-21f7463c-nightly-3b316a603e.patch::version=0.0.0-20230917124854-21f7463c-nightly&hash=bef815&locator=migra%40workspace%3A."
+  resolution: "@blocksuite/store@patch:@blocksuite/store@npm%3A0.0.0-20230917124854-21f7463c-nightly#./.yarn/patches/@blocksuite-store-npm-0.0.0-20230917124854-21f7463c-nightly-3b316a603e.patch::version=0.0.0-20230917124854-21f7463c-nightly&hash=bef815&locator=mini-affine%40workspace%3A."
   dependencies:
     "@blocksuite/global": 0.0.0-20230917124854-21f7463c-nightly
     "@blocksuite/virgo": 0.0.0-20230917124854-21f7463c-nightly
@@ -565,9 +565,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@migra/core@workspace:apps/core":
+"@mini-affine/core@workspace:apps/core":
   version: 0.0.0-use.local
-  resolution: "@migra/core@workspace:apps/core"
+  resolution: "@mini-affine/core@workspace:apps/core"
   dependencies:
     "@blocksuite/block-std": 0.0.0-20230917124854-21f7463c-nightly
     "@blocksuite/blocks": 0.0.0-20230917124854-21f7463c-nightly
@@ -575,23 +575,23 @@ __metadata:
     "@blocksuite/global": 0.0.0-20230917124854-21f7463c-nightly
     "@blocksuite/lit": 0.0.0-20230917124854-21f7463c-nightly
     "@blocksuite/store": 0.0.0-20230917124854-21f7463c-nightly
-    "@migra/shared": "workspace:*"
+    "@mini-affine/shared": "workspace:*"
     "@toeverything/theme": ^0.7.15
     yjs: ^13.6.8
   languageName: unknown
   linkType: soft
 
-"@migra/electron@workspace:apps/electron":
+"@mini-affine/electron@workspace:apps/electron":
   version: 0.0.0-use.local
-  resolution: "@migra/electron@workspace:apps/electron"
+  resolution: "@mini-affine/electron@workspace:apps/electron"
   dependencies:
-    "@migra/shared": "workspace:*"
+    "@mini-affine/shared": "workspace:*"
   languageName: unknown
   linkType: soft
 
-"@migra/shared@workspace:*, @migra/shared@workspace:packages/shared":
+"@mini-affine/shared@workspace:*, @mini-affine/shared@workspace:packages/shared":
   version: 0.0.0-use.local
-  resolution: "@migra/shared@workspace:packages/shared"
+  resolution: "@mini-affine/shared@workspace:packages/shared"
   languageName: unknown
   linkType: soft
 
@@ -3341,31 +3341,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"migra@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "migra@workspace:."
-  dependencies:
-    "@esbuild-plugins/node-globals-polyfill": ^0.2.3
-    "@types/react": ^18.2.22
-    "@types/react-dom": ^18.2.7
-    "@typescript-eslint/eslint-plugin": ^6.7.2
-    "@typescript-eslint/parser": ^6.7.2
-    "@vitejs/plugin-react-swc": ^3.3.2
-    electron: ^26.2.1
-    electron-builder: ^24.6.5
-    eslint: ^8.49.0
-    eslint-plugin-react-hooks: ^4.6.0
-    eslint-plugin-react-refresh: ^0.4.3
-    jotai: ^2.4.2
-    react: ^18.2.0
-    react-dom: ^18.2.0
-    typescript: ^5.2.2
-    vite: ^4.4.9
-    vite-plugin-electron: ^0.14.1
-    vite-plugin-electron-renderer: ^0.14.5
-  languageName: unknown
-  linkType: soft
-
 "mime-db@npm:1.52.0":
   version: 1.52.0
   resolution: "mime-db@npm:1.52.0"
@@ -3404,6 +3379,31 @@ __metadata:
   checksum: 25739fee32c17f433626bf19f016df9036b75b3d84a3046c7d156e72ec963dd29d7fc8a302f55a3d6c5a4ff24259676b15d915aad6480815a969ff2ec0836867
   languageName: node
   linkType: hard
+
+"mini-affine@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "mini-affine@workspace:."
+  dependencies:
+    "@esbuild-plugins/node-globals-polyfill": ^0.2.3
+    "@types/react": ^18.2.22
+    "@types/react-dom": ^18.2.7
+    "@typescript-eslint/eslint-plugin": ^6.7.2
+    "@typescript-eslint/parser": ^6.7.2
+    "@vitejs/plugin-react-swc": ^3.3.2
+    electron: ^26.2.1
+    electron-builder: ^24.6.5
+    eslint: ^8.49.0
+    eslint-plugin-react-hooks: ^4.6.0
+    eslint-plugin-react-refresh: ^0.4.3
+    jotai: ^2.4.2
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    typescript: ^5.2.2
+    vite: ^4.4.9
+    vite-plugin-electron: ^0.14.1
+    vite-plugin-electron-renderer: ^0.14.5
+  languageName: unknown
+  linkType: soft
 
 "minimatch@npm:^3.0.4, minimatch@npm:^3.0.5, minimatch@npm:^3.1.1, minimatch@npm:^3.1.2":
   version: 3.1.2

@@ -11,7 +11,7 @@
     ],
     "types": [
       "react/experimental",
-      "@migra/shared"
+      "@mini-affine/shared"
     ]
   },
   "include": [

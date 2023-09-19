@@ -1,6 +1,6 @@
 {
-  "name": "@migra/electron",
+  "name": "@mini-affine/electron",
   "dependencies": {
-    "@migra/shared": "workspace:*"
+    "@mini-affine/shared": "workspace:*"
   }
 }

@@ -1,4 +1,4 @@
 {
-  "name": "@migra/shared",
+  "name": "@mini-affine/shared",
   "types": "./src/electron-env.d.ts"
 }
