@@ -1,10 +1,9 @@
 import { type ReactElement, useMemo } from 'react'
 import { use } from 'react'
-import './App.css'
 import { getOrCreateWorkspace } from './store'
+import { BlockSuiteEditor } from './components/editor'
 
 export const App = (): ReactElement => {
-
   const workspace = useMemo(() => {
     return getOrCreateWorkspace('id')
   }, [])
@@ -12,29 +11,29 @@ export const App = (): ReactElement => {
     let page = workspace.getPage('page0')
     if (!page) {
       page = workspace.createPage('page0')
-
+      const pageNotNull = page
+      pageNotNull.waitForLoaded().then(() => {
+        const pageBlockId = pageNotNull.addBlock('affine:page', {
+          title: new pageNotNull.Text('Untitled')
+        })
+        pageNotNull.addBlock('affine:surface', {}, pageBlockId)
+        const noteBlockId = pageNotNull.addBlock('affine:note', {}, pageBlockId)
+        pageNotNull.addBlock('affine:paragraph', {}, noteBlockId)
+      })
     }
     return page
   }, [workspace])
 
   if (!page.loaded) {
-    use(page.waitForLoaded().then(() => {
-      if (page.isEmpty) {
-        const pageBlockId = page.addBlock('affine:page', {
-          title: new page.Text('Untitled')
-        })
-        page.addBlock('affine:surface', {}, pageBlockId)
-        const noteBlockId = page.addBlock('affine:note', {}, pageBlockId)
-        page.addBlock('affine:paragraph', {}, noteBlockId)
-      }
-    }))
+    use(page.waitForLoaded())
   }
 
-  console.log(page)
-
   return (
-    <div>
-
+    <div style={{
+      height: '100vh',
+      width: '100vw'
+    }}>
+      <BlockSuiteEditor mode="page" page={page}/>
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import { StrictMode, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
+import '@blocksuite/editor/themes/affine.css'
 import './index.css'
 
 export const LazyApp = lazy(
@@ -14,11 +15,3 @@ root.render(
     <LazyApp/>
   </StrictMode>
 )
-
-// Remove Preload scripts loading
-postMessage({ payload: 'removeLoading' }, '*')
-
-// Use contextBridge
-window.ipcRenderer.on('main-process-message', (_event, message) => {
-  console.log(message)
-})

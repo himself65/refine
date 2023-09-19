@@ -6,7 +6,8 @@
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
     "lib": [
       "DOM",
-      "DOM.Iterable"
+      "DOM.Iterable",
+      "ESNext"
     ],
     "types": [
       "react/experimental",

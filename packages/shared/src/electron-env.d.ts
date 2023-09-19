@@ -20,8 +20,3 @@ declare namespace NodeJS {
     VITE_PUBLIC: string
   }
 }
-
-// Used in the Renderer process, expose in `preload.ts`
-interface Window {
-  ipcRenderer: import('electron').IpcRenderer
-}
