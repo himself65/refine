@@ -19,6 +19,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@types/react": "^18.2.22",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
@@ -34,5 +35,8 @@
     "vite-plugin-electron": "^0.14.1",
     "vite-plugin-electron-renderer": "^0.14.5"
   },
-  "main": "dist-electron/main.js"
+  "main": "dist-electron/main.js",
+  "resolutions": {
+    "@blocksuite/store@0.0.0-20230917124854-21f7463c-nightly": "patch:@blocksuite/store@npm%3A0.0.0-20230917124854-21f7463c-nightly#./.yarn/patches/@blocksuite-store-npm-0.0.0-20230917124854-21f7463c-nightly-3b316a603e.patch"
+  }
 }

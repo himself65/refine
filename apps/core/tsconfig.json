@@ -9,6 +9,7 @@
       "DOM.Iterable"
     ],
     "types": [
+      "react/experimental",
       "@migra/shared"
     ]
   },

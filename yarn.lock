@@ -399,6 +399,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@blocksuite/store@patch:@blocksuite/store@npm%3A0.0.0-20230917124854-21f7463c-nightly#./.yarn/patches/@blocksuite-store-npm-0.0.0-20230917124854-21f7463c-nightly-3b316a603e.patch::locator=migra%40workspace%3A.":
+  version: 0.0.0-20230917124854-21f7463c-nightly
+  resolution: "@blocksuite/store@patch:@blocksuite/store@npm%3A0.0.0-20230917124854-21f7463c-nightly#./.yarn/patches/@blocksuite-store-npm-0.0.0-20230917124854-21f7463c-nightly-3b316a603e.patch::version=0.0.0-20230917124854-21f7463c-nightly&hash=bef815&locator=migra%40workspace%3A."
+  dependencies:
+    "@blocksuite/global": 0.0.0-20230917124854-21f7463c-nightly
+    "@blocksuite/virgo": 0.0.0-20230917124854-21f7463c-nightly
+    "@types/flexsearch": ^0.7.3
+    buffer: ^6.0.3
+    flexsearch: 0.7.21
+    idb-keyval: ^6.2.1
+    jszip: ^3.10.1
+    lib0: ^0.2.83
+    merge: ^2.1.1
+    minimatch: ^9.0.3
+    nanoid: ^4.0.2
+    y-protocols: ^1.0.5
+    zod: ^3.22.2
+  peerDependencies:
+    async-call-rpc: ^6
+    yjs: ^13
+  checksum: 7fca4930a1e66b0e7acfcdb179d2cc2a7cfc847d35ab16dd2cfefc9936127f54946984452855debe67c7baf24594f14fea337a286da5ff4ab44ba8b37a3c030b
+  languageName: node
+  linkType: hard
+
 "@blocksuite/virgo@npm:0.0.0-20230917124854-21f7463c-nightly":
   version: 0.0.0-20230917124854-21f7463c-nightly
   resolution: "@blocksuite/virgo@npm:0.0.0-20230917124854-21f7463c-nightly"
@@ -495,6 +519,15 @@ __metadata:
     minimatch: ^3.0.4
     plist: ^3.0.4
   checksum: 257f3a25a4f940ccbe601a0f3a2a925a28657bc3c5fc46018980b771825834665d184e5ce75cfa0b8639525a0bdbb7f0bc02e69e2d4fb044add64638db4d48a4
+  languageName: node
+  linkType: hard
+
+"@esbuild-plugins/node-globals-polyfill@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@esbuild-plugins/node-globals-polyfill@npm:0.2.3"
+  peerDependencies:
+    esbuild: "*"
+  checksum: f83eeaa382680b26a3b1cf6c396450332c41d2dc0f9fd935d3f4bacf5412bef7383d2aeb4246a858781435b7c005a570dadc81051f8a038f1ef2111f17d3d8b0
   languageName: node
   linkType: hard
 
@@ -849,6 +882,7 @@ __metadata:
     "@blocksuite/lit": 0.0.0-20230917124854-21f7463c-nightly
     "@blocksuite/store": 0.0.0-20230917124854-21f7463c-nightly
     "@migra/shared": "workspace:*"
+    yjs: ^13.6.8
   languageName: unknown
   linkType: soft
 
@@ -3413,7 +3447,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lib0@npm:^0.2.83, lib0@npm:^0.2.85":
+"lib0@npm:^0.2.74, lib0@npm:^0.2.83, lib0@npm:^0.2.85":
   version: 0.2.85
   resolution: "lib0@npm:0.2.85"
   dependencies:
@@ -3607,6 +3641,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "migra@workspace:."
   dependencies:
+    "@esbuild-plugins/node-globals-polyfill": ^0.2.3
     "@types/react": ^18.2.22
     "@types/react-dom": ^18.2.7
     "@typescript-eslint/eslint-plugin": ^6.7.2
@@ -5138,6 +5173,15 @@ __metadata:
     buffer-crc32: ~0.2.3
     fd-slicer: ~1.1.0
   checksum: 7f21fe0bbad6e2cb130044a5d1d0d5a0e5bf3d8d4f8c4e6ee12163ce798fee3de7388d22a7a0907f563ac5f9d40f8699a223d3d5c1718da90b0156da6904022b
+  languageName: node
+  linkType: hard
+
+"yjs@npm:^13.6.8":
+  version: 13.6.8
+  resolution: "yjs@npm:13.6.8"
+  dependencies:
+    lib0: ^0.2.74
+  checksum: a2a6fd17a2cce6461b64bedd69f66845b9dfd4702e285be0b5e382840337232e54ba5cf5d48f871263074de625d3902d17ab8a1766695af3fc05a0b4da8d95e0
   languageName: node
   linkType: hard
 

@@ -1,33 +1,40 @@
-import { type ReactElement, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/electron-vite.animate.svg'
+import { type ReactElement, useMemo } from 'react'
+import { use } from 'react'
 import './App.css'
+import { getOrCreateWorkspace } from './store'
 
 export const App = (): ReactElement => {
-  const [count, setCount] = useState(0)
+
+  const workspace = useMemo(() => {
+    return getOrCreateWorkspace('id')
+  }, [])
+  const page = useMemo(() => {
+    let page = workspace.getPage('page0')
+    if (!page) {
+      page = workspace.createPage('page0')
+
+    }
+    return page
+  }, [workspace])
+
+  if (!page.loaded) {
+    use(page.waitForLoaded().then(() => {
+      if (page.isEmpty) {
+        const pageBlockId = page.addBlock('affine:page', {
+          title: new page.Text('Untitled')
+        })
+        page.addBlock('affine:surface', {}, pageBlockId)
+        const noteBlockId = page.addBlock('affine:note', {}, pageBlockId)
+        page.addBlock('affine:paragraph', {}, noteBlockId)
+      }
+    }))
+  }
+
+  console.log(page)
 
   return (
-    <>
-      <div>
-        <a href="https://electron-vite.github.io" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo"/>
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo"/>
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+
+    </div>
   )
 }

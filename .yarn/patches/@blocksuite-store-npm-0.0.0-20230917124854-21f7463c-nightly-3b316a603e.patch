@@ -1,0 +1,9 @@
+diff --git a/dist/persistence/blob/utils.js b/dist/persistence/blob/utils.js
+index eb8c48216120363c0ad8ee025ae159259c063462..a0dc0157156e4c87f18428ddc9400fe3d3a81a10 100644
+--- a/dist/persistence/blob/utils.js
++++ b/dist/persistence/blob/utils.js
+@@ -1,4 +1,3 @@
+-import { Buffer } from 'buffer';
+ export async function sha(input) {
+     const hash = await crypto.subtle.digest('SHA-256', input);
+     const buffer = Buffer.from(hash);

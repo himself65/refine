@@ -1,5 +1,6 @@
 {
   "name": "@migra/core",
+  "type": "module",
   "dependencies": {
     "@blocksuite/block-std": "0.0.0-20230917124854-21f7463c-nightly",
     "@blocksuite/blocks": "0.0.0-20230917124854-21f7463c-nightly",
@@ -7,6 +8,7 @@
     "@blocksuite/global": "0.0.0-20230917124854-21f7463c-nightly",
     "@blocksuite/lit": "0.0.0-20230917124854-21f7463c-nightly",
     "@blocksuite/store": "0.0.0-20230917124854-21f7463c-nightly",
-    "@migra/shared": "workspace:*"
+    "@migra/shared": "workspace:*",
+    "yjs": "^13.6.8"
   }
 }
