@@ -6,6 +6,7 @@
     "packages/*",
     "apps/*"
   ],
+  "packageManager": "yarn@3.6.4",
   "scripts": {
     "dev": "vite",
     "typecheck": "tsc -b tsconfig.json --diagnostics",
