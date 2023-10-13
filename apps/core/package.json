@@ -10,6 +10,7 @@
     "@blocksuite/store": "0.0.0-20231011102951-763786d7-nightly",
     "@mini-affine/shared": "workspace:*",
     "@toeverything/theme": "^0.7.20",
+    "nanoid": "^5.0.1",
     "yjs": "^13.6.8"
   }
 }
