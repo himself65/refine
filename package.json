@@ -11,7 +11,7 @@
     "dev": "vite",
     "typecheck": "tsc -b tsconfig.json --diagnostics",
     "build": "tsc && vite build && electron-builder",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
