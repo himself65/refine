@@ -22,8 +22,5 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
-      - name: Install 'dmg-builder'
-        if: matrix.os == 'macos-latest'
-        run: npm install -g dmg-builder
       - name: Build
         run: yarn build
