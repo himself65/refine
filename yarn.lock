@@ -859,6 +859,7 @@ __metadata:
     "@blocksuite/store": 0.0.0-20231011102951-763786d7-nightly
     "@mini-affine/shared": "workspace:*"
     "@toeverything/theme": ^0.7.20
+    nanoid: ^5.0.1
     yjs: ^13.6.8
   languageName: unknown
   linkType: soft
@@ -3892,6 +3893,15 @@ __metadata:
   bin:
     nanoid: bin/nanoid.js
   checksum: 747c399cea4664dd0be1d0ec498ffd1ef8f1f5221676fc8b577e3f46f66d9afcddb9595d63d19a2e78d0bc6cc33984f65e66bf1682c850b9e26288883d96b53f
+  languageName: node
+  linkType: hard
+
+"nanoid@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "nanoid@npm:5.0.1"
+  bin:
+    nanoid: bin/nanoid.js
+  checksum: fb5a57ec0563f12f101129b2f11fe50505e5f1219760c43e6ae30fc0a0d2aa269985f6d07ddea15e3bd4b24751c9ef14fa8117cbc80d410726429e2b37a4b13f
   languageName: node
   linkType: hard
 
