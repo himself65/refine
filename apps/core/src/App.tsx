@@ -1,12 +1,16 @@
 import { type ReactElement, useMemo } from 'react'
 import { use } from 'react'
-import { getOrCreateWorkspace } from './store'
+import { getWorkspaceAtom } from './store'
 import { BlockSuiteEditor } from './components/editor'
+import { useAtomValue } from 'jotai/react'
 
 export const App = (): ReactElement => {
-  const workspace = useMemo(() => {
-    return getOrCreateWorkspace('id')
-  }, [])
+  const [
+    workspaceAtom,
+    effectAtom
+  ] = getWorkspaceAtom('workspace:0')
+  const workspace = useAtomValue(workspaceAtom)
+  useAtomValue(effectAtom)
   const page = useMemo(() => {
     let page = workspace.getPage('page0')
     if (!page) {
@@ -14,6 +18,7 @@ export const App = (): ReactElement => {
       const pageNotNull = page
       pageNotNull.waitForLoaded().then(() => {
         const pageBlockId = pageNotNull.addBlock('affine:page', {
+          children: [],
           title: new pageNotNull.Text('Untitled')
         })
         pageNotNull.addBlock('affine:surface', {}, pageBlockId)
