@@ -24,3 +24,5 @@ jobs:
         run: yarn
       - name: Build
         run: yarn build
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
