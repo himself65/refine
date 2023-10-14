@@ -10,7 +10,15 @@ const config: PlaywrightTestConfig = {
   webServer: {
     command: 'yarn run dev',
     port: 5173
-  }
+  },
+  reporter: process.env.CI
+    ? [
+      ['html', { open: 'never', outputFolder: 'artifacts/html-report' }],
+      ['github'],
+      ['line'],
+      ['allure-playwright']
+    ]
+    : 'list'
 }
 
 if (process.env.CI) {
