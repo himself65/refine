@@ -6,10 +6,10 @@
     "packages/*",
     "apps/*"
   ],
-  "packageManager": "yarn@3.6.4",
+  "packageManager": "pnpm@8.9.0",
   "scripts": {
     "dev": "vite",
-    "test": "yarn playwright test",
+    "test": "pnpm playwright test",
     "typecheck": "tsc -b tsconfig.json --diagnostics",
     "build": "tsc && vite build && electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
