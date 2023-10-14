@@ -5,9 +5,9 @@
 ## Usage
 
 ```bash
-yarn install
+pnpm install
 
-yarn dev
+pnpm run dev
 ```
 
 ## LICENSE
