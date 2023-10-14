@@ -26,10 +26,10 @@ export function getOrCreateWorkspace (id: string) {
   return workspace
 }
 
-const workspaceAtomWeakMap = new WeakMap<Workspace, Atom<any>>()
+const workspaceAtomWeakMap = new WeakMap<Workspace, Atom<unknown>>()
 const workspaceEffectAtomWeakMap = new WeakMap<
   Workspace,
-  Atom<any>
+  Atom<unknown>
 >()
 
 export function getWorkspaceAtom (id: string) {
