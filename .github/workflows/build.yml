@@ -23,11 +23,11 @@ jobs:
         run: yarn lint
   test:
     name: Test
-    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -40,6 +40,10 @@ jobs:
       - name: Install Playwright's dependencies
         run: yarn playwright install --with-deps chromium
       - name: Run tests
+        if: ${{ matrix.spec.os == 'ubuntu-latest' }}
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test
+      - name: Run tests
+        if: ${{ matrix.spec.os != 'ubuntu-latest' }}
         run: yarn test
   build:
     strategy:
