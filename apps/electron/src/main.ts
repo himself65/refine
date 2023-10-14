@@ -5,41 +5,47 @@ process.env.DIST = path.join(__dirname, '../dist')
 process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : path.join(
   process.env.DIST, '../public')
 
-let win: BrowserWindow | null
+let browserWindow: BrowserWindow | null = null
+
 const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
+if (VITE_DEV_SERVER_URL && process.env.SESSION_DATA_PATH) {
+  app.setPath('sessionData', process.env.SESSION_DATA_PATH)
+}
 
 function createWindow () {
-  win = new BrowserWindow({
+  const window = new BrowserWindow({
     icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg')
   })
 
   // Test active push message to Renderer-process.
-  win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', (new Date).toLocaleString())
+  window.webContents.on('did-finish-load', () => {
+    window?.webContents.send('main-process-message', (new Date).toLocaleString())
   })
 
   if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL).catch((reason) => {
+    window.loadURL(VITE_DEV_SERVER_URL).catch((reason) => {
       console.error('loadURL failed:', reason)
     })
   } else {
     // win.loadFile('dist/index.html')
-    win.loadFile(path.join(process.env.DIST, 'index.html')).catch((reason) => {
+    window.loadFile(path.join(process.env.DIST, 'index.html')).catch((reason) => {
       console.error('loadFile failed:', reason)
     })
   }
+
+  return window
 }
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    browserWindow?.close()
     app.quit()
-    win = null
   }
 })
 
 app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
+  if (browserWindow === null) {
+    browserWindow = createWindow()
   }
 })
 
