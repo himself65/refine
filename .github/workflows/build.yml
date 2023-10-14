@@ -40,10 +40,10 @@ jobs:
       - name: Install Playwright's dependencies
         run: yarn playwright install --with-deps chromium
       - name: Run tests
-        if: ${{ matrix.spec.os == 'ubuntu-latest' }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- yarn test
       - name: Run tests
-        if: ${{ matrix.spec.os != 'ubuntu-latest' }}
+        if: ${{ matrix.os != 'ubuntu-latest' }}
         run: yarn test
   build:
     strategy:
