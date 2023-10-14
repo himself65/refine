@@ -37,6 +37,8 @@ jobs:
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install
+      - name: Install Playwright's dependencies
+        run: yarn playwright install --with-deps chromium
       - name: Run tests
         run: yarn test
   build:
