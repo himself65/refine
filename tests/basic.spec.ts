@@ -12,6 +12,7 @@ import crypto from 'node:crypto'
 
 let page: Page
 let electronApp: ElectronApplication
+const projectRoot = resolve(__dirname, '..')
 
 const callback = (msg: ConsoleMessage) => {
   console.log(`${msg.type()}: ${msg.text()}`)
@@ -20,10 +21,17 @@ const callback = (msg: ConsoleMessage) => {
 test.beforeAll('start electron app', async () => {
   const cacheDir = resolve(__dirname, '.cache')
   const guid = crypto.randomUUID()
+  const ext = process.platform === 'win32' ? '.cmd' : '';
   electronApp = await electron.launch({
     colorScheme: 'light',
     args: [main],
     cwd: resolve(__dirname, '..'),
+    executablePath: resolve(
+      projectRoot,
+      'node_modules',
+      '.bin',
+      `electron${ext}`
+    ),
     env: {
       VITE_DEV_SERVER_URL: 'http://localhost:5173',
       SESSION_DATA_PATH: resolve(cacheDir, guid)
