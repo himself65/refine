@@ -75,6 +75,8 @@ jobs:
         run: pnpm install
       - name: Install Electron
         run: node ./node_modules/electron/install.js
+        # pnpm might cache the electron binary
+        continue-on-error: true
         env:
           ELECTRON_OVERRIDE_DIST_PATH: ./node_modules/.cache/electron
       - name: Install Playwright's dependencies
