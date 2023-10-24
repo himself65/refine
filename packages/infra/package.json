@@ -1,0 +1,24 @@
+{
+  "name": "@mini-affine/infra",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "vite build"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.umd.cjs"
+    }
+  },
+  "dependencies": {
+    "jotai": "^2.5.0"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0",
+    "vite-plugin-dts": "^3.6.1"
+  }
+}

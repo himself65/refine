@@ -2,6 +2,7 @@ import { Schema, Workspace } from '@blocksuite/store'
 import { atom, type Atom } from 'jotai/vanilla'
 import { atomEffect } from 'jotai-effect'
 import { AffineSchemas, __unstableSchemas } from '@blocksuite/blocks/models'
+import { currentWorkspaceIdAtom } from '@mini-affine/infra'
 import {
   createIndexedDBProvider,
   downloadBinary
@@ -52,15 +53,33 @@ export function getWorkspaceAtom (id: string): [
     }
     return workspace
   })
-  const workspaceEffectAtom = atomEffect(async (get) => {
-    const workspace = await get(workspaceAtom)
-    const provider = createIndexedDBProvider(workspace.doc, 'mini-affine-db')
-    provider.connect()
+  const workspaceEffectAtom = atomEffect((get) => {
+    const abortController = new AbortController()
+    const workspacePromise = get(workspaceAtom)
+    let indexedDBProvider: ReturnType<typeof createIndexedDBProvider>
+    workspacePromise.then(() => {
+      if (abortController.signal.aborted) {
+        return
+      }
+      indexedDBProvider = createIndexedDBProvider(workspace.doc, 'mini-affine-db')
+      indexedDBProvider.connect()
+    })
     return () => {
-      provider.disconnect()
+      abortController.abort()
+      indexedDBProvider.disconnect()
     }
   })
   workspaceAtomWeakMap.set(workspace, workspaceAtom)
   workspaceEffectAtomWeakMap.set(workspace, workspaceEffectAtom)
   return [workspaceAtom, workspaceEffectAtom]
 }
+
+export const currentWorkspaceAtom = atom<Promise<Workspace>>(async get => {
+  const currentWorkspaceId = get(currentWorkspaceIdAtom)
+  if (currentWorkspaceId === null) {
+    throw new Error('Current workspace id is null')
+  }
+  const [workspaceAtom, effectAtom] = getWorkspaceAtom(currentWorkspaceId)
+  get(effectAtom)
+  return get(workspaceAtom)
+})

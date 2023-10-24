@@ -19,9 +19,6 @@ const BlockSuiteEditorImpl = (props: EditorProps): ReactElement => {
   if (editorRef.current === null) {
     editorRef.current = new EditorContainer()
     editorRef.current.autofocus = true
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    globalThis.editor = editorRef.current
   }
   const editor = editorRef.current
   assertExists(editorRef, 'editorRef.current should not be null')
