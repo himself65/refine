@@ -7,6 +7,52 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@blocksuite/block-std':
+        specifier: 0.0.0-20231012110022-883c3ab3-nightly
+        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)
+      '@blocksuite/blocks':
+        specifier: 0.0.0-20231012110022-883c3ab3-nightly
+        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)(nanoid@4.0.2)(yjs@13.6.8)
+      '@blocksuite/editor':
+        specifier: 0.0.0-20231012110022-883c3ab3-nightly
+        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/blocks@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)
+      '@blocksuite/global':
+        specifier: 0.0.0-20231012110022-883c3ab3-nightly
+        version: 0.0.0-20231012110022-883c3ab3-nightly
+      '@blocksuite/lit':
+        specifier: 0.0.0-20231012110022-883c3ab3-nightly
+        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(yjs@13.6.8)
+      '@blocksuite/store':
+        specifier: 0.0.0-20231012110022-883c3ab3-nightly
+        version: 0.0.0-20231012110022-883c3ab3-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
+      '@mini-affine/shared':
+        specifier: workspace:*
+        version: link:packages/shared
+      '@toeverything/theme':
+        specifier: ^0.7.20
+        version: 0.7.20
+      '@toeverything/y-indexeddb':
+        specifier: ^0.10.0-canary.0
+        version: 0.10.0-canary.0(yjs@13.6.8)
+      jotai:
+        specifier: ^2.5.0
+        version: 2.5.0(@types/react@18.2.28)(react@18.3.0-canary-8039e6d0b-20231026)
+      jotai-effect:
+        specifier: ^0.2.1
+        version: 0.2.1(jotai@2.5.0)
+      nanoid:
+        specifier: ^4.0.2
+        version: 4.0.2
+      react:
+        specifier: 18.3.0-canary-8039e6d0b-20231026
+        version: 18.3.0-canary-8039e6d0b-20231026
+      react-dom:
+        specifier: 18.3.0-canary-8039e6d0b-20231026
+        version: 18.3.0-canary-8039e6d0b-20231026(react@18.3.0-canary-8039e6d0b-20231026)
+      yjs:
+        specifier: ^13.6.8
+        version: 13.6.8
     devDependencies:
       '@esbuild-plugins/node-globals-polyfill':
         specifier: ^0.2.3
@@ -63,53 +109,7 @@ importers:
         specifier: ^0.14.5
         version: 0.14.5
 
-  apps/core:
-    dependencies:
-      '@blocksuite/block-std':
-        specifier: 0.0.0-20231012110022-883c3ab3-nightly
-        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)
-      '@blocksuite/blocks':
-        specifier: 0.0.0-20231012110022-883c3ab3-nightly
-        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)(nanoid@4.0.2)(yjs@13.6.8)
-      '@blocksuite/editor':
-        specifier: 0.0.0-20231012110022-883c3ab3-nightly
-        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/blocks@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)
-      '@blocksuite/global':
-        specifier: 0.0.0-20231012110022-883c3ab3-nightly
-        version: 0.0.0-20231012110022-883c3ab3-nightly
-      '@blocksuite/lit':
-        specifier: 0.0.0-20231012110022-883c3ab3-nightly
-        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(yjs@13.6.8)
-      '@blocksuite/store':
-        specifier: 0.0.0-20231012110022-883c3ab3-nightly
-        version: 0.0.0-20231012110022-883c3ab3-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
-      '@mini-affine/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
-      '@toeverything/theme':
-        specifier: ^0.7.20
-        version: 0.7.20
-      '@toeverything/y-indexeddb':
-        specifier: ^0.10.0-canary.0
-        version: 0.10.0-canary.0(yjs@13.6.8)
-      jotai:
-        specifier: ^2.5.0
-        version: 2.5.0(@types/react@18.2.28)(react@18.3.0-canary-8039e6d0b-20231026)
-      jotai-effect:
-        specifier: ^0.2.1
-        version: 0.2.1(jotai@2.5.0)
-      nanoid:
-        specifier: ^4.0.2
-        version: 4.0.2
-      react:
-        specifier: 18.3.0-canary-8039e6d0b-20231026
-        version: 18.3.0-canary-8039e6d0b-20231026
-      react-dom:
-        specifier: 18.3.0-canary-8039e6d0b-20231026
-        version: 18.3.0-canary-8039e6d0b-20231026(react@18.3.0-canary-8039e6d0b-20231026)
-      yjs:
-        specifier: ^13.6.8
-        version: 13.6.8
+  apps/core: {}
 
   apps/electron:
     dependencies:

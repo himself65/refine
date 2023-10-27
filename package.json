@@ -6,7 +6,7 @@
     "packages/*",
     "apps/*"
   ],
-  "packageManager": "pnpm@8.9.2",
+  "packageManager": "pnpm@8.10.0",
   "scripts": {
     "dev": "vite",
     "test": "pnpm playwright test",
@@ -14,6 +14,23 @@
     "build": "tsc && vite build && electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
+  },
+  "dependencies": {
+    "@blocksuite/block-std": "0.0.0-20231012110022-883c3ab3-nightly",
+    "@blocksuite/blocks": "0.0.0-20231012110022-883c3ab3-nightly",
+    "@blocksuite/editor": "0.0.0-20231012110022-883c3ab3-nightly",
+    "@blocksuite/global": "0.0.0-20231012110022-883c3ab3-nightly",
+    "@blocksuite/lit": "0.0.0-20231012110022-883c3ab3-nightly",
+    "@blocksuite/store": "0.0.0-20231012110022-883c3ab3-nightly",
+    "@mini-affine/shared": "workspace:*",
+    "@toeverything/theme": "^0.7.20",
+    "@toeverything/y-indexeddb": "^0.10.0-canary.0",
+    "jotai": "^2.5.0",
+    "jotai-effect": "^0.2.1",
+    "nanoid": "^4.0.2",
+    "react": "18.3.0-canary-8039e6d0b-20231026",
+    "react-dom": "18.3.0-canary-8039e6d0b-20231026",
+    "yjs": "^13.6.8"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
