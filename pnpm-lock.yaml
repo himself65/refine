@@ -8,9 +8,6 @@ importers:
 
   .:
     devDependencies:
-      '@playwright/test':
-        specifier: ^1.39.0
-        version: 1.39.0
       '@types/node':
         specifier: ^20.8.9
         version: 20.8.9
@@ -106,6 +103,9 @@ importers:
         specifier: workspace:*
         version: link:../../packages/shared
     devDependencies:
+      '@playwright/test':
+        specifier: ^1.39.0
+        version: 1.39.0
       dmg-builder:
         specifier: 24.7.0
         version: 24.7.0
