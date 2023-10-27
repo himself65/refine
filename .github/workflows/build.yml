@@ -81,8 +81,10 @@ jobs:
           ELECTRON_OVERRIDE_DIST_PATH: ./node_modules/.cache/electron
       - name: Install Playwright's dependencies
         run: pnpm playwright install --with-deps chromium
+        working-directory: apps/desktop
       - name: Run tests
         run: pnpm test
+        working-directory: apps/desktop
   build:
     strategy:
       fail-fast: false
