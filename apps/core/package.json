@@ -1,18 +1,4 @@
 {
   "name": "@mini-affine/core",
-  "type": "module",
-  "dependencies": {
-    "@blocksuite/block-std": "0.0.0-20231012110022-883c3ab3-nightly",
-    "@blocksuite/blocks": "0.0.0-20231012110022-883c3ab3-nightly",
-    "@blocksuite/editor": "0.0.0-20231012110022-883c3ab3-nightly",
-    "@blocksuite/global": "0.0.0-20231012110022-883c3ab3-nightly",
-    "@blocksuite/lit": "0.0.0-20231012110022-883c3ab3-nightly",
-    "@blocksuite/store": "0.0.0-20231012110022-883c3ab3-nightly",
-    "@mini-affine/shared": "workspace:*",
-    "@toeverything/theme": "^0.7.20",
-    "@toeverything/y-indexeddb": "^0.10.0-canary.0",
-    "jotai-effect": "^0.1.0",
-    "nanoid": "^5.0.1",
-    "yjs": "^13.6.8"
-  }
+  "type": "module"
 }

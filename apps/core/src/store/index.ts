@@ -52,12 +52,21 @@ export function getWorkspaceAtom (id: string): [
     }
     return workspace
   })
-  const workspaceEffectAtom = atomEffect(async (get) => {
-    const workspace = await get(workspaceAtom)
-    const provider = createIndexedDBProvider(workspace.doc, 'mini-affine-db')
-    provider.connect()
+  const workspaceEffectAtom = atomEffect((get) => {
+    const workspacePromise = get(workspaceAtom)
+    const abortController = new AbortController()
+    workspacePromise.then((workspace) => {
+      if (abortController.signal.aborted) {
+        return
+      }
+      const provider = createIndexedDBProvider(workspace.doc, 'mini-affine-db')
+      provider.connect()
+      abortController.signal.addEventListener('abort', () => {
+        provider.disconnect()
+      })
+    })
     return () => {
-      provider.disconnect()
+      abortController.abort()
     }
   })
   workspaceAtomWeakMap.set(workspace, workspaceAtom)
