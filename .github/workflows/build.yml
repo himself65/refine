@@ -130,5 +130,5 @@ jobs:
       - name: Upload Desktop
         uses: actions/upload-artifact@v3
         with:
-          name: desktop
+          name: desktop-${{ matrix.os }}
           path: apps/desktop/release
