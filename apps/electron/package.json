@@ -1,6 +1,16 @@
 {
   "name": "@mini-affine/electron",
+  "version": "0.0.0",
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "build": "electron-builder"
+  },
   "dependencies": {
     "@mini-affine/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "dmg-builder": "24.7.0",
+    "electron": "26.4.0",
+    "electron-builder": "24.7.0"
   }
 }

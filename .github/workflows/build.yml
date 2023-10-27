@@ -115,9 +115,13 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-      - name: Install Playwright's dependencies
-        run: pnpm playwright install --with-deps chromium
-      - name: Build
+      - name: Build Core
         run: pnpm run build
+        working-directory: apps/core
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Build Desktop
+        run: pnpm run build
+        working-directory: apps/desktop
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
