@@ -127,3 +127,8 @@ jobs:
         working-directory: apps/desktop
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - name: Upload Desktop
+        uses: actions/upload-artifact@v3
+        with:
+          name: desktop
+          path: apps/desktop/release
