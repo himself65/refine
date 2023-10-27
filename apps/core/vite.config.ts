@@ -4,17 +4,17 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   build: {
-    outDir: '../electron/dist',
+    outDir: '../desktop/dist',
   },
   plugins: [
     react(),
     electron({
       vite: {
         build: {
-          outDir: '../electron/dist-electron'
+          outDir: '../desktop/dist-electron'
         }
       },
-      entry: '../electron/src/main.ts'
+      entry: '../desktop/src/main.ts'
     })
   ]
 })
