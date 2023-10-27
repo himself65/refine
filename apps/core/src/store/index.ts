@@ -26,13 +26,16 @@ export function getOrCreateWorkspace (id: string) {
   return workspace
 }
 
-const workspaceAtomWeakMap = new WeakMap<Workspace, Atom<unknown>>()
+const workspaceAtomWeakMap = new WeakMap<Workspace, Atom<Promise<Workspace>>>()
 const workspaceEffectAtomWeakMap = new WeakMap<
   Workspace,
   Atom<unknown>
 >()
 
-export function getWorkspaceAtom (id: string) {
+export function getWorkspaceAtom (id: string): [
+  Atom<Promise<Workspace>>,
+  Atom<void>
+] {
   const workspace = getOrCreateWorkspace(id)
   if (workspaceAtomWeakMap.has(workspace)
     && workspaceEffectAtomWeakMap.has(workspace)) {
@@ -59,5 +62,5 @@ export function getWorkspaceAtom (id: string) {
   })
   workspaceAtomWeakMap.set(workspace, workspaceAtom)
   workspaceEffectAtomWeakMap.set(workspace, workspaceEffectAtom)
-  return [workspaceAtom, workspaceEffectAtom] as const
+  return [workspaceAtom, workspaceEffectAtom]
 }
