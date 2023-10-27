@@ -24,6 +24,9 @@ importers:
       '@playwright/test':
         specifier: ^1.39.0
         version: 1.39.0
+      '@types/node':
+        specifier: ^20.8.9
+        version: 20.8.9
       '@types/react':
         specifier: ^18.2.28
         version: 18.2.28
@@ -62,7 +65,7 @@ importers:
         version: 5.2.2
       vite:
         specifier: ^4.4.11
-        version: 4.4.11
+        version: 4.4.11(@types/node@20.8.9)
       vite-plugin-electron:
         specifier: ^0.14.1
         version: 0.14.1(vite-plugin-electron-renderer@0.14.5)
@@ -1204,7 +1207,7 @@ packages:
     dependencies:
       '@types/http-cache-semantics': 4.0.2
       '@types/keyv': 3.1.4
-      '@types/node': 18.18.5
+      '@types/node': 20.8.9
       '@types/responselike': 1.0.1
     dev: true
 
@@ -1221,7 +1224,7 @@ packages:
   /@types/fs-extra@9.0.13:
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
     dependencies:
-      '@types/node': 20.8.6
+      '@types/node': 20.8.9
     dev: true
 
   /@types/http-cache-semantics@4.0.2:
@@ -1235,7 +1238,7 @@ packages:
   /@types/keyv@3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 18.18.5
+      '@types/node': 20.8.9
     dev: true
 
   /@types/ms@0.7.32:
@@ -1246,17 +1249,17 @@ packages:
     resolution: {integrity: sha512-4slmbtwV59ZxitY4ixUZdy1uRLf9eSIvBWPQxNjhHYWEtn0FryfKpyS2cvADYXTayWdKEIsJengncrVvkI4I6A==}
     dev: true
 
-  /@types/node@20.8.6:
-    resolution: {integrity: sha512-eWO4K2Ji70QzKUqRy6oyJWUeB7+g2cRagT3T/nxYibYcT4y2BDL8lqolRXjTHmkZCdJfIPaY73KbJAZmcryxTQ==}
+  /@types/node@20.8.9:
+    resolution: {integrity: sha512-UzykFsT3FhHb1h7yD4CA4YhBHq545JC0YnEz41xkipN88eKQtL6rSgocL5tbAP6Ola9Izm/Aw4Ora8He4x0BHg==}
     dependencies:
-      undici-types: 5.25.3
+      undici-types: 5.26.5
     dev: true
 
   /@types/plist@3.0.3:
     resolution: {integrity: sha512-DXkBoKc7jwUR0p439icInmXXMJNhoImdpOrrgA5/nDFK7LVtcJ9MyQNKhJEKpEztnHGWnNWMWLOIR62By0Ln0A==}
     requiresBuild: true
     dependencies:
-      '@types/node': 20.8.6
+      '@types/node': 20.8.9
       xmlbuilder: 15.1.1
     dev: true
     optional: true
@@ -1280,7 +1283,7 @@ packages:
   /@types/responselike@1.0.1:
     resolution: {integrity: sha512-TiGnitEDxj2X0j+98Eqk5lv/Cij8oHd32bU4D/Yw6AOq7vvTk0gSD2GPj0G/HkvhMoVsdlhYF4yqqlyPBTM6Sg==}
     dependencies:
-      '@types/node': 18.18.5
+      '@types/node': 20.8.9
     dev: true
 
   /@types/scheduler@0.16.4:
@@ -1308,7 +1311,7 @@ packages:
     resolution: {integrity: sha512-CHzgNU3qYBnp/O4S3yv2tXPlvMTq0YWSTVg2/JYLqWZGHwwgJGAwd00poay/11asPq8wLFwHzubyInqHIFmmiw==}
     requiresBuild: true
     dependencies:
-      '@types/node': 18.18.5
+      '@types/node': 20.8.9
     dev: true
     optional: true
 
@@ -1454,7 +1457,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.22.5(@babel/core@7.23.2)
       '@types/babel__core': 7.20.2
       react-refresh: 0.14.0
-      vite: 4.4.11
+      vite: 4.4.11(@types/node@20.8.9)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -3807,9 +3810,8 @@ packages:
     hasBin: true
     dev: true
 
-  /undici-types@5.25.3:
-    resolution: {integrity: sha512-Ga1jfYwRn7+cP9v8auvEXN1rX3sWqlayd4HP7OKk4mZWylEmu3KzXDUGrQUN6Ol7qo1gPvB2e5gX6udnyEPgdA==}
-    requiresBuild: true
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
     dev: true
 
   /universalify@0.1.2:
@@ -3879,7 +3881,7 @@ packages:
       vite-plugin-electron-renderer: 0.14.5
     dev: true
 
-  /vite@4.4.11:
+  /vite@4.4.11(@types/node@20.8.9):
     resolution: {integrity: sha512-ksNZJlkcU9b0lBwAGZGGaZHCMqHsc8OpgtoYhsQ4/I2v5cnpmmmqe5pM4nv/4Hn6G/2GhTdj0DhZh2e+Er1q5A==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -3907,6 +3909,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 20.8.9
       esbuild: 0.18.20
       postcss: 8.4.31
       rollup: 3.29.4
