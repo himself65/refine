@@ -36,10 +36,10 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-      - name: Install Playwright's dependencies
-        run: pnpm playwright install --with-deps chromium
       - name: Run ESLint
         run: pnpm run lint
+      - name: Run Type Check
+        run: pnpm run typecheck
   test:
     name: Test
     strategy:
