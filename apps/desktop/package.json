@@ -1,5 +1,5 @@
 {
-  "name": "@mini-affine/electron",
+  "name": "@mini-affine/desktop",
   "version": "0.0.0",
   "main": "dist-electron/main.js",
   "repository": "https://github.com/himself65/mini-affine.git",
