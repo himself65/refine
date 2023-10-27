@@ -11,8 +11,11 @@
     "@mini-affine/shared": "workspace:*",
     "@toeverything/theme": "^0.7.20",
     "@toeverything/y-indexeddb": "^0.10.0-canary.0",
-    "jotai-effect": "^0.1.0",
-    "nanoid": "^5.0.1",
+    "jotai": "^2.5.0",
+    "jotai-effect": "^0.2.1",
+    "nanoid": "^4.0.2",
+    "react": "18.3.0-canary-8039e6d0b-20231026",
+    "react-dom": "18.3.0-canary-8039e6d0b-20231026",
     "yjs": "^13.6.8"
   }
 }

@@ -7,16 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      jotai:
-        specifier: ^2.4.3
-        version: 2.4.3(@types/react@18.2.28)(react@18.3.0-canary-7118f5dd7-20230705)
-      react:
-        specifier: 18.3.0-canary-7118f5dd7-20230705
-        version: 18.3.0-canary-7118f5dd7-20230705
-      react-dom:
-        specifier: 18.3.0-canary-7118f5dd7-20230705
-        version: 18.3.0-canary-7118f5dd7-20230705(react@18.3.0-canary-7118f5dd7-20230705)
     devDependencies:
       '@esbuild-plugins/node-globals-polyfill':
         specifier: ^0.2.3
@@ -80,7 +70,7 @@ importers:
         version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)
       '@blocksuite/blocks':
         specifier: 0.0.0-20231012110022-883c3ab3-nightly
-        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)(nanoid@5.0.1)(yjs@13.6.8)
+        version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)(nanoid@4.0.2)(yjs@13.6.8)
       '@blocksuite/editor':
         specifier: 0.0.0-20231012110022-883c3ab3-nightly
         version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/blocks@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)
@@ -102,12 +92,21 @@ importers:
       '@toeverything/y-indexeddb':
         specifier: ^0.10.0-canary.0
         version: 0.10.0-canary.0(yjs@13.6.8)
+      jotai:
+        specifier: ^2.5.0
+        version: 2.5.0(@types/react@18.2.28)(react@18.3.0-canary-8039e6d0b-20231026)
       jotai-effect:
-        specifier: ^0.1.0
-        version: 0.1.0(jotai@2.4.3)
+        specifier: ^0.2.1
+        version: 0.2.1(jotai@2.5.0)
       nanoid:
-        specifier: ^5.0.1
-        version: 5.0.1
+        specifier: ^4.0.2
+        version: 4.0.2
+      react:
+        specifier: 18.3.0-canary-8039e6d0b-20231026
+        version: 18.3.0-canary-8039e6d0b-20231026
+      react-dom:
+        specifier: 18.3.0-canary-8039e6d0b-20231026
+        version: 18.3.0-canary-8039e6d0b-20231026(react@18.3.0-canary-8039e6d0b-20231026)
       yjs:
         specifier: ^13.6.8
         version: 13.6.8
@@ -374,7 +373,7 @@ packages:
       zod: 3.22.4
     dev: false
 
-  /@blocksuite/blocks@0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)(nanoid@5.0.1)(yjs@13.6.8):
+  /@blocksuite/blocks@0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)(nanoid@4.0.2)(yjs@13.6.8):
     resolution: {integrity: sha512-fXL82h3JVvUJ4xufQpFbKpWg7zUK7K+MNlZwxXWv4bDJimqQsoeHFdNPYUWolAdrmL0kkDhJO9/mTAtYEcFXZg==}
     peerDependencies:
       '@blocksuite/block-std': 0.0.0-20231012110022-883c3ab3-nightly
@@ -399,7 +398,7 @@ packages:
       jszip: 3.10.1
       lit: 2.8.0
       marked: 4.3.0
-      nanoid: 5.0.1
+      nanoid: 4.0.2
       pdf-lib: 1.17.1
       shiki: 0.14.5
       sortablejs: 1.15.0
@@ -417,7 +416,7 @@ packages:
       '@blocksuite/store': 0.0.0-20231012110022-883c3ab3-nightly
       '@toeverything/theme': ^0.7.16
     dependencies:
-      '@blocksuite/blocks': 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)(nanoid@5.0.1)(yjs@13.6.8)
+      '@blocksuite/blocks': 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)(nanoid@4.0.2)(yjs@13.6.8)
       '@blocksuite/global': 0.0.0-20231012110022-883c3ab3-nightly
       '@blocksuite/lit': 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/block-std@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(yjs@13.6.8)
       '@blocksuite/store': 0.0.0-20231012110022-883c3ab3-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
@@ -2840,16 +2839,16 @@ packages:
       minimatch: 3.1.2
     dev: true
 
-  /jotai-effect@0.1.0(jotai@2.4.3):
-    resolution: {integrity: sha512-l8HOfnmD+g+UJMO5VDm4isuFh/weeOGR9C7v3AZAtIVn140fb6gtTWZTG7mbxgBXVHemJdS+PDyK9llZwFHyIg==}
+  /jotai-effect@0.2.1(jotai@2.5.0):
+    resolution: {integrity: sha512-A7YZHD5RuYBqbYtWKKIFHO2EAwNQoxI1Ye2QPamnqVZNzkwMybPe18B7SjDfr4br0lUe76JbWEUjEQ/OWN+pTA==}
     peerDependencies:
       jotai: '>=2.4.3'
     dependencies:
-      jotai: 2.4.3(@types/react@18.2.28)(react@18.3.0-canary-7118f5dd7-20230705)
+      jotai: 2.5.0(@types/react@18.2.28)(react@18.3.0-canary-8039e6d0b-20231026)
     dev: false
 
-  /jotai@2.4.3(@types/react@18.2.28)(react@18.3.0-canary-7118f5dd7-20230705):
-    resolution: {integrity: sha512-CSAHX9LqWG5WCrU8OgBoZbBJ+Bo9rQU0mPusEF4e0CZ/SNFgurG26vb3UpgvCSJZgYVcUQNiUBM5q86PA8rstQ==}
+  /jotai@2.5.0(@types/react@18.2.28)(react@18.3.0-canary-8039e6d0b-20231026):
+    resolution: {integrity: sha512-iPJDFrhNw3KU4o4SSAESeZoW+nM1L/76VULXZWF23qmivBEcbAQjiF5n1W4Hn5dXAol4tmtEYe4HH7d9emEz0Q==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@types/react': '>=17.0.0'
@@ -2861,7 +2860,7 @@ packages:
         optional: true
     dependencies:
       '@types/react': 18.2.28
-      react: 18.3.0-canary-7118f5dd7-20230705
+      react: 18.3.0-canary-8039e6d0b-20231026
     dev: false
 
   /js-tokens@4.0.0:
@@ -3360,14 +3359,14 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /react-dom@18.3.0-canary-7118f5dd7-20230705(react@18.3.0-canary-7118f5dd7-20230705):
-    resolution: {integrity: sha512-WpNXsdLGLeWqnVh77i5siP8XjTw0NiFkjAZv7jDti0k2xy++31c6RT15hd2K0iFWJP1CMkuaCTSN7ZlmpnGfBg==}
+  /react-dom@18.3.0-canary-8039e6d0b-20231026(react@18.3.0-canary-8039e6d0b-20231026):
+    resolution: {integrity: sha512-H1JoRPsibBazpZeqQ9mWw58ChfxE1EZo5eOiRh+Ztz2rpfLBOMZCa8IjtnLrUOAjWcO+KkBisgibjeCQb6WpvQ==}
     peerDependencies:
-      react: 18.3.0-canary-7118f5dd7-20230705
+      react: 18.3.0-canary-8039e6d0b-20231026
     dependencies:
       loose-envify: 1.4.0
-      react: 18.3.0-canary-7118f5dd7-20230705
-      scheduler: 0.24.0-canary-7118f5dd7-20230705
+      react: 18.3.0-canary-8039e6d0b-20231026
+      scheduler: 0.24.0-canary-8039e6d0b-20231026
     dev: false
 
   /react-refresh@0.14.0:
@@ -3375,8 +3374,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /react@18.3.0-canary-7118f5dd7-20230705:
-    resolution: {integrity: sha512-JmjeKd3OCthZzdNTvhMimIb7Tp+FwZDioOgBOxshhOv/AO256o4ZhlKWwqXMn72Orv4vgF3IGzUcK7Jxl1PVTw==}
+  /react@18.3.0-canary-8039e6d0b-20231026:
+    resolution: {integrity: sha512-vlVdzo0PJiwshpfpMSxB4iirygntWJ8AD3nMetQBp6T8YHLv7WMRqMOfna9wn5GMXRJcUw9paQklNiOVGP68ag==}
     engines: {node: '>=0.10.0'}
     dependencies:
       loose-envify: 1.4.0
@@ -3513,8 +3512,8 @@ packages:
     resolution: {integrity: sha512-0s+oAmw9zLl1V1cS9BtZN7JAd0cW5e0QH4W3LWEK6a4LaLEA2OTpGYWDY+6XasBLtz6wkm3u1xRw95mRuJ59WA==}
     dev: true
 
-  /scheduler@0.24.0-canary-7118f5dd7-20230705:
-    resolution: {integrity: sha512-FO1xuWngK9PXXpKLELnSgow+6eILWN7KFzLJRm2TrME9Dz9R+gs1jqmQsM4JF68Xfr4Q+mXva2RbxwsDWjtF1w==}
+  /scheduler@0.24.0-canary-8039e6d0b-20231026:
+    resolution: {integrity: sha512-dWUzSzKcmDy+DQz/aNgYmaXMduHlXed7pTfL4UUkZwwHElNUVsJhZfItWIj2S+7t5o+8GrFA12se0CuJkrJVsA==}
     dependencies:
       loose-envify: 1.4.0
     dev: false
