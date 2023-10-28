@@ -66,9 +66,6 @@
     },
     {
       "path": "./packages/core/tsconfig.json"
-    },
-    {
-      "path": "./packages/shared/tsconfig.json"
     }
   ],
   "include": [],

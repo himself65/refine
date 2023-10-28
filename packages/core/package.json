@@ -6,6 +6,11 @@
       "types": "./dist/app.d.ts",
       "import": "./dist/app.js",
       "require": "./dist/app.cjs"
+    },
+    "./store": {
+      "types": "./dist/store.d.ts",
+      "import": "./dist/store.js",
+      "require": "./dist/store.cjs"
     }
   },
   "scripts": {
@@ -19,7 +24,6 @@
     "@blocksuite/global": "0.0.0-20231012110022-883c3ab3-nightly",
     "@blocksuite/lit": "0.0.0-20231012110022-883c3ab3-nightly",
     "@blocksuite/store": "0.0.0-20231012110022-883c3ab3-nightly",
-    "@mini-affine/shared": "workspace:*",
     "@toeverything/theme": "^0.7.20",
     "@toeverything/y-indexeddb": "^0.10.0-canary.0",
     "jotai": "^2.5.0",

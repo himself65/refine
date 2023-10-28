@@ -1,3 +1,4 @@
+'use client'
 import type { EditorContainer } from '@blocksuite/editor'
 import { assertExists } from '@blocksuite/global/utils'
 import type { Page } from '@blocksuite/store'
@@ -23,9 +24,6 @@ const BlockSuiteEditorImpl = (props: EditorProps): ReactElement => {
     const EditorContainer = use(EditorContainerPromise)
     editorRef.current = new EditorContainer()
     editorRef.current.autofocus = true
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    globalThis.editor = editorRef.current
   }
   const editor = editorRef.current
   assertExists(editorRef, 'editorRef.current should not be null')

@@ -44,9 +44,9 @@ importers:
       '@mini-affine/core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@mini-affine/shared':
-        specifier: workspace:*
-        version: link:../../packages/shared
+      jotai:
+        specifier: ^2.5.0
+        version: 2.5.0(@types/react@18.2.28)(react@18.3.0-canary-8039e6d0b-20231026)
       react:
         specifier: 18.3.0-canary-8039e6d0b-20231026
         version: 18.3.0-canary-8039e6d0b-20231026
@@ -84,9 +84,18 @@ importers:
       '@mini-affine/core':
         specifier: workspace:*
         version: link:../../packages/core
+      jotai:
+        specifier: ^2.5.0
+        version: 2.5.0(@types/react@18.2.28)(react@18.3.0-canary-8039e6d0b-20231026)
+      jotai-effect:
+        specifier: ^0.2.1
+        version: 0.2.1(jotai@2.5.0)
       next:
         specifier: 14.0.0
         version: 14.0.0(react-dom@18.3.0-canary-8039e6d0b-20231026)(react@18.3.0-canary-8039e6d0b-20231026)
+      next-themes:
+        specifier: ^0.2.1
+        version: 0.2.1(next@14.0.0)(react-dom@18.3.0-canary-8039e6d0b-20231026)(react@18.3.0-canary-8039e6d0b-20231026)
       react:
         specifier: 18.3.0-canary-8039e6d0b-20231026
         version: 18.3.0-canary-8039e6d0b-20231026
@@ -127,9 +136,6 @@ importers:
       '@blocksuite/store':
         specifier: 0.0.0-20231012110022-883c3ab3-nightly
         version: 0.0.0-20231012110022-883c3ab3-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
-      '@mini-affine/shared':
-        specifier: workspace:*
-        version: link:../shared
       '@toeverything/theme':
         specifier: ^0.7.20
         version: 0.7.20
@@ -164,8 +170,6 @@ importers:
       vite-plugin-dts:
         specifier: ^3.6.2
         version: 3.6.2(@types/node@20.8.9)(typescript@5.2.2)(vite@4.4.11)
-
-  packages/shared: {}
 
 packages:
 
@@ -4097,6 +4101,18 @@ packages:
   /natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
+
+  /next-themes@0.2.1(next@14.0.0)(react-dom@18.3.0-canary-8039e6d0b-20231026)(react@18.3.0-canary-8039e6d0b-20231026):
+    resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
+    peerDependencies:
+      next: '*'
+      react: '*'
+      react-dom: '*'
+    dependencies:
+      next: 14.0.0(react-dom@18.3.0-canary-8039e6d0b-20231026)(react@18.3.0-canary-8039e6d0b-20231026)
+      react: 18.3.0-canary-8039e6d0b-20231026
+      react-dom: 18.3.0-canary-8039e6d0b-20231026(react@18.3.0-canary-8039e6d0b-20231026)
+    dev: false
 
   /next@14.0.0(react-dom@18.3.0-canary-8039e6d0b-20231026)(react@18.3.0-canary-8039e6d0b-20231026):
     resolution: {integrity: sha512-J0jHKBJpB9zd4+c153sair0sz44mbaCHxggs8ryVXSFBuBqJ8XdE9/ozoV85xGh2VnSjahwntBZZgsihL9QznA==}

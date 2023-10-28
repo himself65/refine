@@ -5,8 +5,7 @@
     "outDir": "./dist/electron/src",
     "tsBuildInfoFile": "./dist/electron/.tsbuildinfo",
     "types": [
-      "node",
-      "@mini-affine/shared"
+      "node"
     ]
   },
   "include": [
@@ -21,9 +20,6 @@
     },
     {
       "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "../../packages/shared/tsconfig.json"
     }
   ]
 }

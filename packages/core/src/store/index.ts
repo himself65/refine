@@ -8,68 +8,125 @@ import {
 } from '@toeverything/y-indexeddb'
 import { applyUpdate } from 'yjs'
 
-const schema = new Schema()
-
-schema.register(AffineSchemas).register(__unstableSchemas)
-
-const workspaceMap = new Map<string, Workspace>()
-
-export function getOrCreateWorkspace (id: string) {
-  let workspace = workspaceMap.get(id)
-  if (!workspace) {
-    workspace = new Workspace({
-      id,
-      schema
-    })
-    workspaceMap.set(id, workspace)
-  }
-  return workspace
+export type Preload = (workspace: Workspace) => Promise<void>
+export type ProviderCreator = (workspace: Workspace) => {
+  connect: () => void,
+  disconnect: () => void
 }
 
-const workspaceAtomWeakMap = new WeakMap<Workspace, Atom<Promise<Workspace>>>()
-const workspaceEffectAtomWeakMap = new WeakMap<
-  Workspace,
-  Atom<unknown>
->()
+/**
+ * @internal
+ */
+export const globalWorkspaceMap = new Map<string, Workspace>()
 
-export function getWorkspaceAtom (id: string): [
-  Atom<Promise<Workspace>>,
-  Atom<void>
-] {
-  const workspace = getOrCreateWorkspace(id)
-  if (workspaceAtomWeakMap.has(workspace)
-    && workspaceEffectAtomWeakMap.has(workspace)) {
-    return [
-      workspaceAtomWeakMap.get(workspace)!,
-      workspaceEffectAtomWeakMap.get(workspace)!
-    ]
+class WorkspaceManager {
+  #wokrspaceAtomWeakMap = new WeakMap<Workspace, Atom<Promise<Workspace>>>()
+  #workspaceEffectAtomWeakMap = new WeakMap<
+    Workspace,
+    Atom<unknown>
+  >()
+
+  readonly #schema = new Schema()
+
+  constructor (
+    public preloads: Preload[],
+    public providers: ProviderCreator[]
+  ) {
+    this.#schema.register(AffineSchemas).register(__unstableSchemas)
   }
-  const workspaceAtom = atom(async () => {
-    const workspace = getOrCreateWorkspace(id)
-    const binary = await downloadBinary(workspace.doc.guid, 'mini-affine-db')
-    if (binary) {
-      applyUpdate(workspace.doc, binary)
-    }
-    return workspace
-  })
-  const workspaceEffectAtom = atomEffect((get) => {
-    const workspacePromise = get(workspaceAtom)
-    const abortController = new AbortController()
-    workspacePromise.then((workspace) => {
-      if (abortController.signal.aborted) {
-        return
-      }
-      const provider = createIndexedDBProvider(workspace.doc, 'mini-affine-db')
-      provider.connect()
-      abortController.signal.addEventListener('abort', () => {
-        provider.disconnect()
+
+  getWorkspaceAtom = (workspaceId: string): Atom<Promise<Workspace>> => {
+    let workspace = globalWorkspaceMap.get(workspaceId)
+    if (!workspace) {
+      workspace = new Workspace({
+        id: workspaceId,
+        schema: this.#schema
       })
-    })
-    return () => {
-      abortController.abort()
+      globalWorkspaceMap.set(workspaceId, workspace)
     }
-  })
-  workspaceAtomWeakMap.set(workspace, workspaceAtom)
-  workspaceEffectAtomWeakMap.set(workspace, workspaceEffectAtom)
-  return [workspaceAtom, workspaceEffectAtom]
+    {
+      const workspaceAtom = this.#wokrspaceAtomWeakMap.get(workspace)
+      if (workspaceAtom) {
+        return workspaceAtom
+      }
+    }
+    {
+      const ensureWorkspace = workspace
+      const workspaceAtom = atom(async () => {
+        for (const preload of this.preloads) {
+          await preload(ensureWorkspace)
+        }
+        return ensureWorkspace
+      })
+      this.#wokrspaceAtomWeakMap.set(workspace, workspaceAtom)
+      return workspaceAtom
+    }
+  }
+
+  getWorkspaceEffectAtom = (workspaceId: string): Atom<void> => {
+    let workspace = globalWorkspaceMap.get(workspaceId)
+    if (!workspace) {
+      workspace = new Workspace({
+        id: workspaceId,
+        schema: this.#schema
+      })
+      globalWorkspaceMap.set(workspaceId, workspace)
+    }
+    {
+      const workspaceEffectAtom = this.#workspaceEffectAtomWeakMap.get(
+        workspace)
+      if (workspaceEffectAtom) {
+        return workspaceEffectAtom
+      }
+    }
+    {
+      const workspaceEffectAtom = atomEffect((get) => {
+        const workspacePromise = get(this.getWorkspaceAtom(workspaceId))
+        const abortController = new AbortController()
+        workspacePromise.then((workspace) => {
+          if (abortController.signal.aborted) {
+            return
+          }
+          for (const providerCreator of this.providers) {
+            const provider = providerCreator(workspace)
+            provider.connect()
+            abortController.signal.addEventListener('abort', () => {
+              provider.disconnect()
+            })
+          }
+        })
+        return () => {
+          abortController.abort()
+        }
+      })
+      this.#workspaceEffectAtomWeakMap.set(workspace, workspaceEffectAtom)
+      return workspaceEffectAtom
+    }
+  }
 }
+
+export const workspaceManager = new WorkspaceManager(
+  [
+    async (workspace) => {
+      const binary = await downloadBinary(workspace.doc.guid, 'mini-affine-db')
+      if (binary) {
+        // only download root doc
+        applyUpdate(workspace.doc, binary)
+      }
+    }
+  ],
+  [
+    (workspace) => {
+      const provider = createIndexedDBProvider(workspace.doc,
+        'refine-indexeddb')
+      return {
+        connect: () => {
+          provider.connect()
+        },
+        disconnect: () => {
+          provider.disconnect()
+        }
+      }
+    }
+  ]
+)

@@ -11,14 +11,17 @@
   },
   "dependencies": {
     "@mini-affine/core": "workspace:*",
+    "jotai": "^2.5.0",
+    "jotai-effect": "^0.2.1",
+    "next": "14.0.0",
+    "next-themes": "^0.2.1",
     "react": "18.3.0-canary-8039e6d0b-20231026",
-    "react-dom": "18.3.0-canary-8039e6d0b-20231026",
-    "next": "14.0.0"
+    "react-dom": "18.3.0-canary-8039e6d0b-20231026"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
+    "eslint-config-next": "14.0.0",
     "postcss": "^8.4.31",
-    "tailwindcss": "^3.3.5",
-    "eslint-config-next": "14.0.0"
+    "tailwindcss": "^3.3.5"
   }
 }

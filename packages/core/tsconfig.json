@@ -10,17 +10,13 @@
       "ESNext"
     ],
     "types": [
-      "react/experimental",
-      "@mini-affine/shared"
+      "react/experimental"
     ]
   },
   "include": [
     "./src"
   ],
   "references": [
-    {
-      "path": "../shared/tsconfig.json"
-    },
     {
       "path": "./tsconfig.node.json"
     }

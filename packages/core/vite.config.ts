@@ -6,7 +6,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        app: './src/app.tsx'
+        app: './src/app.tsx',
+        store: './src/store.ts'
       },
       formats: ['es', 'cjs']
     },
