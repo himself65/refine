@@ -51,14 +51,21 @@
     "incremental": true,
 
     // Completeness
-    "skipLibCheck": true // skip all type checks for .d.ts files
+    "skipLibCheck": true, // skip all type checks for .d.ts files
+
+    "paths": {
+      "@mini-affine/core/*": ["./packages/core/src/*"],
+    }
   },
   "references": [
     {
-      "path": "./apps/core/tsconfig.json"
+      "path": "./apps/desktop/tsconfig.json"
     },
     {
-      "path": "./apps/desktop/tsconfig.json"
+      "path": "./apps/web/tsconfig.json"
+    },
+    {
+      "path": "./packages/core/tsconfig.json"
     },
     {
       "path": "./packages/shared/tsconfig.json"

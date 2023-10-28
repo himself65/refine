@@ -4,16 +4,25 @@
   "main": "dist-electron/main.js",
   "repository": "https://github.com/himself65/mini-affine.git",
   "scripts": {
+    "dev": "vite",
     "build": "electron-builder",
     "test": "playwright test"
   },
   "dependencies": {
+    "@blocksuite/editor": "0.0.0-20231012110022-883c3ab3-nightly",
+    "react": "18.3.0-canary-8039e6d0b-20231026",
+    "react-dom": "18.3.0-canary-8039e6d0b-20231026",
+    "@mini-affine/core": "workspace:*",
     "@mini-affine/shared": "workspace:*"
   },
   "devDependencies": {
     "@playwright/test": "^1.39.0",
+    "@vitejs/plugin-react": "^4.1.0",
     "dmg-builder": "24.7.0",
     "electron": "26.4.0",
-    "electron-builder": "24.7.0"
+    "electron-builder": "24.7.0",
+    "vite": "^4.4.11",
+    "vite-plugin-electron": "^0.14.1",
+    "vite-plugin-electron-renderer": "^0.14.5"
   }
 }

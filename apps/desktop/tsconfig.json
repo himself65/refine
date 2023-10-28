@@ -1,21 +1,27 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src/",
-    "outDir": "./dist/main/src",
-    "tsBuildInfoFile": "./dist/main/.tsbuildinfo",
+    "rootDir": "./src/electron",
+    "outDir": "./dist/electron/src",
+    "tsBuildInfoFile": "./dist/electron/.tsbuildinfo",
     "types": [
       "node",
       "@mini-affine/shared"
     ]
   },
   "include": [
-    "./src"
+    "./src/electron"
   ],
   "exclude": [
     "./src/preload.ts"
   ],
   "references": [
+    {
+      "path": "./tsconfig.web.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    },
     {
       "path": "../../packages/shared/tsconfig.json"
     }
