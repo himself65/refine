@@ -7,10 +7,10 @@
       "ESNext"
     ],
     "jsx": "preserve",
-    "incremental": true,
     "types": [
       "react/canary"
     ],
+    "incremental": true,
     "plugins": [
       {
         "name": "next"
@@ -21,7 +21,8 @@
   },
   "include": [
     "next-env.d.ts",
-    "./src",
+    "./**/*.ts",
+    "./**/*.tsx",
     ".next/types/**/*.ts"
   ],
   "references": [

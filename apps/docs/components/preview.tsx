@@ -1,4 +1,4 @@
-'use client'
+import type { ReactElement } from 'react'
 import {
   type FC,
   type PropsWithChildren,
@@ -6,6 +6,13 @@ import {
   useEffect,
   useState
 } from 'react'
+import { getDefaultStore } from 'jotai/vanilla'
+import { themeAtom } from '@refine/core/store'
+
+const store = getDefaultStore()
+store.sub(themeAtom, () => {
+  alert('Change theme is not supported in preview mode')
+})
 
 let importAppPromise: Promise<typeof import('@refine/core/app')>
 if (typeof window !== 'undefined') {
@@ -30,13 +37,11 @@ const NoSsr: FC<PropsWithChildren> = ({
   )
 }
 
-export default function Home () {
+export const Preview = (): ReactElement => {
   const { App } = use(importAppPromise)
   return (
-    <main>
-      <NoSsr>
-        <App className=''/>
-      </NoSsr>
-    </main>
+    <NoSsr>
+      <App className='w-auto h-96 overflow-scroll border-solid border-2 border-indigo-600'/>
+    </NoSsr>
   )
 }

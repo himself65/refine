@@ -62,6 +62,9 @@
       "path": "./apps/desktop/tsconfig.json"
     },
     {
+      "path": "./apps/docs/tsconfig.json"
+    },
+    {
       "path": "./apps/web/tsconfig.json"
     },
     {

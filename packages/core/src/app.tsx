@@ -6,7 +6,11 @@ import { workspaceManager } from './store/index'
 import { BlockSuiteEditor } from './components/editor'
 import { useAtom, useAtomValue } from 'jotai/react'
 
-export const App = (): ReactElement => {
+export type AppProps = {
+  className?: string
+}
+
+export const App = (props: AppProps): ReactElement => {
   const [theme, setTheme] = useAtom(themeAtom)
   const workspaceAtom = workspaceManager.getWorkspaceAtom('workspace:0')
   const effectAtom = workspaceManager.getWorkspaceEffectAtom('workspace:0')
@@ -35,10 +39,9 @@ export const App = (): ReactElement => {
   }
 
   return (
-    <div style={{
-      height: '100vh',
-      width: '100vw'
-    }}>
+    <div
+      className={props.className}
+    >
       <button
         onClick={
           useCallback(() => {
