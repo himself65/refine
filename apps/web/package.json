@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mini-affine/core": "workspace:*",
+    "@refine/core": "workspace:*",
     "jotai": "^2.5.0",
     "jotai-effect": "^0.2.1",
     "next": "14.0.0",

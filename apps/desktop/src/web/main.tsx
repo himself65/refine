@@ -2,7 +2,7 @@ import { StrictMode, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import '@blocksuite/editor/themes/affine.css'
 import { getDefaultStore } from 'jotai/vanilla'
-import { themeAtom } from '@mini-affine/core/store'
+import { themeAtom } from '@refine/core/store'
 import './index.css'
 
 declare global {
@@ -30,7 +30,7 @@ window.apis.getTheme().then(theme => {
 })
 
 export const LazyApp = lazy(
-  () => import('@mini-affine/core/app').then(({ App }) => ({ default: App })))
+  () => import('@refine/core/app').then(({ App }) => ({ default: App })))
 
 const div = document.getElementById('root')
 if (!div) throw new Error('Root element not found')

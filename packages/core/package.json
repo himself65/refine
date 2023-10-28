@@ -1,5 +1,5 @@
 {
-  "name": "@mini-affine/core",
+  "name": "@refine/core",
   "type": "module",
   "exports": {
     "./app": {

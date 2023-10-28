@@ -108,7 +108,7 @@ class WorkspaceManager {
 export const workspaceManager = new WorkspaceManager(
   [
     async (workspace) => {
-      const binary = await downloadBinary(workspace.doc.guid, 'mini-affine-db')
+      const binary = await downloadBinary(workspace.doc.guid, 'refine-db')
       if (binary) {
         // only download root doc
         applyUpdate(workspace.doc, binary)

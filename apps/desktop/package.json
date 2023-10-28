@@ -1,8 +1,8 @@
 {
-  "name": "@mini-affine/desktop",
+  "name": "@refine/desktop",
   "version": "0.0.0",
   "main": "dist-electron/main.js",
-  "repository": "https://github.com/himself65/mini-affine.git",
+  "repository": "https://github.com/himself65/refine.git",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@blocksuite/editor": "0.0.0-20231012110022-883c3ab3-nightly",
-    "@mini-affine/core": "workspace:*",
+    "@refine/core": "workspace:*",
     "jotai": "^2.5.0",
     "react": "18.3.0-canary-8039e6d0b-20231026",
     "react-dom": "18.3.0-canary-8039e6d0b-20231026"
