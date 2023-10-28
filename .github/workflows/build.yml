@@ -79,6 +79,7 @@ jobs:
         continue-on-error: true
         env:
           ELECTRON_OVERRIDE_DIST_PATH: ./node_modules/.cache/electron
+        working-directory: apps/desktop
       - name: Install Playwright's dependencies
         run: pnpm playwright install --with-deps chromium
         working-directory: apps/desktop
