@@ -8,7 +8,7 @@ const config: PlaywrightTestConfig = {
   fullyParallel: true,
   timeout: process.env.CI ? 50_000 : 30_000,
   webServer: {
-    command: 'pnpm run --filter core dev',
+    command: 'pnpm run dev',
     port: 5173
   },
   reporter: process.env.CI
