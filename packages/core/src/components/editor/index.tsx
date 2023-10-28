@@ -1,8 +1,11 @@
-import { EditorContainer } from '@blocksuite/editor'
+import type { EditorContainer } from '@blocksuite/editor'
 import { assertExists } from '@blocksuite/global/utils'
 import type { Page } from '@blocksuite/store'
 import type { CSSProperties, ReactElement } from 'react'
-import { memo, useEffect, useRef } from 'react'
+import { memo, useEffect, useRef, use, Suspense } from 'react'
+
+const EditorContainerPromise = import('@blocksuite/editor').then(
+  m => m.EditorContainer)
 
 export type EditorProps = {
   page: Page;
@@ -17,6 +20,7 @@ const BlockSuiteEditorImpl = (props: EditorProps): ReactElement => {
   assertExists(page, 'page should not be null')
   const editorRef = useRef<EditorContainer | null>(null)
   if (editorRef.current === null) {
+    const EditorContainer = use(EditorContainerPromise)
     editorRef.current = new EditorContainer()
     editorRef.current.autofocus = true
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -68,11 +72,21 @@ const BlockSuiteEditorImpl = (props: EditorProps): ReactElement => {
   )
 }
 
+export const EditorFallback = () => {
+  return (
+    <div>
+      Loading...
+    </div>
+  )
+}
+
 export const BlockSuiteEditor = memo(function BlockSuiteEditor (
   props: EditorProps
 ): ReactElement {
   return (
-    <BlockSuiteEditorImpl {...props} />
+    <Suspense fallback={<EditorFallback/>}>
+      <BlockSuiteEditorImpl {...props} />
+    </Suspense>
   )
 })
 
