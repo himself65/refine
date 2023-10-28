@@ -16,11 +16,11 @@ const ThemeProviderInner: FC<PropsWithChildren> = ({
   useEffect(() => {
     if (initial) {
       setInitial(false)
-      setTheme(upstreamTheme as any)
+      setTheme(upstreamTheme === 'light' ? 'light' : 'dark')
     } else if (upstreamTheme !== theme) {
       setUpstreamTheme(theme)
     }
-  }, [initial, theme, upstreamTheme, setTheme])
+  }, [initial, theme, upstreamTheme, setTheme, setUpstreamTheme])
   return children
 }
 
