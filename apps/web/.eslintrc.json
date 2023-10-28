@@ -1,4 +1,7 @@
 {
   "root": false,
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "react-refresh/only-export-components": "off"
+  }
 }
