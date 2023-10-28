@@ -1,7 +1,7 @@
 {
   "name": "@mini-affine/core",
   "type": "module",
-  "main": "../electron/dist-electron/main.js",
+  "main": "../desktop/dist-electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build"
