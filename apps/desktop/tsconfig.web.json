@@ -1,9 +1,9 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src/",
-    "outDir": "./dist/src",
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "rootDir": "./src/web",
+    "outDir": "./dist/web",
+    "tsBuildInfoFile": "./dist/web/.tsbuildinfo",
     "lib": [
       "DOM",
       "DOM.Iterable",
@@ -14,15 +14,10 @@
       "@mini-affine/shared"
     ]
   },
-  "include": [
-    "./src"
-  ],
+  "include": ["./src/web"],
   "references": [
     {
-      "path": "../../packages/shared/tsconfig.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
+      "path": "../../packages/core"
     }
   ]
 }

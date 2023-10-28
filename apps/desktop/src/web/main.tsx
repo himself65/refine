@@ -4,7 +4,7 @@ import '@blocksuite/editor/themes/affine.css'
 import './index.css'
 
 export const LazyApp = lazy(
-  () => import('./App').then(({ App }) => ({ default: App })))
+  () => import('@mini-affine/core/app').then(({ App }) => ({ default: App })))
 
 const div = document.getElementById('root')
 if (!div) throw new Error('Root element not found')

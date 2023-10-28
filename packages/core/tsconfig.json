@@ -1,0 +1,28 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src/",
+    "outDir": "./dist/src",
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "types": [
+      "react/experimental",
+      "@mini-affine/shared"
+    ]
+  },
+  "include": [
+    "./src"
+  ],
+  "references": [
+    {
+      "path": "../shared/tsconfig.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
