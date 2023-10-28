@@ -8,7 +8,7 @@ import { Provider } from './provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Mini AFFiNE'
+  title: 'refine'
 }
 
 export default function RootLayout ({
