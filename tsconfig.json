@@ -54,7 +54,7 @@
     "skipLibCheck": true, // skip all type checks for .d.ts files
 
     "paths": {
-      "@mini-affine/core/*": ["./packages/core/src/*"],
+      "@refine/core/*": ["./packages/core/src/*"],
     }
   },
   "references": [

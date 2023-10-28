@@ -11,7 +11,7 @@ import {
 let importAppPromise = Promise.resolve(
   { App: () => null as ReactElement | null })
 if (typeof window !== 'undefined') {
-  importAppPromise = import('@mini-affine/core/app')
+  importAppPromise = import('@refine/core/app')
 }
 
 const NoSsr: FC<PropsWithChildren> = ({

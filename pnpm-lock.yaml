@@ -41,7 +41,7 @@ importers:
       '@blocksuite/editor':
         specifier: 0.0.0-20231012110022-883c3ab3-nightly
         version: 0.0.0-20231012110022-883c3ab3-nightly(@blocksuite/blocks@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/lit@0.0.0-20231012110022-883c3ab3-nightly)(@blocksuite/store@0.0.0-20231012110022-883c3ab3-nightly)(@toeverything/theme@0.7.20)
-      '@mini-affine/core':
+      '@refine/core':
         specifier: workspace:*
         version: link:../../packages/core
       jotai:
@@ -81,7 +81,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@mini-affine/core':
+      '@refine/core':
         specifier: workspace:*
         version: link:../../packages/core
       jotai:
