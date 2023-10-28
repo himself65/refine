@@ -11,10 +11,10 @@
   },
   "dependencies": {
     "@blocksuite/editor": "0.0.0-20231012110022-883c3ab3-nightly",
-    "react": "18.3.0-canary-8039e6d0b-20231026",
-    "react-dom": "18.3.0-canary-8039e6d0b-20231026",
     "@mini-affine/core": "workspace:*",
-    "@mini-affine/shared": "workspace:*"
+    "jotai": "^2.5.0",
+    "react": "18.3.0-canary-8039e6d0b-20231026",
+    "react-dom": "18.3.0-canary-8039e6d0b-20231026"
   },
   "devDependencies": {
     "@playwright/test": "^1.39.0",

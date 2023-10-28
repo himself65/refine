@@ -1,14 +1,15 @@
-import { type ReactElement, useMemo } from 'react'
+'use client'
+import { type ReactElement, useCallback, useMemo } from 'react'
 import { use } from 'react'
-import { getWorkspaceAtom } from './store'
+import { themeAtom } from './store/api.js'
+import { workspaceManager } from './store/index'
 import { BlockSuiteEditor } from './components/editor'
-import { useAtomValue } from 'jotai/react'
+import { useAtom, useAtomValue } from 'jotai/react'
 
 export const App = (): ReactElement => {
-  const [
-    workspaceAtom,
-    effectAtom
-  ] = getWorkspaceAtom('workspace:0')
+  const [theme, setTheme] = useAtom(themeAtom)
+  const workspaceAtom = workspaceManager.getWorkspaceAtom('workspace:0')
+  const effectAtom = workspaceManager.getWorkspaceEffectAtom('workspace:0')
   const workspace = useAtomValue(workspaceAtom)
   useAtomValue(effectAtom)
   const page = useMemo(() => {
@@ -38,6 +39,15 @@ export const App = (): ReactElement => {
       height: '100vh',
       width: '100vw'
     }}>
+      <button
+        onClick={
+          useCallback(() => {
+            setTheme(theme => theme === 'light' ? 'dark' : 'light')
+          }, [setTheme])
+        }
+      >
+        change theme. Current theme: {theme}
+      </button>
       <BlockSuiteEditor mode="page" page={page}/>
     </div>
   )
