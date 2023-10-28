@@ -5,7 +5,8 @@
   "repository": "https://github.com/himself65/mini-affine.git",
   "scripts": {
     "dev": "vite",
-    "build": "electron-builder",
+    "build": "vite build",
+    "make": "electron-builder",
     "test": "playwright test"
   },
   "dependencies": {
