@@ -1,6 +1,0 @@
-{
-  "name": "@mini-affine/electron",
-  "dependencies": {
-    "@mini-affine/shared": "workspace:*"
-  }
-}

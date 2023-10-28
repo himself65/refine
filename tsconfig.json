@@ -58,13 +58,10 @@
       "path": "./apps/core/tsconfig.json"
     },
     {
-      "path": "./apps/electron/tsconfig.json"
+      "path": "./apps/desktop/tsconfig.json"
     },
     {
       "path": "./packages/shared/tsconfig.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
     }
   ],
   "include": [],

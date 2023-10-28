@@ -1,0 +1,19 @@
+{
+  "name": "@mini-affine/desktop",
+  "version": "0.0.0",
+  "main": "dist-electron/main.js",
+  "repository": "https://github.com/himself65/mini-affine.git",
+  "scripts": {
+    "build": "electron-builder",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "@mini-affine/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.39.0",
+    "dmg-builder": "24.7.0",
+    "electron": "26.4.0",
+    "electron-builder": "24.7.0"
+  }
+}
