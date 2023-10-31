@@ -1,0 +1,24 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src/",
+    "outDir": "./dist/src",
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
+    ],
+    "types": [
+      "react/experimental"
+    ]
+  },
+  "include": [
+    "./src"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}
