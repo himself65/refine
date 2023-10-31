@@ -55,6 +55,7 @@
 
     "paths": {
       "@refine/core/*": ["./packages/core/src/*"],
+      "jotai-inject": ["./packages/jotai-inject/src/index"],
     }
   },
   "references": [
@@ -69,6 +70,9 @@
     },
     {
       "path": "./packages/core/tsconfig.json"
+    },
+    {
+      "path": "./packages/jotai-inject/tsconfig.json"
     }
   ],
   "include": [],
