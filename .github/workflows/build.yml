@@ -83,9 +83,8 @@ jobs:
       - name: Install Playwright's dependencies
         run: pnpm playwright install --with-deps chromium
         working-directory: apps/desktop
-      - name: Build Core
-        run: pnpm run build
-        working-directory: packages/core
+      - name: Build Packages
+        run: pnpm run build:packages
       - name: Run tests
         run: pnpm test
         working-directory: apps/desktop
@@ -122,9 +121,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-      - name: Build Core
-        run: pnpm run build
-        working-directory: packages/core
+      - name: Build Packages
+        run: pnpm run build:packages
       - name: Build Desktop
         run: pnpm run build
         working-directory: apps/desktop
@@ -168,9 +166,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-      - name: Build Core
-        run: pnpm run build
-        working-directory: packages/core
+      - name: Build Packages
+        run: pnpm run build:packages
       - name: Build Web
         run: pnpm run build
         working-directory: apps/web
@@ -203,9 +200,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
-      - name: Build Core
-        run: pnpm run build
-        working-directory: packages/core
+      - name: Build Packages
+        run: pnpm run build:packages
       - name: Build Docs
         run: pnpm run build
         working-directory: apps/docs

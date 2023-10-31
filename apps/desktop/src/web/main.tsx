@@ -1,8 +1,8 @@
 import { StrictMode, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import '@blocksuite/editor/themes/affine.css'
-import { getDefaultStore } from 'jotai/vanilla'
 import { themeAtom } from '@refine/core/store'
+import { inject } from 'jotai-inject'
 import './index.css'
 
 declare global {
@@ -14,20 +14,14 @@ declare global {
   }
 }
 
-const store = getDefaultStore()
-const html = document.documentElement
-
-window.apis.getTheme().then(theme => {
-  html.dataset.theme = theme
-  store.set(themeAtom, theme)
-  store.sub(themeAtom, () => {
-    const theme = store.get(themeAtom)
-    html.dataset.theme = theme
-    window.apis.changeTheme(theme).catch(() => {
-      console.error('Failed to change theme')
-    })
-  })
-})
+inject(
+  themeAtom,
+  () => window.apis.getTheme(),
+  (theme) => {
+    window.apis.changeTheme(theme).catch(console.error)
+    document.documentElement.setAttribute('data-theme', theme)
+  }
+)
 
 export const LazyApp = lazy(
   () => import('@refine/core/app').then(({ App }) => ({ default: App })))

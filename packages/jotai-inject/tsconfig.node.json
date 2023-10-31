@@ -8,6 +8,12 @@
     "types": ["node"]
   },
   "include": [
+    "./test",
     "vite.config.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.json"
+    }
   ]
 }

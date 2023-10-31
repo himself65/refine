@@ -6,11 +6,10 @@ import {
   useEffect,
   useState
 } from 'react'
-import { getDefaultStore } from 'jotai/vanilla'
 import { themeAtom } from '@refine/core/store'
+import { inject } from 'jotai-inject'
 
-const store = getDefaultStore()
-store.sub(themeAtom, () => {
+inject(themeAtom, () => 'light' as const, () => {
   alert('Change theme is not supported in preview mode')
 })
 
@@ -41,7 +40,8 @@ export const Preview = (): ReactElement => {
   const { App } = use(importAppPromise)
   return (
     <NoSsr>
-      <App className='w-auto h-96 overflow-scroll border-solid border-2 border-indigo-600'/>
+      <App
+        className="w-auto h-96 overflow-scroll border-solid border-2 border-indigo-600"/>
     </NoSsr>
   )
 }

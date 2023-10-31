@@ -1,0 +1,35 @@
+{
+  "name": "jotai-inject",
+  "version": "0.1.0",
+  "type": "module",
+  "keywords": [
+    "jotai",
+    "react"
+  ],
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "dependencies": {
+    "jotai": "^2.5.0",
+    "jotai-effect": "^0.2.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.1.0",
+    "vite": "^4.4.11",
+    "vite-plugin-dts": "^3.6.2",
+    "vitest": "^0.34.6"
+  }
+}

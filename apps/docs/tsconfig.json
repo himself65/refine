@@ -28,6 +28,9 @@
   "references": [
     {
       "path": "../../packages/core"
+    },
+    {
+      "path": "../../packages/jotai-inject"
     }
   ]
 }
