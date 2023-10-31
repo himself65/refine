@@ -23,6 +23,7 @@ export function inject<
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const effectWeakMap = new WeakMap<PrimitiveAtom<any>, Atom<void>>()
 
 export function useInject<Value> (
