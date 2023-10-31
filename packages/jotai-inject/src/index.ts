@@ -15,9 +15,7 @@ export function inject<
   // @ts-expect-error fixme: https://github.com/pmndrs/jotai/pull/2222
   injectAtom.init = accessor()
   injectAtom.write = function (get, set, apply) {
-    if (typeof apply === 'function') {
-      originalWrite(get, set, apply)
-    }
+    originalWrite(get, set, apply)
     updateValue(get(injectAtom))
     return
   }

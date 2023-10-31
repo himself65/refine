@@ -72,7 +72,7 @@
       "path": "./packages/core/tsconfig.json"
     },
     {
-      "path": "./packages/jotai-inject/tsconfig.json"
+      "path": "./packages/jotai-inject/tsconfig.node.json"
     }
   ],
   "include": [],
