@@ -1,6 +1,7 @@
 {
   "name": "jotai-inject",
   "version": "0.1.0",
+  "type": "module",
   "keywords": [
     "jotai",
     "react"
