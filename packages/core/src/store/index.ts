@@ -109,7 +109,7 @@ class WorkspaceManager {
     return this.#localInjected
   }
 
-  public injectIndexedDBProvider = async () => {
+  public injectLocalProvider = async () => {
     if (this.#localInjected) {
       return
     }

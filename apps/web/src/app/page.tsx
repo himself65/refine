@@ -42,7 +42,7 @@ const NoSsr: FC<PropsWithChildren> = ({
 
 let injectPromise = Promise.resolve()
 if (typeof window !== 'undefined' && !workspaceManager.localInjected) {
-  injectPromise = workspaceManager.injectIndexedDBProvider()
+  injectPromise = workspaceManager.injectLocalProvider()
 }
 
 if (typeof window !== 'undefined') {

@@ -7,12 +7,11 @@ import { useAtomValue } from 'jotai/react'
 export function inject<
   Value
 > (
-  injectAtom: PrimitiveAtom<Value>,
+  injectAtom: PrimitiveAtom<Value> & { init: Value | Promise<Value> },
   accessor: () => (Value | Promise<Value>),
   updateValue: (apply: Value) => void
 ) {
   const originalWrite = injectAtom.write.bind(injectAtom)
-  // @ts-expect-error fixme: https://github.com/pmndrs/jotai/pull/2222
   injectAtom.init = accessor()
   injectAtom.write = function (get, set, apply) {
     originalWrite(get, set, apply)
