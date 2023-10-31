@@ -28,6 +28,7 @@
     "@toeverything/y-indexeddb": "^0.10.0-canary.0",
     "jotai": "^2.5.0",
     "jotai-effect": "^0.2.1",
+    "jotai-inject": "^0.1.0",
     "nanoid": "^4.0.2",
     "react": "18.3.0-canary-8039e6d0b-20231026",
     "react-dom": "18.3.0-canary-8039e6d0b-20231026",
