@@ -33,9 +33,7 @@ export function useInject<Value> (
   if (!effectWeakMap.has(injectAtom)) {
     const originalWrite = injectAtom.write.bind(injectAtom)
     injectAtom.write = function (get, set, apply) {
-      if (typeof apply === 'function') {
-        originalWrite(get, set, apply)
-      }
+      originalWrite(get, set, apply)
       updateValue(get(injectAtom))
       return
     }
