@@ -17,7 +17,10 @@ declare module 'socket.io' {
   }
 }
 
-export function createApp (): HTTPServer {
+export function createApp (): {
+  io: Server
+  server: HTTPServer
+} {
   const app = express()
 
   // server doesn't hold the instance of yjs document
@@ -31,7 +34,6 @@ export function createApp (): HTTPServer {
   })
 
   io.on('connection', (socket) => {
-    console.log('connected')
     socket.on('ping', () => {
       socket.emit('pong')
     })
@@ -61,5 +63,5 @@ export function createApp (): HTTPServer {
     })
   })
 
-  return server
+  return { io, server }
 }

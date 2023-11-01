@@ -55,6 +55,7 @@
 
     "paths": {
       "@refine/core/*": ["./packages/core/src/*"],
+      "@refine/server/*": ["./apps/server/src/*"],
       "jotai-inject": ["./packages/jotai-inject/src/index"],
     }
   },
@@ -66,7 +67,7 @@
       "path": "./apps/docs/tsconfig.json"
     },
     {
-      "path": "./apps/server/tsconfig.json"
+      "path": "./apps/server/tsconfig.node.json"
     },
     {
       "path": "./apps/web/tsconfig.json"

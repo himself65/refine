@@ -1,5 +1,5 @@
 import { createApp } from './server.js'
 
-const app = createApp()
+const { server } = createApp()
 
-app.listen(3030)
+server.listen(3030)
