@@ -2,6 +2,9 @@
   "name": "@refine/server",
   "private": true,
   "type": "module",
+  "bin": {
+    "refine-server": "./dist/index.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/server.d.ts",
