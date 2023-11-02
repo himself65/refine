@@ -23,6 +23,10 @@ export function createApp (): {
 } {
   const app = express()
 
+  app.get('/', (_, res) => {
+    res.json({ message: 'Hello world' }).end()
+  })
+
   // server doesn't hold the instance of yjs document
   const docMap = new Map<string, Uint8Array>()
 
