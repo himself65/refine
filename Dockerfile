@@ -1,11 +1,12 @@
 FROM node:18
 
-WORKDIR ./
+WORKDIR /app
 
-COPY ./apps/server/package*.json ./
-RUN npm install --only=production
-COPY ./apps/server/dist ./
+COPY . .
+RUN corepack enable \
+    && pnpm install \
+    && pnpm run --filter server build
+
 EXPOSE 3030
 
-CMD ["node", "./index.js"]
-
+CMD ["node", "./apps/server/dist/index.js"]
