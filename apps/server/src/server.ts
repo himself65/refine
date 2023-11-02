@@ -1,7 +1,7 @@
 import { createServer, type Server as HTTPServer } from 'node:http'
 import express from 'express'
 import { Server } from 'socket.io'
-import { mergeUpdates } from 'yjs'
+import { mergeUpdates, diffUpdate } from 'yjs'
 
 declare module 'socket.io' {
   /**
@@ -38,10 +38,20 @@ export function createApp (): {
       socket.emit('pong')
     })
 
-    socket.on('diff', (guid: string) => {
+    socket.on('diff', (guid: string, stateVector?: Uint8Array) => {
       const doc = docMap.get(guid)
-      if (doc) {
-        socket.emit('diff', doc)
+      if (stateVector === undefined) {
+        if (doc) {
+          socket.emit('update', guid, doc)
+        }
+      } else if (doc) {
+        const update = diffUpdate(doc, stateVector)
+        docMap.set(guid, update)
+        socket.emit('update', guid, update)
+        socket.broadcast.emit('update', guid, update)
+      } else {
+        docMap.set(guid, stateVector)
+        socket.broadcast.emit('update', guid, stateVector)
       }
     })
 
@@ -53,13 +63,7 @@ export function createApp (): {
         const newDoc = mergeUpdates([doc, update])
         docMap.set(guid, newDoc)
       }
-      const id = socket.id
-      for (const socket of await io.sockets.fetchSockets()) {
-        if (socket.id === id) {
-          continue
-        }
-        socket.emit('update', guid, update)
-      }
+      socket.broadcast.emit('update', guid, update)
     })
   })
 
