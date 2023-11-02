@@ -83,7 +83,7 @@ test('should work in sync provider', async (t) => {
 
   const provider = createSyncProvider(clientSocket, rootDoc)
   provider.connect()
-  await timeout(1000)
+  await timeout()
 
   const secondSocket = ioc(`http://localhost:${port}`)
   secondSocket.connect()
@@ -92,6 +92,7 @@ test('should work in sync provider', async (t) => {
       t.deepEqual(guid, 'root')
       const diff = diffUpdate(encodeStateAsUpdate(rootDoc), update)
       t.deepEqual(diff, emptyDiff)
+      secondSocket.disconnect()
       resolve()
     })
     secondSocket.emit('diff', 'root')
