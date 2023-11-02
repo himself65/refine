@@ -2,26 +2,23 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "rootDir": "./src/",
-    "outDir": "./dist/src",
+    "outDir": "./dist",
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "module": "node16",
+    "target": "ESNext",
     "lib": [
-      "DOM",
-      "DOM.Iterable",
       "ESNext"
     ],
+    "moduleResolution": "node16",
     "types": [
-      "react/experimental"
+      "node"
     ]
   },
   "include": [
     "./src"
   ],
-  "references": [
-    {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "../jotai-inject"
-    }
-  ]
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }

@@ -2,11 +2,8 @@ import { Schema, Workspace } from '@blocksuite/store'
 import { atom, type Atom } from 'jotai/vanilla'
 import { atomEffect } from 'jotai-effect'
 import { AffineSchemas, __unstableSchemas } from '@blocksuite/blocks/models'
-import {
-  createIndexedDBProvider,
-  downloadBinary
-} from '@toeverything/y-indexeddb'
 import { applyUpdate } from 'yjs'
+import { inject } from 'jotai-inject'
 
 export type Preload = (workspace: Workspace) => Promise<void>
 export type ProviderCreator = (workspace: Workspace) => {
@@ -28,10 +25,10 @@ class WorkspaceManager {
 
   readonly #schema = new Schema()
 
-  constructor (
-    public preloads: Preload[],
-    public providers: ProviderCreator[]
-  ) {
+  public readonly preloadAtom = atom<Preload[]>([])
+  public readonly providerAtom = atom<ProviderCreator[]>([])
+
+  constructor () {
     this.#schema.register(AffineSchemas).register(__unstableSchemas)
   }
 
@@ -52,8 +49,9 @@ class WorkspaceManager {
     }
     {
       const ensureWorkspace = workspace
-      const workspaceAtom = atom(async () => {
-        for (const preload of this.preloads) {
+      const workspaceAtom = atom(async (get) => {
+        const preloads = get(this.preloadAtom)
+        for (const preload of preloads) {
           await preload(ensureWorkspace)
         }
         return ensureWorkspace
@@ -87,7 +85,8 @@ class WorkspaceManager {
           if (abortController.signal.aborted) {
             return
           }
-          for (const providerCreator of this.providers) {
+          const providers = get(this.providerAtom)
+          for (const providerCreator of providers) {
             const provider = providerCreator(workspace)
             provider.connect()
             abortController.signal.addEventListener('abort', () => {
@@ -103,30 +102,48 @@ class WorkspaceManager {
       return workspaceEffectAtom
     }
   }
-}
 
-export const workspaceManager = new WorkspaceManager(
-  [
-    async (workspace) => {
-      const binary = await downloadBinary(workspace.doc.guid, 'refine-db')
-      if (binary) {
-        // only download root doc
-        applyUpdate(workspace.doc, binary)
-      }
+  #localInjected = false
+
+  get localInjected () {
+    return this.#localInjected
+  }
+
+  public injectLocalProvider = async () => {
+    if (this.#localInjected) {
+      return
     }
-  ],
-  [
-    (workspace) => {
-      const provider = createIndexedDBProvider(workspace.doc,
-        'refine-indexeddb')
-      return {
-        connect: () => {
-          provider.connect()
-        },
-        disconnect: () => {
-          provider.disconnect()
+    const { createIndexedDBProvider, downloadBinary } = await import('@toeverything/y-indexeddb')
+    inject(this.preloadAtom, () => [
+      async (workspace) => {
+        const binary = await downloadBinary(workspace.doc.guid, 'refine-db')
+        if (binary) {
+          // only download root doc
+          applyUpdate(workspace.doc, binary)
         }
       }
-    }
-  ]
-)
+    ], () => {
+      throw new Error('unreachable')
+    })
+
+    inject(this.providerAtom, () => [
+      (workspace) => {
+        const provider = createIndexedDBProvider(workspace.doc,
+          'refine-indexeddb')
+        return {
+          connect: () => {
+            provider.connect()
+          },
+          disconnect: () => {
+            provider.disconnect()
+          }
+        }
+      }
+    ], () => {
+      throw new Error('unreachable')
+    })
+    this.#localInjected = true
+  }
+}
+
+export const workspaceManager = new WorkspaceManager()
