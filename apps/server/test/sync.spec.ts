@@ -68,7 +68,7 @@ test('should work in DIY listener', (t) => {
   })
 })
 
-test.only('should work in sync provider', async (t) => {
+test('should work in sync provider', async (t) => {
   const rootDoc = new Doc({
     guid: 'root'
   })
