@@ -1,14 +1,16 @@
-import test from 'ava'
+import test, { type ExecutionContext } from 'ava'
 import { createApp } from '@refine/server'
 import type { AddressInfo } from 'node:net'
-import { promisify } from 'node:util'
 import { type Socket as ClientSocket } from 'socket.io-client'
 import { type Socket as ServerSocket, Server as IOServer } from 'socket.io'
 import type { Server } from 'node:http'
-import { diffUpdate, Doc, encodeStateAsUpdate } from 'yjs'
+import {
+  applyUpdate,
+  diffUpdate,
+  Doc,
+  encodeStateVector
+} from 'yjs'
 import { createSocketPair } from './util.js'
-
-const timeout = promisify(setTimeout)
 
 const emptyDiff = new Uint8Array([0, 0])
 
@@ -67,7 +69,24 @@ test('should work in DIY listener', (t) => {
   })
 })
 
-test('should work in sync provider', async (t) => {
+async function waitForSYN (
+  t: ExecutionContext,
+  doc: Doc,
+  socket: ClientSocket
+) {
+  return new Promise<void>(resolve => {
+    socket.once('update', (guid: string, update: Uint8Array) => {
+      if (guid === doc.guid) {
+        const diff = diffUpdate(update, encodeStateVector(doc))
+        t.deepEqual(diff, emptyDiff)
+        resolve()
+      }
+    })
+    socket.emit('diff', doc.guid)
+  })
+}
+
+test('should work in sync provider with sub document', async (t) => {
   const rootDoc = new Doc({
     guid: 'root'
   })
@@ -82,17 +101,55 @@ test('should work in sync provider', async (t) => {
 
   const provider = createSyncProvider(clientSocket, rootDoc)
   provider.connect()
-  await timeout()
+  await waitForSYN(t, rootDoc, clientSocket)
+  provider.disconnect()
 
   const [secondSocket] = await createSocketPair(io, port)
   return new Promise<void>(resolve => {
     secondSocket.once('update', (guid: string, update: Uint8Array) => {
       t.deepEqual(guid, 'root')
-      const diff = diffUpdate(encodeStateAsUpdate(rootDoc), update)
+      const diff = diffUpdate(update, encodeStateVector(rootDoc))
       t.deepEqual(diff, emptyDiff)
+
+      const newDoc = new Doc({
+        guid: 'newRoot'
+      })
+      applyUpdate(newDoc, update)
+      const pages = newDoc.getMap('pages')
+      t.deepEqual([...pages.keys()], ['page0'])
+
       secondSocket.disconnect()
       resolve()
     })
     secondSocket.emit('diff', 'root')
   })
+})
+
+test('should work in sync provider with update', async (t) => {
+  const { createSyncProvider } = await import('@refine/server/sync-provider')
+  const pageDoc = new Doc({
+    guid: 'page0'
+  })
+  {
+    const blocksMap = pageDoc.getMap('blocks')
+    blocksMap.set('block:0', 'test')
+    const provider = createSyncProvider(clientSocket, pageDoc)
+    provider.connect()
+    await waitForSYN(t, pageDoc, clientSocket)
+    provider.disconnect()
+    clientSocket.disconnect()
+  }
+  {
+    const [secondSocket] = await createSocketPair(io, port)
+    const secondPageDoc = new Doc({
+      guid: 'page0'
+    })
+    const provider = createSyncProvider(secondSocket, secondPageDoc)
+    provider.connect()
+    await waitForSYN(t, secondPageDoc, secondSocket)
+    const blocksMap = secondPageDoc.getMap('blocks')
+    t.deepEqual(blocksMap.toJSON(), {
+      'block:0': 'test'
+    })
+  }
 })

@@ -1,5 +1,10 @@
 import type { Socket } from 'socket.io-client'
-import { applyUpdate, Doc, encodeStateVector, mergeUpdates } from 'yjs'
+import {
+  applyUpdate,
+  Doc,
+  encodeStateAsUpdate,
+  mergeUpdates
+} from 'yjs'
 
 type SubdocEvent = {
   loaded: Set<Doc>;
@@ -10,15 +15,14 @@ type OnUpdate = (update: Uint8Array, origin: unknown) => void
 type OnDestroy = () => void
 type OnSubDocs = (event: SubdocEvent) => void
 
-const guidMap = new Map<string, Doc>()
-const cacheMap = new Map<string, Uint8Array>()
-
 export function createSyncProvider (socket: Socket, rootDoc: Doc) {
+  const guidMap = new Map<string, Doc>()
+  const cacheMap = new Map<string, Uint8Array>()
   const onUpdateMap = new WeakMap<Doc, OnUpdate>()
   const onDestroyMap = new WeakMap<Doc, OnDestroy>()
   const onSubDocsMap = new WeakMap<Doc, OnSubDocs>()
 
-  socket.on('update', (guid: string, update: Uint8Array) => {
+  function onSocketUpdate (guid: string, update: Uint8Array) {
     let cache = cacheMap.get(guid)
     const doc = guidMap.get(guid)
     if (!doc) {
@@ -35,7 +39,9 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
       }
       applyUpdate(doc, update, `socket-${socket.id}`)
     }
-  })
+  }
+
+  socket.on('update', onSocketUpdate)
 
   function setupDoc (doc: Doc) {
     const guid = doc.guid
@@ -73,7 +79,14 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
 
   function updateDoc (doc: Doc) {
     if (doc.shouldLoad) {
-      socket.emit('diff', doc.guid, encodeStateVector(doc))
+      socket.once('update', (guid: string) => {
+        if (guid === doc.guid) {
+          for (const subdoc of doc.getSubdocs()) {
+            updateDoc(subdoc)
+          }
+        }
+      })
+      socket.emit('diff', doc.guid, encodeStateAsUpdate(doc))
       for (const subdoc of doc.getSubdocs()) {
         updateDoc(subdoc)
       }
