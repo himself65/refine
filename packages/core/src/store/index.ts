@@ -25,6 +25,9 @@ class WorkspaceManager {
 
   readonly #schema = new Schema()
 
+  #preloads: Preload[] = []
+  #providers: ProviderCreator[] = []
+
   public readonly preloadAtom = atom<Preload[]>([])
   public readonly providerAtom = atom<ProviderCreator[]>([])
 
@@ -103,46 +106,51 @@ class WorkspaceManager {
     }
   }
 
-  #localInjected = false
+  #injected = false
 
-  get localInjected () {
-    return this.#localInjected
+  get injected () {
+    return this.#injected
   }
 
-  public injectLocalProvider = async () => {
-    if (this.#localInjected) {
+  public withLocalProvider = async () => {
+    const {
+      createIndexedDBProvider,
+      downloadBinary
+    } = await import('@toeverything/y-indexeddb')
+    this.#preloads.push(async (workspace) => {
+      const binary = await downloadBinary(workspace.doc.guid, 'refine-db')
+      if (binary) {
+        // only download root doc
+        applyUpdate(workspace.doc, binary)
+      }
+    })
+    this.#providers.push((workspace) => {
+      const provider = createIndexedDBProvider(workspace.doc,
+        'refine-indexeddb')
+      return {
+        connect: () => {
+          provider.connect()
+        },
+        disconnect: () => {
+          provider.disconnect()
+        }
+      }
+    })
+  }
+
+  public inject = async () => {
+    if (this.#injected) {
       return
     }
-    const { createIndexedDBProvider, downloadBinary } = await import('@toeverything/y-indexeddb')
-    inject(this.preloadAtom, () => [
-      async (workspace) => {
-        const binary = await downloadBinary(workspace.doc.guid, 'refine-db')
-        if (binary) {
-          // only download root doc
-          applyUpdate(workspace.doc, binary)
-        }
-      }
-    ], () => {
-      throw new Error('unreachable')
-    })
 
-    inject(this.providerAtom, () => [
-      (workspace) => {
-        const provider = createIndexedDBProvider(workspace.doc,
-          'refine-indexeddb')
-        return {
-          connect: () => {
-            provider.connect()
-          },
-          disconnect: () => {
-            provider.disconnect()
-          }
-        }
-      }
-    ], () => {
+    function unreachable () {
       throw new Error('unreachable')
-    })
-    this.#localInjected = true
+    }
+
+    inject(this.preloadAtom, () => this.#preloads, unreachable)
+    inject(this.providerAtom, () => this.#providers, unreachable)
+
+    this.#injected = true
   }
 }
 
