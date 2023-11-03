@@ -12,7 +12,8 @@ export default defineConfig({
     outDir: './dist',
     rollupOptions: {
       external: [
-        /^jotai/
+        /^jotai/,
+        /^react/
       ]
     }
   },
