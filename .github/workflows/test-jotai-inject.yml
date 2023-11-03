@@ -1,4 +1,4 @@
-name: Test Jotai Inject
+name: Test
 
 on:
   push:
