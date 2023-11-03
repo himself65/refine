@@ -22,7 +22,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "vite build --watch",
+    "test": "vitest"
   },
   "dependencies": {
     "jotai": "^2.5.0",

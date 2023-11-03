@@ -1,0 +1,25 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src/electron",
+    "outDir": "./dist/electron/src",
+    "tsBuildInfoFile": "./dist/electron/.tsbuildinfo",
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "./src/electron"
+  ],
+  "exclude": [
+    "./src/preload.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.web.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
+}

@@ -1,27 +1,18 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src/",
-    "outDir": "./dist/src",
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
-    "types": [
-      "react/experimental"
-    ]
+    "outDir": "./dist/node",
+    "tsBuildInfoFile": "./dist/node/.tsbuildinfo",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "types": ["node"]
   },
   "include": [
-    "./src"
+    "vite.config.ts"
   ],
   "references": [
     {
-      "path": "./tsconfig.node.json"
-    },
-    {
-      "path": "../jotai-inject"
+      "path": "./tsconfig.src.json"
     }
   ]
 }

@@ -1,19 +1,22 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src/",
-    "outDir": "./dist/src",
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
+    "outDir": "./dist/node",
+    "tsBuildInfoFile": "./dist/node/.tsbuildinfo",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "types": [
-      "react/experimental"
+      "node"
     ]
   },
   "include": [
-    "./src"
+    "./test",
+    "vite.config.ts",
+    "vitest.config.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.src.json"
+    }
   ]
 }

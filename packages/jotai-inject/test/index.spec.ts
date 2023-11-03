@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest'
-import { inject } from '../src'
+import { inject } from 'jotai-inject'
 import { atom, getDefaultStore } from 'jotai/vanilla'
 
 test('basic', () => {

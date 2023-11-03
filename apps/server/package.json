@@ -17,8 +17,8 @@
   },
   "scripts": {
     "dev": "ts-node src/index.ts",
-    "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -p tsconfig.json --watch",
+    "build": "tsc -p tsconfig.src.json",
+    "build:watch": "tsc -p tsconfig.src.json --watch",
     "test": "ava --concurrency 1 --serial",
     "test:coverage": "c8 ava --concurrency 1 --serial"
   },
@@ -57,7 +57,7 @@
       "test/**/*.spec.ts"
     ],
     "environmentVariables": {
-      "TS_NODE_PROJECT": "./tsconfig.node.json"
+      "TS_NODE_PROJECT": "./tsconfig.json"
     }
   },
   "c8": {
