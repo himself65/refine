@@ -4,11 +4,6 @@
     "rootDir": "./src/",
     "outDir": "./dist/src",
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
-    ],
     "types": [
       "react/experimental"
     ]

@@ -1,8 +1,7 @@
-import type { Atom, PrimitiveAtom } from 'jotai/vanilla'
-import type { MutableRefObject } from 'react'
+import type { PrimitiveAtom } from 'jotai/vanilla'
 import { useHydrateAtoms } from 'jotai/utils'
-import { atomEffect } from 'jotai-effect'
-import { useAtomValue } from 'jotai/react'
+import { useState } from 'react'
+import { useSetAtom } from 'jotai/react'
 
 export function inject<
   Value
@@ -20,33 +19,35 @@ export function inject<
   }
 }
 
+type UpdateValue<Value> = (newValue: Value) => void
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const effectWeakMap = new WeakMap<PrimitiveAtom<any>, Atom<void>>()
+const weakMap = new WeakMap<PrimitiveAtom<any>, UpdateValue<any>>()
 
 export function useInject<Value> (
   injectAtom: PrimitiveAtom<Value>,
-  valueRef: MutableRefObject<Value>,
-  updateValue: (apply: Value) => void
+  value: Value,
+  updateValue: UpdateValue<Value>
 ) {
-  const currentValue = valueRef.current
-  useHydrateAtoms([[injectAtom, currentValue]])
-  if (!effectWeakMap.has(injectAtom)) {
+  const [oldValue, setOldValue] = useState(value)
+  useHydrateAtoms([[injectAtom, value]])
+  if (!weakMap.has(injectAtom)) {
     const originalWrite = injectAtom.write.bind(injectAtom)
     injectAtom.write = function (get, set, apply) {
       originalWrite(get, set, apply)
       updateValue(get(injectAtom))
       return
     }
-    const effectAtom = atomEffect((get) => {
-      const atomValue = get(injectAtom)
-      const currentValue = valueRef.current
-      if (atomValue !== currentValue) {
-        updateValue(atomValue)
-      }
-    })
-    effectWeakMap.set(injectAtom, effectAtom)
+    weakMap.set(injectAtom, updateValue)
   }
-  const effectAtom = effectWeakMap.get(injectAtom)!
-  useAtomValue(injectAtom)
-  useAtomValue(effectAtom)
+
+  const setAtom = useSetAtom(injectAtom)
+  if (oldValue !== value) {
+    setOldValue(value)
+    setAtom(value)
+  }
+
+  if (weakMap.get(injectAtom) !== updateValue) {
+    weakMap.set(injectAtom, updateValue)
+  }
 }

@@ -7,6 +7,11 @@
     "moduleResolution": "bundler",
     "types": [
       "node"
+    ],
+    "lib": [
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
     ]
   },
   "include": [
