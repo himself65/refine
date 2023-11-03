@@ -19,7 +19,7 @@
     "dev": "ts-node src/index.ts",
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json --watch",
-    "test": "ava"
+    "test": "ava --concurrency 1 --serial"
   },
   "dependencies": {
     "@prisma/client": "^5.5.2",
