@@ -1,24 +1,19 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "./src/",
-    "outDir": "./dist",
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "outDir": "./dist/node",
+    "tsBuildInfoFile": "./dist/node/.tsbuildinfo",
     "module": "node16",
-    "target": "ESNext",
-    "lib": [
-      "ESNext"
-    ],
     "moduleResolution": "node16",
-    "types": [
-      "node"
-    ]
+    "types": ["node"],
+    "lib": ["ESNext"]
   },
   "include": [
-    "./src"
+    "./test"
   ],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+  "references": [
+    {
+      "path": "./tsconfig.src.json"
+    }
+  ]
 }
