@@ -1,12 +1,12 @@
 import test from 'ava'
-import crypto from 'node:crypto'
 import { createApp } from '@refine/server'
 import type { AddressInfo } from 'node:net'
 import { promisify } from 'node:util'
-import { io as ioc, type Socket as ClientSocket } from 'socket.io-client'
+import { type Socket as ClientSocket } from 'socket.io-client'
 import { type Socket as ServerSocket, Server as IOServer } from 'socket.io'
 import type { Server } from 'node:http'
 import { diffUpdate, Doc, encodeStateAsUpdate } from 'yjs'
+import { createSocketPair } from './util.js'
 
 const timeout = promisify(setTimeout)
 
@@ -23,21 +23,12 @@ test.beforeEach(async () => {
     const { io: _io, server: _server } = createApp()
     io = _io
     server = _server
-    server.listen(() => {
+    server.listen(async () => {
       port = (server.address() as AddressInfo).port
-      const clientId = crypto.randomUUID()
-      clientSocket = ioc(`http://localhost:${port}`, {
-        query: {
-          id: clientId
-        }
-      })
-      io.on('connection', (socket) => {
-        if (socket.handshake.query.id === clientId) {
-          serverSocket = socket
-          resolve()
-        }
-      })
-      clientSocket.connect()
+      const [cs, ss] = await createSocketPair(io, port)
+      clientSocket = cs
+      serverSocket = ss
+      resolve()
     })
   })
 })
@@ -46,6 +37,14 @@ test.afterEach(() => {
   io.close()
   server.close()
   clientSocket.disconnect()
+})
+
+test('should `/` work', async t => {
+  const response = await fetch(`http://localhost:${port}/`, {
+    method: 'GET'
+  })
+  const json = await response.json()
+  t.deepEqual(json, { message: 'Hello world' })
 })
 
 test('should basic ping/ping work', async t => {
@@ -85,8 +84,7 @@ test('should work in sync provider', async (t) => {
   provider.connect()
   await timeout()
 
-  const secondSocket = ioc(`http://localhost:${port}`)
-  secondSocket.connect()
+  const [secondSocket] = await createSocketPair(io, port)
   return new Promise<void>(resolve => {
     secondSocket.once('update', (guid: string, update: Uint8Array) => {
       t.deepEqual(guid, 'root')

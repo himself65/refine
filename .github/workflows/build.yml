@@ -121,8 +121,15 @@ jobs:
         run: pnpm run build
         working-directory: apps/server
       - name: Test
-        run: pnpm run test
+        run: pnpm run test:coverage
         working-directory: apps/server
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          name: @refine/server
+          flags: server
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./apps/server/coverage/lcov.info
   build-desktop:
     name: Build Desktop
     strategy:
