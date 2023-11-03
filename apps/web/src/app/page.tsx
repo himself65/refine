@@ -41,8 +41,8 @@ const NoSsr: FC<PropsWithChildren> = ({
 }
 
 let injectPromise = Promise.resolve()
-if (typeof window !== 'undefined' && !workspaceManager.localInjected) {
-  injectPromise = workspaceManager.injectLocalProvider()
+if (typeof window !== 'undefined' && !workspaceManager.injected) {
+  injectPromise = workspaceManager.withLocalProvider().then(workspaceManager.inject)
 }
 
 if (typeof window !== 'undefined') {
