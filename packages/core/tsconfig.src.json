@@ -18,9 +18,6 @@
   ],
   "references": [
     {
-      "path": "./tsconfig.node.json"
-    },
-    {
       "path": "../jotai-inject"
     }
   ]
