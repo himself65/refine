@@ -38,7 +38,7 @@ jobs:
         run: pnpm install
       - name: Test
         run: pnpm run test:coverage
-        working-directory: package/jotai-inject
+        working-directory: packages/jotai-inject
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
