@@ -53,6 +53,7 @@ export const App = (props: AppProps): ReactElement => {
       <div>
         Page not found
         <button
+          data-testid='create-page'
           onClick={handleNewPage}
         >create page</button>
       </div>
