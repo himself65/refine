@@ -22,7 +22,9 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
   const onDestroyMap = new WeakMap<Doc, OnDestroy>()
   const onSubDocsMap = new WeakMap<Doc, OnSubDocs>()
 
-  function onSocketUpdate (guid: string, update: Uint8Array) {
+  function onSocketUpdate (guid: string, _update: ArrayBuffer) {
+    let update = new Uint8Array(_update)
+    console.log('update', guid, update)
     let cache = cacheMap.get(guid)
     const doc = guidMap.get(guid)
     if (!doc) {
@@ -34,10 +36,11 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
       cacheMap.set(guid, cache)
     } else {
       if (cache) {
-        applyUpdate(doc, cache, `socket-${socket.id}`)
+        update = mergeUpdates([cache, update])
         cacheMap.delete(guid)
       }
       applyUpdate(doc, update, `socket-${socket.id}`)
+      console.log('json', guid, doc.toJSON())
     }
   }
 
@@ -45,11 +48,13 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
 
   function setupDoc (doc: Doc) {
     const guid = doc.guid
-    if (guidMap.has(guid)) throw new Error('Doc already setup')
+    if (guidMap.has(guid)) {
+      return
+    }
     guidMap.set(guid, doc)
 
-    const onUpdate: OnUpdate = (update, origin) => {
-      socket.emit('update', update, `${origin}`)
+    const onUpdate: OnUpdate = (update) => {
+      socket.emit('update', doc.guid, update)
     }
     onUpdateMap.set(doc, onUpdate)
     doc.on('update', onUpdate)
@@ -95,7 +100,9 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
 
   function cleanupDoc (doc: Doc) {
     const guid = doc.guid
-    if (!guidMap.has(guid)) throw new Error('Doc not setup')
+    if (!guidMap.has(guid)) {
+      return
+    }
     guidMap.delete(guid)
 
     const onUpdate = onUpdateMap.get(doc)

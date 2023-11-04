@@ -1,5 +1,5 @@
 'use client'
-import { type ReactElement, useCallback, useMemo } from 'react'
+import { type ReactElement, useCallback, useEffect, useState } from 'react'
 import { use } from 'react'
 import { themeAtom } from './store/api.js'
 import { workspaceManager } from './store/index'
@@ -16,23 +16,48 @@ export const App = (props: AppProps): ReactElement => {
   const effectAtom = workspaceManager.getWorkspaceEffectAtom('workspace:0')
   const workspace = useAtomValue(workspaceAtom)
   useAtomValue(effectAtom)
-  const page = useMemo(() => {
-    let page = workspace.getPage('page0')
-    if (!page) {
-      page = workspace.createPage('page0')
-      const pageNotNull = page
-      pageNotNull.waitForLoaded().then(() => {
-        const pageBlockId = pageNotNull.addBlock('affine:page', {
-          children: [],
-          title: new pageNotNull.Text('Untitled')
-        })
-        pageNotNull.addBlock('affine:surface', {}, pageBlockId)
-        const noteBlockId = pageNotNull.addBlock('affine:note', {}, pageBlockId)
-        pageNotNull.addBlock('affine:paragraph', {}, noteBlockId)
-      })
+  const [page, setPage] = useState(workspace.getPage('page0'))
+  useEffect(() => {
+    const dispose = workspace.slots.pageAdded.on((pageId) => {
+      if (pageId === 'page0') {
+        setPage(workspace.getPage('page0'))
+      }
+    })
+    return () => {
+      dispose.dispose()
     }
-    return page
-  }, [workspace])
+  }, [])
+
+  const handleNewPage = async () => {
+    const page = workspace.createPage({ id: 'page0' })
+    workspace.setPageMeta('page0', {
+      tags: []
+    })
+    await page.waitForLoaded()
+    const pageBlockId = page.addBlock('affine:page', {
+      children: [],
+      title: new page.Text('Untitled')
+    })
+    page.addBlock('affine:surface', {}, pageBlockId)
+    const noteBlockId = page.addBlock('affine:note', {}, pageBlockId)
+    page.addBlock('affine:paragraph', {}, noteBlockId)
+    setPage(page)
+  }
+
+  const handleChangeTheme = useCallback(() => {
+    setTheme(theme => theme === 'light' ? 'dark' : 'light')
+  }, [setTheme])
+
+  if (!page) {
+    return (
+      <div>
+        Page not found
+        <button
+          onClick={handleNewPage}
+        >create page</button>
+      </div>
+    )
+  }
 
   if (!page.loaded) {
     use(page.waitForLoaded())
@@ -43,11 +68,7 @@ export const App = (props: AppProps): ReactElement => {
       className={props.className}
     >
       <button
-        onClick={
-          useCallback(() => {
-            setTheme(theme => theme === 'light' ? 'dark' : 'light')
-          }, [setTheme])
-        }
+        onClick={handleChangeTheme}
       >
         change theme. Current theme: {theme}
       </button>

@@ -19,12 +19,7 @@ if (typeof window !== 'undefined') {
   })
 }
 
-const socket = io('http://localhost:3030', {
-  query: {
-    workspaceId: 'workspace:0',
-    userId: '123456'
-  }
-})
+const socket = io('http://localhost:3030')
 
 const NoSsr: FC<PropsWithChildren> = ({
   children
@@ -42,11 +37,12 @@ const NoSsr: FC<PropsWithChildren> = ({
 
 let injectPromise = Promise.resolve()
 if (typeof window !== 'undefined' && !workspaceManager.injected) {
-  injectPromise = workspaceManager.withLocalProvider().then(workspaceManager.inject)
-}
-
-if (typeof window !== 'undefined') {
-  socket.connect()
+  injectPromise = workspaceManager.withLocalProvider().then(async () => {
+    const { createSyncProvider } = await import('@refine/server/sync-provider')
+    await workspaceManager.with(undefined, (
+      workspace
+    ) => createSyncProvider(socket, workspace.doc))
+  }).then(workspaceManager.inject)
 }
 
 export default function Home () {
@@ -55,7 +51,11 @@ export default function Home () {
   const workspaceId = 'workspace:0'
   const workspaceAtom = workspaceManager.getWorkspaceAtom(workspaceId)
   const effectAtom = workspaceManager.getWorkspaceEffectAtom(workspaceId)
-  useAtomValue(workspaceAtom)
+  const workspace = useAtomValue(workspaceAtom)
+  useEffect(() => {
+    // @ts-expect-error
+    window.workspace = workspace
+  }, [])
   useAtomValue(effectAtom)
   return (
     <main>

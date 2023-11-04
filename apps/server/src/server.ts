@@ -28,7 +28,7 @@ export function createApp (): {
   })
 
   // server doesn't hold the instance of yjs document
-  const docMap = new Map<string, Uint8Array>()
+  const docUpdateMap = new Map<string, Uint8Array>()
 
   const server = createServer(app)
   const io = new Server(server, {
@@ -43,21 +43,31 @@ export function createApp (): {
     })
 
     socket.on('diff', (guid: string, update?: Uint8Array) => {
-      const doc = docMap.get(guid)
+      try {
+        update && decodeUpdate(update)
+      } catch {
+        update = undefined
+      }
+
+      const docUpdate = docUpdateMap.get(guid)
       if (update === undefined) {
-        if (doc) {
-          socket.emit('update', guid, doc)
+        if (docUpdate) {
+          console.log('diff 1', decodeUpdate(docUpdate))
+          socket.emit('update', guid, docUpdate)
         }
       } else {
-        if (doc) {
+        if (docUpdate) {
           try {
-            update = diffUpdate(doc, update)
-            docMap.set(guid, update)
+            console.log('diff 2', update, docUpdate)
+            update = diffUpdate(docUpdate, update)
+            console.log('result', update)
+            docUpdateMap.set(guid, update)
             socket.emit('update', guid, update)
             socket.broadcast.emit('update', guid, update)
           } catch {
-            docMap.set(guid, doc)
-            socket.emit('update', guid, doc)
+            docUpdateMap.set(guid, docUpdate)
+            console.log('diff 3', decodeUpdate(docUpdate))
+            socket.emit('update', guid, docUpdate)
           }
         } else {
           try {
@@ -66,19 +76,25 @@ export function createApp (): {
             // invalid update, just ignore
             return
           }
-          docMap.set(guid, update)
+          docUpdateMap.set(guid, update)
           socket.broadcast.emit('update', guid, update)
         }
       }
     })
 
     socket.on('update', async (guid: string, update: Uint8Array) => {
-      const doc = docMap.get(guid)
+      try {
+        decodeUpdate(update)
+      } catch {
+        console.error('invalid update', guid, update)
+        return
+      }
+      const doc = docUpdateMap.get(guid)
       if (!doc) {
-        docMap.set(guid, update)
+        docUpdateMap.set(guid, update)
       } else {
         const newDoc = mergeUpdates([doc, update])
-        docMap.set(guid, newDoc)
+        docUpdateMap.set(guid, newDoc)
       }
       socket.broadcast.emit('update', guid, update)
     })

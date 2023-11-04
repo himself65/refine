@@ -15,5 +15,9 @@
     {
       "path": "./tsconfig.src.json"
     }
-  ]
+  ],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }
