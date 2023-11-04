@@ -38,11 +38,17 @@ const NoSsr: FC<PropsWithChildren> = ({
 let injectPromise = Promise.resolve()
 if (typeof window !== 'undefined' && !workspaceManager.injected) {
   injectPromise = workspaceManager.withLocalProvider().then(async () => {
-    const { createSyncProvider } = await import('@refine/server/sync-provider')
+    const { createSyncProvider } = await import('y-io/sync-provider')
     await workspaceManager.with(undefined, (
       workspace
     ) => createSyncProvider(socket, workspace.doc))
   }).then(workspaceManager.inject)
+}
+
+declare global {
+  interface Window {
+    workspace: unknown
+  }
 }
 
 export default function Home () {
@@ -53,9 +59,8 @@ export default function Home () {
   const effectAtom = workspaceManager.getWorkspaceEffectAtom(workspaceId)
   const workspace = useAtomValue(workspaceAtom)
   useEffect(() => {
-    // @ts-expect-error
     window.workspace = workspace
-  }, [])
+  }, [workspace])
   useAtomValue(effectAtom)
   return (
     <main>
