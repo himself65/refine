@@ -5,7 +5,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        index: './src/index.ts'
+        'sync-provider': './src/sync-provider/index.ts',
+        'server': './src/server/index.ts'
       },
       formats: ['es', 'cjs']
     },
@@ -13,7 +14,8 @@ export default defineConfig({
     rollupOptions: {
       external: [
         /^jotai/,
-        /^react/
+        /^socket/,
+        /^yjs/
       ]
     }
   },

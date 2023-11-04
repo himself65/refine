@@ -29,7 +29,8 @@
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "ts-node": "^10.9.1",
-    "yjs": "^13.6.8"
+    "yjs": "^13.6.8",
+    "y-io": "workspace:*"
   },
   "peerDependencies": {
     "@blocksuite/store": "*"

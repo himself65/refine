@@ -1,0 +1,33 @@
+{
+  "name": "y-io",
+  "version": "0.0.1",
+  "type": "module",
+  "exports": {
+    "./sync-provider": {
+      "types": "./dist/src/sync-provider/index.d.ts",
+      "import": "./dist/sync-provider.js",
+      "require": "./dist/sync-provider.cjs"
+    },
+    "./server": {
+      "types": "./dist/src/server/index.d.ts",
+      "import": "./dist/server.js",
+      "require": "./dist/server.cjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "devDependencies": {
+    "socket.io": "^4.7.2",
+    "socket.io-client": "^4.7.2",
+    "vite": "^4.4.11",
+    "vite-plugin-dts": "^3.6.2",
+    "yjs": "^13.6.8"
+  },
+  "peerDependencies": {
+    "socket.io": "^4",
+    "socket.io-client": "^4",
+    "yjs": "^13"
+  }
+}

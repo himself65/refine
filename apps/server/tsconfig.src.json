@@ -14,6 +14,11 @@
       "node"
     ]
   },
+  "references": [
+    {
+      "path": "../../packages/y-io/tsconfig.src.json"
+    }
+  ],
   "include": [
     "./src"
   ]
