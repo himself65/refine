@@ -26,7 +26,7 @@ export const App = (props: AppProps): ReactElement => {
     return () => {
       dispose.dispose()
     }
-  }, [])
+  }, [workspace])
 
   const handleNewPage = async () => {
     const page = workspace.createPage({ id: 'page0' })
