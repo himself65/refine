@@ -97,7 +97,7 @@ test('should work in sync provider with sub document', async (t) => {
   pages.set('page0', pageDoc)
   const blocksMap = pageDoc.getMap('blocks')
   blocksMap.set('block:0', 'test')
-  const { createSyncProvider } = await import('@refine/server/sync-provider')
+  const { createSyncProvider } = await import('y-io/sync-provider')
 
   const provider = createSyncProvider(clientSocket, rootDoc)
   provider.connect()
@@ -126,7 +126,7 @@ test('should work in sync provider with sub document', async (t) => {
 })
 
 test('should work in sync provider with update', async (t) => {
-  const { createSyncProvider } = await import('@refine/server/sync-provider')
+  const { createSyncProvider } = await import('y-io/sync-provider')
   const pageDoc = new Doc({
     guid: 'page0'
   })

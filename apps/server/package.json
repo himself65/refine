@@ -9,10 +9,6 @@
     ".": {
       "types": "./dist/server.d.ts",
       "import": "./dist/server.js"
-    },
-    "./sync-provider": {
-      "types": "./dist/sync-provider/index.d.ts",
-      "import": "./dist/sync-provider/index.js"
     }
   },
   "scripts": {
