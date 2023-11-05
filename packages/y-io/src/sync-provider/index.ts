@@ -24,7 +24,6 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
 
   function onSocketUpdate (guid: string, _update: ArrayBuffer) {
     let update = new Uint8Array(_update)
-    console.log('update', guid, update)
     let cache = cacheMap.get(guid)
     const doc = guidMap.get(guid)
     if (!doc) {
@@ -40,7 +39,6 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
         cacheMap.delete(guid)
       }
       applyUpdate(doc, update, `socket-${socket.id}`)
-      console.log('json', guid, doc.toJSON())
     }
   }
 

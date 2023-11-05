@@ -20,21 +20,17 @@ export function bindSyncServer (
       const docUpdate = docUpdateMap.get(guid)
       if (update === undefined) {
         if (docUpdate) {
-          console.log('diff 1', decodeUpdate(docUpdate))
           socket.emit('update', guid, docUpdate)
         }
       } else {
         if (docUpdate) {
           try {
-            console.log('diff 2', update, docUpdate)
             update = diffUpdate(docUpdate, update)
-            console.log('result', update)
             docUpdateMap.set(guid, update)
             socket.emit('update', guid, update)
             socket.broadcast.emit('update', guid, update)
           } catch {
             docUpdateMap.set(guid, docUpdate)
-            console.log('diff 3', decodeUpdate(docUpdate))
             socket.emit('update', guid, docUpdate)
           }
         } else {
