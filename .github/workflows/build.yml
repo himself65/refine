@@ -132,7 +132,7 @@ jobs:
           flags: server
           root_dir: apps/server
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./apps/server/coverage/lcov.info
+          directory: ./apps/server/coverage
   test-jotai-inject:
     name: Test jotai-inject
     runs-on: ubuntu-latest
@@ -170,9 +170,8 @@ jobs:
         with:
           name: jotai-inject
           flags: packages
-          root_dir: packages/jotai-inject
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./packages/jotai-inject/coverage/lcov.info
+          directory: ./packages/jotai-inject/coverage
   build-desktop:
     name: Build Desktop
     strategy:
