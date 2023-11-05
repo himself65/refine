@@ -1,0 +1,35 @@
+codecov:
+  require_ci_to_pass: true
+comment:
+  behavior: default
+  layout: reach,diff,flags,tree,reach
+  show_carryforward_flags: false
+coverage:
+  precision: 2
+  range: "60...80"
+  round: down
+  status:
+    changes: false
+    default_rules:
+      flag_coverage_not_uploaded_behavior: include
+    patch: true
+    project: true
+github_checks:
+  annotations: true
+
+flag_management:
+  default_rules:
+    carryforward: true
+    statuses:
+      - type: project
+        target: auto
+        threshold: 1%
+      - type: patch
+        target: 90%
+  individual_flags:
+    - name: jotai-inject
+      paths:
+        - packages/jotai-inject
+    - name: server
+      paths:
+        - apps/server
