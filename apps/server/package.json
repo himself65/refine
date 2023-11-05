@@ -60,7 +60,7 @@
   "c8": {
     "reporter": [
       "text",
-      "lcov"
+      "json"
     ],
     "report-dir": "coverage"
   }
