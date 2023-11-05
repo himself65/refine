@@ -40,7 +40,7 @@ test('useInject', async () => {
       </div>
     )
   }
-  render(<App/>)
+  const app = render(<App/>)
   expect(fn).toBeCalledTimes(0)
   await userEvent.click(screen.getByTestId('btn'))
   await userEvent.click(screen.getByTestId('btn'))
@@ -48,4 +48,38 @@ test('useInject', async () => {
   const value = store.get(a)
   expect(value).toBe(2)
   expect(screen.getByTestId<HTMLDivElement>('value').textContent).toBe('2')
+  app.unmount()
+})
+
+test('useInject with no cache fn', async () => {
+  const store = getDefaultStore()
+  const a = atom(1)
+  const App = () => {
+    const [num, setNum] = useState(0)
+    const fn = (value: number) => {
+      expect(value).toBe(store.get(a))
+    }
+    useInject(a, num, fn)
+    const value = useAtomValue(a)
+    return (
+      <div>
+        <button
+          data-testid="btn"
+          onClick={() => setNum(num => num + 1)}
+        >
+          Plus
+        </button>
+        <div data-testid="value">
+          {value}
+        </div>
+      </div>
+    )
+  }
+  const app = render(<App/>)
+  await userEvent.click(screen.getByTestId('btn'))
+  await userEvent.click(screen.getByTestId('btn'))
+  const value = store.get(a)
+  expect(value).toBe(2)
+  expect(screen.getByTestId<HTMLDivElement>('value').textContent).toBe('2')
+  app.unmount()
 })
