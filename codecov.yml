@@ -27,7 +27,7 @@ flag_management:
       - type: patch
         target: 90%
   individual_flags:
-    - name: jotai-inject
+    - name: packages
       paths:
         - packages/jotai-inject
     - name: server
