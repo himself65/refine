@@ -130,6 +130,7 @@ jobs:
         with:
           name: refine-server
           flags: server
+          root_dir: apps/server
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./apps/server/coverage/lcov.info
   test-jotai-inject:
@@ -169,6 +170,7 @@ jobs:
         with:
           name: jotai-inject
           flags: packages
+          root_dir: packages/jotai-inject
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./packages/jotai-inject/coverage/lcov.info
   build-desktop:
