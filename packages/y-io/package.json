@@ -14,6 +14,10 @@
       "require": "./dist/server.cjs"
     }
   },
+  "files": [
+    "dist",
+    "src"
+  ],
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch"
