@@ -14,11 +14,12 @@
       "node"
     ]
   },
+  "references": [
+    {
+      "path": "../../packages/y-io/tsconfig.src.json"
+    }
+  ],
   "include": [
     "./src"
-  ],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  }
+  ]
 }

@@ -138,6 +138,11 @@ class WorkspaceManager {
     })
   }
 
+  public with = async (preload?: Preload, providerCreator?: ProviderCreator) => {
+    preload && this.#preloads.push(preload)
+    providerCreator && this.#providers.push(providerCreator)
+  }
+
   public inject = async () => {
     if (this.#injected) {
       return

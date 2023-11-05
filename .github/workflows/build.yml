@@ -117,6 +117,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+      - name: Build Packages
+        run: pnpm run build:packages
       - name: Build Server
         run: pnpm run build
         working-directory: apps/server

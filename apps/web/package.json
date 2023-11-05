@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@refine/core": "workspace:*",
+    "yjs": "^13.6.8",
+    "y-io": "workspace:*",
     "jotai": "^2.5.0",
     "jotai-inject": "workspace:*",
     "jotai-effect": "^0.2.1",
