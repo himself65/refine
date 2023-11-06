@@ -27,10 +27,12 @@ function willMissingUpdateImpl (
   return missingMap.size > 0 ? missingMap : false
 }
 
-export function willMissingUpdate (doc: Doc, update: Uint8Array): boolean {
+export function willMissingUpdate (
+  doc: Doc, update: Uint8Array): false | Map<number, number> {
   return willMissingUpdateImpl(doc, update, decodeUpdate)
 }
 
-export function willMissingUpdateV2 (doc: Doc, update: Uint8Array): boolean {
+export function willMissingUpdateV2 (
+  doc: Doc, update: Uint8Array): false | Map<number, number> {
   return willMissingUpdateImpl(doc, update, decodeUpdateV2)
 }
