@@ -79,9 +79,6 @@
       "path": "./packages/jotai-inject/tsconfig.json"
     },
     {
-      "path": "./packages/jotai-yjs/tsconfig.json"
-    },
-    {
       "path": "./packages/y-io/tsconfig.json"
     }
   ],
