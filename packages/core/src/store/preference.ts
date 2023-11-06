@@ -2,6 +2,7 @@ import { Workspace } from '@blocksuite/store'
 import { Array as YArray, Doc } from 'yjs'
 import { YKeyValue } from 'y-utility/y-keyvalue'
 import { atom } from 'jotai/vanilla'
+import { RESET } from 'jotai/utils'
 
 function getWorkspacePreferenceDoc (
   workspace: Workspace,
@@ -41,6 +42,7 @@ export function settingAtom<Value> (
   const valueAtom = atom((kv.get(key) || defaultValue) as Value)
 
   valueAtom.onMount = set => {
+    set((kv.get(key) as Value) || defaultValue)
     const onChange = (changes: Changes<unknown>) => {
       if (changes.has(key)) {
         const change = changes.get(key)!
@@ -59,21 +61,25 @@ export function settingAtom<Value> (
 
   return atom<
     Value,
-    [Value | ((prev: Value) => Value)],
+    [Value | ((prev: Value) => Value) | typeof RESET],
     void
   >(
     (get) => get(valueAtom),
     (get, set, newValue) => {
       const oldValue = get(valueAtom)
+      if (typeof newValue === 'function') {
+        newValue = (newValue as (prev: Value) => Value)(oldValue)
+      }
       if (newValue === oldValue) {
         return
       }
-      if (newValue === undefined) {
+      if (newValue === RESET) {
         kv.delete(key)
+        set(valueAtom, defaultValue)
       } else {
         kv.set(key, newValue)
+        set(valueAtom, newValue)
       }
-      set(valueAtom, newValue)
     }
   )
 }
