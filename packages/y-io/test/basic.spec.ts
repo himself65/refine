@@ -5,7 +5,13 @@ import { Server } from 'socket.io'
 import { createServer } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { io as ioc, Socket as ClientSocket } from 'socket.io-client'
-import { diffUpdate, Doc, encodeStateVector } from 'yjs'
+import {
+  applyUpdate,
+  decodeUpdate,
+  diffUpdate,
+  Doc,
+  encodeStateVector
+} from 'yjs'
 import { promisify } from 'node:util'
 
 const sleep = promisify(setTimeout)
@@ -96,6 +102,42 @@ describe('createSyncProvider', () => {
 
     provider.disconnect()
     secondProvider.disconnect()
+    doc.destroy()
+    secondDoc.destroy()
+  })
+
+  test('should sync document in duplex', async () => {
+    const { socket, doc } = createClient()
+    const map = doc.getMap()
+    const provider = createSyncProvider(socket, doc)
+    const { socket: secondSocket, doc: secondDoc } = createClient()
+    const secondMap = secondDoc.getMap()
+    const secondProvider = createSyncProvider(secondSocket, secondDoc)
+
+    provider.connect()
+    secondProvider.connect()
+    map.set('foo', 'bar')
+    await vi.waitFor(() => {
+      expect(secondMap.get('foo')).toBe('bar')
+    })
+    secondMap.set('foo', 'bar2')
+    await vi.waitFor(() => {
+      expect(map.get('foo')).toBe('bar2')
+    })
+
+    const update = docUpdateMap.get(doc.guid) as Uint8Array
+    expect(update).toBeDefined()
+    {
+      const doc = new Doc({
+        guid: 'new'
+      })
+      applyUpdate(doc, update)
+      const map = doc.getMap()
+      expect(map.get('foo')).toBe('bar2')
+    }
+
+    socket.disconnect()
+    secondSocket.disconnect()
     doc.destroy()
     secondDoc.destroy()
   })
