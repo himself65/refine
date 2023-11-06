@@ -15,7 +15,8 @@ export default defineConfig({
       external: [
         /^jotai/,
         /^socket/,
-        /^yjs/
+        /^yjs/,
+        /^y-utils/
       ]
     }
   },
