@@ -233,7 +233,7 @@ describe('edge cases', () => {
     })
     provider.disconnect()
     // wrong emit
-    const onError = vi.fn((...args: any[]) => {
+    const onError = vi.fn((...args: unknown[]) => {
       expect(args[0]).toBe('invalid update')
     })
     vi.stubGlobal('console', {
