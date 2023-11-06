@@ -18,6 +18,7 @@
       "require": "./dist/store/preference.cjs"
     }
   },
+  "license": "MIT",
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
