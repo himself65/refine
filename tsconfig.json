@@ -80,6 +80,9 @@
     },
     {
       "path": "./packages/y-io/tsconfig.json"
+    },
+    {
+      "path": "./packages/y-utils/tsconfig.json"
     }
   ],
   "include": [],

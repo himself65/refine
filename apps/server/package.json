@@ -5,6 +5,7 @@
   "bin": {
     "refine-server": "./dist/index.js"
   },
+  "license": "MIT",
   "exports": {
     ".": {
       "types": "./dist/server.d.ts",
