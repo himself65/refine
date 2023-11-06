@@ -5,23 +5,20 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        'sync-provider': './src/sync-provider/index.ts',
-        'server': './src/server/index.ts'
+        index: './src/index.ts'
       },
       formats: ['es', 'cjs']
     },
     outDir: './dist',
     rollupOptions: {
       external: [
-        /^jotai/,
-        /^socket/,
         /^yjs/
       ]
     }
   },
   plugins: [
     dts({
-      include: ["src"],
+      include: ['src']
     })
   ]
 })
