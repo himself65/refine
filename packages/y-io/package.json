@@ -20,7 +20,10 @@
   ],
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "vite build --watch",
+    "test": "vitest",
+    "test:ui": "vitest --ui --coverage.enabled=true",
+    "test:coverage": "vitest --coverage"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^0.34.6",
