@@ -7,7 +7,8 @@ export default defineConfig({
     lib: {
       entry: {
         app: './src/app.tsx',
-        store: './src/store.ts'
+        store: './src/store.ts',
+        'store/preference': './src/store/preference.ts',
       },
       formats: ['es', 'cjs']
     },
@@ -20,12 +21,17 @@ export default defineConfig({
         /^@toeverything/,
         /^jotai/,
         /^yjs/,
-        /^jotai-effect/
+        /^jotai-effect/,
+        /^y-utility/
       ]
     }
   },
   plugins: [
     react(),
-    dts()
+    dts({
+      include: [
+        'src'
+      ]
+    })
   ]
 })
