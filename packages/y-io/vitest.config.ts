@@ -6,7 +6,7 @@ export default mergeConfig(viteConfig, defineConfig({
     environment: 'happy-dom',
     coverage: {
       provider: 'v8',
-      reporter: ['lcov', 'text', 'html']
+      reporter: ['json', 'text', 'html']
     }
   }
 }))
