@@ -6,10 +6,6 @@ export function bindSyncServer (
 ) {
   const docUpdateMap = new Map<string, Uint8Array>()
   io.on('connection', (socket) => {
-    socket.on('ping', () => {
-      socket.emit('pong')
-    })
-
     socket.on('diff', (guid: string, update?: Uint8Array) => {
       try {
         update && decodeUpdate(update)

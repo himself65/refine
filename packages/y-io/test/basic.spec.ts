@@ -8,7 +8,7 @@ import { io as ioc, Socket as ClientSocket } from 'socket.io-client'
 import {
   applyUpdate,
   diffUpdate,
-  Doc,
+  Doc, encodeStateAsUpdate,
   encodeStateVector
 } from 'yjs'
 import { promisify } from 'node:util'
@@ -63,7 +63,7 @@ function createClient () {
   }
 }
 
-describe('createSyncProvider', () => {
+describe('sync provider', () => {
   test('should empty document still empty', async () => {
     const {
       socket,
@@ -200,6 +200,84 @@ describe('createSyncProvider', () => {
       p2.disconnect()
     }
 
+    provider.disconnect()
+    secondProvider.disconnect()
+    socket.disconnect()
+    secondSocket.disconnect()
+    doc.destroy()
+    secondDoc.destroy()
+  })
+})
+
+describe('edge cases', () => {
+  test('wrong update/diff', async () => {
+    const { socket, doc } = createClient()
+    const provider = createSyncProvider(socket, doc)
+    const { socket: secondSocket, doc: secondDoc } = createClient()
+    const secondProvider = createSyncProvider(secondSocket, secondDoc)
+    provider.connect()
+    secondProvider.connect()
+    const fn = vi.fn((guid: string, update: Uint8Array) => {
+      expect(guid).toBe(doc.guid)
+      expect(update).toBeInstanceOf(Uint8Array)
+    })
+    secondSocket.once('update', fn)
+    doc.getMap().set('foo', 'bar')
+    expect(doc.getMap().get('foo')).toBe('bar')
+    await vi.waitFor(() => {
+      expect(secondDoc.getMap().get('foo')).toBe('bar')
+    })
+    provider.disconnect()
+    // wrong emit
+    const onError = vi.fn((...args: any[]) => {
+      expect(args[0]).toBe('invalid update')
+    })
+    vi.stubGlobal('console', {
+      error: onError
+    })
+    expect(onError).toHaveBeenCalledTimes(0)
+    socket.emit('update', -1, new Uint8Array([0, 1, 2]))
+    socket.emit('update', 'wrong-id', new Uint8Array([0, 1, 2]))
+    socket.emit('update', undefined, undefined)
+    socket.emit('update', undefined, new Uint8Array([0, 1, 2]))
+    socket.emit('update', {}, {})
+    await vi.waitFor(() => {
+      expect(onError).toHaveBeenCalledTimes(5)
+    })
+
+    doc.getMap().set('foo', 'hello world')
+    const update = encodeStateAsUpdate(doc)
+    // manually emit update
+    socket.emit('update', doc.guid, update)
+    await vi.waitFor(() => {
+      expect(secondDoc.getMap().get('foo')).toBe('hello world')
+    })
+
+    socket.emit('diff', -1, new Uint8Array([0, 1, 2]))
+    socket.emit('diff', 'wrong-id', new Uint8Array([0, 1, 2]))
+    socket.emit('diff', undefined, undefined)
+    socket.emit('diff', undefined, new Uint8Array([0, 1, 2]))
+    socket.emit('diff', {}, {})
+    socket.emit('diff', doc.guid, new Uint8Array([0, 1, 2]))
+    socket.emit('diff', doc.guid, 'not-update')
+
+    const onSocketUpdate = vi.fn((guid: string, update: Uint8Array) => {
+      expect(guid).toBe(doc.guid)
+      expect(update).toBeInstanceOf(Uint8Array)
+      const testDoc = new Doc({
+        guid: 'test'
+      })
+      applyUpdate(testDoc, update)
+      expect(testDoc.getMap().get('foo')).toBe('hello world')
+    })
+    socket.once('update', onSocketUpdate)
+    socket.emit('diff', doc.guid)
+    expect(onSocketUpdate).toHaveBeenCalledTimes(0)
+    await vi.waitFor(() => {
+      expect(onSocketUpdate).toHaveBeenCalledTimes(1)
+    })
+
+    vi.unstubAllGlobals()
     provider.disconnect()
     secondProvider.disconnect()
     socket.disconnect()
