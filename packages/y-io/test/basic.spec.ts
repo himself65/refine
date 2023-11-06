@@ -179,6 +179,10 @@ describe('sync provider', () => {
       })
     }
 
+    secondProvider.disconnect()
+    secondProvider.connect()
+    secondProvider.connect()
+
     {
       map.delete('1')
       subDoc.getMap().set('foo', 'bar3')
@@ -210,7 +214,7 @@ describe('sync provider', () => {
 })
 
 describe('edge cases', () => {
-  test('wrong update/diff', async () => {
+  test('should works when wrong update/diff', async () => {
     const { socket, doc } = createClient()
     const provider = createSyncProvider(socket, doc)
     const { socket: secondSocket, doc: secondDoc } = createClient()
@@ -285,4 +289,34 @@ describe('edge cases', () => {
     doc.destroy()
     secondDoc.destroy()
   })
+
+  test('should cache the update even doesn\'t listen the document',
+    async () => {
+      const { socket, doc } = createClient()
+      const provider = createSyncProvider(socket, doc)
+      provider.connect()
+      await waitForSYN(doc, socket)
+      const { socket: secondSocket, doc: secondDoc } = createClient()
+      const secondProvider = createSyncProvider(secondSocket, secondDoc)
+      await waitForSYN(secondDoc, secondSocket)
+      doc.getMap().set('foo', 'bar')
+      secondProvider.connect()
+      doc.getMap().set('foo', 'bar2')
+      await vi.waitFor(() => {
+        expect(secondDoc.getMap().get('foo')).toBe('bar2')
+      })
+      secondProvider.disconnect()
+      doc.getMap().set('foo', 'bar3')
+      secondProvider.connect()
+      await vi.waitFor(() => {
+        expect(secondDoc.getMap().get('foo')).toBe('bar3')
+      })
+
+      secondProvider.disconnect()
+      secondSocket.disconnect()
+      provider.disconnect()
+      socket.disconnect()
+      doc.destroy()
+      secondDoc.destroy()
+    })
 })
