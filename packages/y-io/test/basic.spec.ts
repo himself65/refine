@@ -12,6 +12,7 @@ import {
   encodeStateVector
 } from 'yjs'
 import { promisify } from 'node:util'
+import { willMissingUpdate } from 'y-utils'
 
 const sleep = promisify(setTimeout)
 
@@ -36,7 +37,7 @@ afterEach(() => {
   io.close()
 })
 
-async function waitForSYN (
+async function waitForSync (
   doc: Doc,
   socket: ClientSocket
 ) {
@@ -44,11 +45,20 @@ async function waitForSYN (
     socket.once('update', (guid: string, update: Uint8Array) => {
       if (guid === doc.guid) {
         const diff = diffUpdate(update, encodeStateVector(doc))
+        // after the syncing, the document should not have any difference.
         expect(diff).toEqual(new Uint8Array([0, 0]))
         resolve()
       }
     })
     socket.emit('diff', doc.guid)
+  })
+}
+
+async function waitSocketUpdateOnce (socket: ClientSocket) {
+  return new Promise<void>(resolve => {
+    socket.once('update', () => {
+      resolve()
+    })
   })
 }
 
@@ -88,7 +98,7 @@ describe('sync provider', () => {
     map.set('foo', 'bar')
     const provider = createSyncProvider(socket, doc)
     provider.connect()
-    await waitForSYN(doc, socket)
+    await waitForSync(doc, socket)
     const {
       socket: secondSocket,
       doc: secondDoc
@@ -97,7 +107,7 @@ describe('sync provider', () => {
     const secondProvider = createSyncProvider(secondSocket, secondDoc)
     expect(secondMap.get('foo')).toBeUndefined()
     secondProvider.connect()
-    await waitForSYN(secondDoc, secondSocket)
+    await waitForSync(secondDoc, secondSocket)
     expect(secondMap.get('foo')).toBe('bar')
 
     provider.disconnect()
@@ -155,7 +165,7 @@ describe('sync provider', () => {
     map.set('1', subDoc)
     const provider = createSyncProvider(socket, doc)
     provider.connect()
-    await waitForSYN(doc, socket)
+    await waitForSync(doc, socket)
     const {
       socket: secondSocket,
       doc: secondDoc
@@ -164,7 +174,7 @@ describe('sync provider', () => {
     expect(secondMap.get('1')).toBeUndefined()
     const secondProvider = createSyncProvider(secondSocket, secondDoc)
     secondProvider.connect()
-    await waitForSYN(secondDoc, secondSocket)
+    await waitForSync(secondDoc, secondSocket)
     const secondSubDoc = secondMap.get('1') as Doc
     expect(secondSubDoc).toBeInstanceOf(Doc)
 
@@ -295,10 +305,10 @@ describe('edge cases', () => {
       const { socket, doc } = createClient()
       const provider = createSyncProvider(socket, doc)
       provider.connect()
-      await waitForSYN(doc, socket)
+      await waitForSync(doc, socket)
       const { socket: secondSocket, doc: secondDoc } = createClient()
       const secondProvider = createSyncProvider(secondSocket, secondDoc)
-      await waitForSYN(secondDoc, secondSocket)
+      await waitForSync(secondDoc, secondSocket)
       doc.getMap().set('foo', 'bar')
       secondProvider.connect()
       doc.getMap().set('foo', 'bar2')
@@ -335,6 +345,60 @@ describe('edge cases', () => {
 
     socket.disconnect()
     secondSocket.disconnect()
+    doc.destroy()
+    secondDoc.destroy()
+  })
+
+  test('should missing update will not break the doc', async () => {
+    const { socket, doc } = createClient()
+    const { socket: secondSocket, doc: secondDoc } = createClient()
+    const secondProvider = createSyncProvider(secondSocket, secondDoc)
+    secondProvider.connect()
+    const updates: Uint8Array[] = []
+    doc.on('update', (update: Uint8Array) => {
+      expect(willMissingUpdate(doc, update)).toBe(false)
+      updates.push(update)
+    })
+    const map = doc.getMap()
+    map.set('x', 1)
+    map.set('y', 2)
+    expect(updates.length).toBe(2)
+    socket.emit('update', doc.guid, updates[0])
+    socket.emit('update', doc.guid, updates[1])
+    await vi.waitFor(() => {
+      expect(secondDoc.getMap().get('x')).toBe(1)
+      expect(secondDoc.getMap().get('y')).toBe(2)
+    })
+    map.set('x', 3)
+    map.set('y', 4)
+    expect(updates.length).toBe(4)
+    socket.emit('update', doc.guid, updates[3])
+    const onWarn = vi.fn((...args: unknown[]) => {
+      expect(args[0]).toBe('detected missing update from clients:')
+      expect(args[1]).toBe(doc.clientID)
+    })
+    vi.stubGlobal('console', {
+      warn: onWarn
+    })
+    await waitSocketUpdateOnce(secondSocket)
+    expect(secondDoc.getMap().get('x')).toBe(1)
+    expect(secondDoc.getMap().get('y')).toBe(2)
+    expect(onWarn).toHaveBeenCalledTimes(1)
+    vi.unstubAllGlobals()
+    const serverUpdate = docUpdateMap.get(doc.guid) as Uint8Array
+    expect(serverUpdate).toBeDefined()
+    applyUpdate(secondDoc, serverUpdate)
+    expect(secondDoc.getMap().get('x')).toBe(1)
+    expect(secondDoc.getMap().get('y')).toBe(undefined)
+    const pendingStructs = secondDoc.store.pendingStructs
+    expect(pendingStructs).toBeDefined()
+    expect(pendingStructs?.missing).toEqual(new Map([
+      [doc.clientID, 2]
+    ]))
+
+    secondProvider.disconnect()
+    secondSocket.disconnect()
+    socket.disconnect()
     doc.destroy()
     secondDoc.destroy()
   })

@@ -2,6 +2,16 @@
 
 > Socket.io provider for Yjs in both client and server side.
 
+## Feature
+
+- socket.io based
+- sub-document sync support
+- easy to integrate with existing socket.io server
+- update detection (won't break the existing data)
+- multiple clients syncing
+- TypeScript & 100% code coverage
+- End-to-end encryption (WIP)
+
 ## Usage
 
 ### Server

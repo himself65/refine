@@ -1,10 +1,11 @@
 import type { Socket } from 'socket.io-client'
 import {
-  applyUpdate,
+  applyUpdate, diffUpdate,
   Doc,
-  encodeStateAsUpdate,
+  encodeStateAsUpdate, encodeStateVector,
   mergeUpdates
 } from 'yjs'
+import { willMissingUpdate } from 'y-utils'
 
 type SubdocEvent = {
   loaded: Set<Doc>;
@@ -38,7 +39,24 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
         update = mergeUpdates([cache, update])
         cacheMap.delete(guid)
       }
-      applyUpdate(doc, update, `socket-${socket.id}`)
+      const missing = willMissingUpdate(doc, update)
+      if (missing === false) {
+        applyUpdate(doc, update, `socket-${socket.id}`)
+      } else {
+        const fakeDoc = new Doc()
+        const docUpdate = encodeStateAsUpdate(doc)
+        applyUpdate(fakeDoc, docUpdate)
+        applyUpdate(fakeDoc, update)
+        const stateVector = encodeStateVector(fakeDoc)
+        const diff = diffUpdate(docUpdate, stateVector)
+        applyUpdate(doc, diff, `socket-${socket.id}`)
+        fakeDoc.destroy()
+
+        cacheMap.set(guid, diffUpdate(update, stateVector))
+        console.warn('detected missing update from clients:', ...missing.keys())
+        // there is no way
+        //  to know if the missing update still exists in the network
+      }
     }
   }
 
