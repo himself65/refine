@@ -5,6 +5,7 @@ import {
   encodeStateAsUpdate,
   mergeUpdates
 } from 'yjs'
+import { willMissingUpdate } from 'y-utils'
 
 type SubdocEvent = {
   loaded: Set<Doc>;
@@ -38,7 +39,15 @@ export function createSyncProvider (socket: Socket, rootDoc: Doc) {
         update = mergeUpdates([cache, update])
         cacheMap.delete(guid)
       }
-      applyUpdate(doc, update, `socket-${socket.id}`)
+      const missing = willMissingUpdate(doc, update)
+      if (missing === false) {
+        applyUpdate(doc, update, `socket-${socket.id}`)
+      } else {
+        cacheMap.set(guid, update)
+        console.warn('detected missing update from clients:', ...missing.keys())
+        // there is no way
+        //  to know if the missing update still exists in the network
+      }
     }
   }
 

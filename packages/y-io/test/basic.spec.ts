@@ -12,6 +12,7 @@ import {
   encodeStateVector
 } from 'yjs'
 import { promisify } from 'node:util'
+import { willMissingUpdate } from 'y-utils'
 
 const sleep = promisify(setTimeout)
 
@@ -49,6 +50,14 @@ async function waitForSYN (
       }
     })
     socket.emit('diff', doc.guid)
+  })
+}
+
+async function waitSocketUpdateOnce (socket: ClientSocket) {
+  return new Promise<void>(resolve => {
+    socket.once('update', () => {
+      resolve()
+    })
   })
 }
 
@@ -337,5 +346,43 @@ describe('edge cases', () => {
     secondSocket.disconnect()
     doc.destroy()
     secondDoc.destroy()
+  })
+
+  test('should missing update will not break the doc', async () => {
+    const { socket, doc } = createClient()
+    const { socket: secondSocket, doc: secondDoc } = createClient()
+    const secondProvider = createSyncProvider(secondSocket, secondDoc)
+    secondProvider.connect()
+    const updates: Uint8Array[] = []
+    doc.on('update', (update: Uint8Array) => {
+      expect(willMissingUpdate(doc, update)).toBe(false)
+      updates.push(update)
+    })
+    const map = doc.getMap()
+    map.set('x', 1)
+    map.set('y', 2)
+    expect(updates.length).toBe(2)
+    socket.emit('update', doc.guid, updates[0])
+    socket.emit('update', doc.guid, updates[1])
+    await vi.waitFor(() => {
+      expect(secondDoc.getMap().get('x')).toBe(1)
+      expect(secondDoc.getMap().get('y')).toBe(2)
+    })
+    map.set('x', 3)
+    map.set('y', 4)
+    expect(updates.length).toBe(4)
+    socket.emit('update', doc.guid, updates[3])
+    const onWarn = vi.fn((...args: unknown[]) => {
+      expect(args[0]).toBe('detected missing update from clients:')
+      expect(args[1]).toBe(doc.clientID)
+    })
+    vi.stubGlobal('console', {
+      warn: onWarn
+    })
+    await waitSocketUpdateOnce(secondSocket)
+    expect(secondDoc.getMap().get('x')).toBe(1)
+    expect(secondDoc.getMap().get('y')).toBe(2)
+    expect(onWarn).toHaveBeenCalledTimes(1)
+    vi.unstubAllGlobals()
   })
 })

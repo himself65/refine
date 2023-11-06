@@ -16,7 +16,9 @@ function willMissingUpdateImpl (
     const items = doc.store.clients.get(client) ?? []
     const lastItem = items.at(-1)
     if (!lastItem) {
-      missingMap.set(client, struct.id.clock)
+      if (struct.id.clock !== 0) {
+        missingMap.set(client, struct.id.clock)
+      }
       continue
     }
     const nextClock = lastItem.id.clock + lastItem.length
