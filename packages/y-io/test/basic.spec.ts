@@ -7,7 +7,6 @@ import type { AddressInfo } from 'node:net'
 import { io as ioc, Socket as ClientSocket } from 'socket.io-client'
 import {
   applyUpdate,
-  decodeUpdate,
   diffUpdate,
   Doc,
   encodeStateVector
