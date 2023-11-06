@@ -77,8 +77,9 @@ describe('createSyncProvider', () => {
     provider.disconnect()
     expect(fn).toHaveBeenCalledTimes(0)
 
-    doc.destroy()
     provider.disconnect()
+    socket.disconnect()
+    doc.destroy()
   })
 
   test('should sync document', async () => {
@@ -101,6 +102,8 @@ describe('createSyncProvider', () => {
 
     provider.disconnect()
     secondProvider.disconnect()
+    socket.disconnect()
+    secondSocket.disconnect()
     doc.destroy()
     secondDoc.destroy()
   })
@@ -135,6 +138,70 @@ describe('createSyncProvider', () => {
       expect(map.get('foo')).toBe('bar2')
     }
 
+    provider.disconnect()
+    secondProvider.disconnect()
+    socket.disconnect()
+    secondSocket.disconnect()
+    doc.destroy()
+    secondDoc.destroy()
+  })
+
+  test('should sync sub document and multiple provider in duplex', async () => {
+    const { socket, doc } = createClient()
+    const subDoc = new Doc({
+      guid: 'sub-doc1'
+    })
+    const map = doc.getMap()
+    map.set('1', subDoc)
+    const provider = createSyncProvider(socket, doc)
+    provider.connect()
+    await waitForSYN(doc, socket)
+    const {
+      socket: secondSocket,
+      doc: secondDoc
+    } = createClient()
+    const secondMap = secondDoc.getMap()
+    expect(secondMap.get('1')).toBeUndefined()
+    const secondProvider = createSyncProvider(secondSocket, secondDoc)
+    secondProvider.connect()
+    await waitForSYN(secondDoc, secondSocket)
+    const secondSubDoc = secondMap.get('1') as Doc
+    expect(secondSubDoc).toBeInstanceOf(Doc)
+
+    {
+      subDoc.getMap().set('foo', 'bar')
+      await vi.waitFor(() => {
+        expect(secondSubDoc.getMap().get('foo')).toBe('bar')
+      })
+      secondSubDoc.getMap().set('foo', 'bar2')
+      await vi.waitFor(() => {
+        expect(subDoc.getMap().get('foo')).toBe('bar2')
+      })
+    }
+
+    {
+      map.delete('1')
+      subDoc.getMap().set('foo', 'bar3')
+      await vi.waitFor(() => {
+        expect(secondMap.get('1')).toBeUndefined()
+      })
+      expect(secondSubDoc.getMap().get('foo')).toBe('bar2')
+      const p1 = createSyncProvider(socket, subDoc)
+      const p2 = createSyncProvider(secondSocket, secondSubDoc)
+      expect(subDoc.getMap().get('foo')).toBe('bar3')
+      expect(secondSubDoc.getMap().get('foo')).toBe('bar2')
+      p1.connect()
+      p2.connect()
+      await vi.waitFor(() => {
+        expect(subDoc.getMap().get('foo')).toBe('bar3')
+      })
+
+      p1.disconnect()
+      p2.disconnect()
+    }
+
+    provider.disconnect()
+    secondProvider.disconnect()
     socket.disconnect()
     secondSocket.disconnect()
     doc.destroy()
