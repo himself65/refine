@@ -1,5 +1,5 @@
 import { type Server } from 'socket.io'
-import { decodeUpdate, diffUpdate, mergeUpdates } from 'yjs'
+import { decodeUpdate, mergeUpdates } from 'yjs'
 
 export function bindSyncServer (
   io: Server
@@ -20,15 +20,10 @@ export function bindSyncServer (
         }
       } else {
         if (docUpdate) {
-          try {
-            update = diffUpdate(docUpdate, update)
-            docUpdateMap.set(guid, update)
-            socket.emit('update', guid, update)
-            socket.broadcast.emit('update', guid, update)
-          } catch {
-            docUpdateMap.set(guid, docUpdate)
-            socket.emit('update', guid, docUpdate)
-          }
+          update = mergeUpdates([docUpdate, update])
+          docUpdateMap.set(guid, update)
+          socket.emit('update', guid, update)
+          socket.broadcast.emit('update', guid, update)
         } else {
           try {
             decodeUpdate(update)

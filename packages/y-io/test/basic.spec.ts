@@ -262,7 +262,7 @@ describe('edge cases', () => {
     socket.emit('diff', undefined, undefined)
     socket.emit('diff', undefined, new Uint8Array([0, 1, 2]))
     socket.emit('diff', {}, {})
-    socket.emit('diff', doc.guid, new Uint8Array([0, 1, 2]))
+    socket.emit('diff', doc.guid, new Uint8Array([255, 255, 255]))
     socket.emit('diff', doc.guid, 'not-update')
 
     const onSocketUpdate = vi.fn((guid: string, update: Uint8Array) => {
@@ -319,4 +319,23 @@ describe('edge cases', () => {
       doc.destroy()
       secondDoc.destroy()
     })
+
+  test('should works with only sockets', async () => {
+    const { socket, doc } = createClient()
+    const { socket: secondSocket, doc: secondDoc } = createClient()
+    doc.getMap().set('foo', 'bar')
+    secondSocket.on('update', (guid: string, update: Uint8Array) => {
+      expect(guid).toBe(doc.guid)
+      applyUpdate(secondDoc, update)
+    })
+    socket.emit('update', doc.guid, encodeStateAsUpdate(doc))
+    await vi.waitFor(() => {
+      expect(secondDoc.getMap().get('foo')).toBe('bar')
+    })
+
+    socket.disconnect()
+    secondSocket.disconnect()
+    doc.destroy()
+    secondDoc.destroy()
+  })
 })
