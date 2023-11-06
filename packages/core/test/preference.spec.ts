@@ -3,7 +3,7 @@ import { settingAtom } from '../src/store/preference'
 import { Schema, Workspace } from '@blocksuite/store'
 import { AffineSchemas } from '@blocksuite/blocks/models'
 import { getDefaultStore } from 'jotai/vanilla'
-import type { Doc } from 'yjs'
+import type { Doc, Array as YArray } from 'yjs'
 import { YKeyValue } from 'y-utility/y-keyvalue'
 import { RESET } from 'jotai/utils'
 
@@ -29,7 +29,10 @@ test('settingAtom', async () => {
   expect(store.get(testValueAtom)).toBe('test-value-2')
   store.set(testValueAtom, () => 'test-value-2')
   const settingDoc = workspace.doc.getMap('settings').get('test-user') as Doc
-  const kv = new YKeyValue(settingDoc.getArray('setting') as any)
+  const kv = new YKeyValue(settingDoc.getArray('setting') as YArray<{
+    key: string,
+    val: unknown
+  }>)
   expect(kv.get('test-key')).toBe('test-value-2')
   const unsub = store.sub(testValueAtom, vi.fn())
   kv.set('test-key', 'test-value-3')
