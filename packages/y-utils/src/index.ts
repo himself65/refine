@@ -4,45 +4,27 @@ function willMissingUpdateImpl (
   doc: Doc,
   update: Uint8Array,
   decode: typeof decodeUpdateV2 | typeof decodeUpdate
-): boolean {
-  const decoded = decode(update)
-  const futureItems = decoded.structs
-  const clientDeleteSetMap = decoded.ds.clients
-  const clients = [...clientDeleteSetMap.keys()]
-  let findLost = false
+): false | Map<number, number> {
+  const { structs } = decode(update)
+  // clientId -> clock
+  const missingMap = new Map<number, number>()
 
   // find if missing update in the structs
-  for (let i = 0; i < futureItems.length; i++) {
-    const futureItem = futureItems[i]
-    const client = futureItem.id.client
+  for (let i = 0; i < structs.length; i++) {
+    const struct = structs[i]
+    const client = struct.id.client
     const items = doc.store.clients.get(client) ?? []
     const lastItem = items.at(-1)
     if (!lastItem) {
-      findLost = true
+      missingMap.set(client, struct.id.clock)
       continue
     }
     const nextClock = lastItem.id.clock + lastItem.length
-    findLost ||= nextClock < futureItem.id.clock
+    if (nextClock < struct.id.clock) {
+      missingMap.set(client, struct.id.clock)
+    }
   }
-
-  // find if missing update in the ds
-  for (let i = 0; i < clients.length; i++) {
-    const client = clients[i]
-    const deleteSet = clientDeleteSetMap.get(client) ?? []
-    const items = doc.store.clients.get(client) ?? []
-    const clocks = deleteSet.map(deleteItem => deleteItem.clock)
-    const find = clocks.every(clock => {
-      for (let i = items.length - 1; i >= 0; i--) {
-        const item = items[i]
-        if (item.id.clock === clock) {
-          return true
-        }
-      }
-      return false
-    })
-    findLost ||= !find
-  }
-  return findLost
+  return missingMap.size > 0 ? missingMap : false
 }
 
 export function willMissingUpdate (doc: Doc, update: Uint8Array): boolean {
