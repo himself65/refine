@@ -31,9 +31,9 @@
     "@vitest/ui": "^0.34.6",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
-    "vite": "^4.4.11",
+    "vite": "^4.5.0",
+    "vite-plugin-dts": "^3.6.3",
     "vitest": "^0.34.6",
-    "vite-plugin-dts": "^3.6.2",
     "yjs": "^13.6.8"
   },
   "peerDependencies": {
