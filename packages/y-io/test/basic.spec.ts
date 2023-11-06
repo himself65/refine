@@ -6,7 +6,7 @@ import { createServer } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import { io as ioc, Socket as ClientSocket } from 'socket.io-client'
 import {
-  applyUpdate, decodeUpdate,
+  applyUpdate,
   diffUpdate,
   Doc, encodeStateAsUpdate,
   encodeStateVector
