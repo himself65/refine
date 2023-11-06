@@ -130,8 +130,50 @@ jobs:
         with:
           name: refine-server
           flags: server
+          root_dir: apps/server
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./apps/server/coverage/lcov.info
+          directory: ./coverage
+          working-directory: ./apps/server
+  test-jotai-inject:
+    name: Test jotai-inject
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+      - name: Test
+        run: pnpm run test:coverage
+        working-directory: packages/jotai-inject
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          name: jotai-inject
+          flags: packages
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage
+          working-directory: ./packages/jotai-inject
   build-desktop:
     name: Build Desktop
     strategy:
