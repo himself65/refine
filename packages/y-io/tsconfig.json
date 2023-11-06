@@ -7,16 +7,12 @@
     "moduleResolution": "bundler",
     "types": [
       "node"
-    ],
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ESNext"
     ]
   },
   "include": [
     "./test",
-    "vite.config.ts"
+    "vite.config.ts",
+    "vitest.config.ts"
   ],
   "references": [
     {

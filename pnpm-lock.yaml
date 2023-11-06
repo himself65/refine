@@ -332,6 +332,12 @@ importers:
 
   packages/y-io:
     devDependencies:
+      '@vitest/coverage-v8':
+        specifier: ^0.34.6
+        version: 0.34.6(vitest@0.34.6)
+      '@vitest/ui':
+        specifier: ^0.34.6
+        version: 0.34.6(vitest@0.34.6)
       socket.io:
         specifier: ^4.7.2
         version: 4.7.2
@@ -344,6 +350,9 @@ importers:
       vite-plugin-dts:
         specifier: ^3.6.2
         version: 3.6.2(@types/node@20.8.9)(typescript@5.2.2)(vite@4.4.11)
+      vitest:
+        specifier: ^0.34.6
+        version: 0.34.6(@vitest/ui@0.34.6)(happy-dom@12.10.3)
       yjs:
         specifier: ^13.6.8
         version: 13.6.8
