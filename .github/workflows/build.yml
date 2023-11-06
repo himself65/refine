@@ -167,6 +167,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+      - name: Build Packages
+        run: pnpm run build:packages
       - name: Test
         run: pnpm run test:coverage
         working-directory: packages/${{ matrix.packages }}
