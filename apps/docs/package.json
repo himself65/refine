@@ -12,7 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@refine/core": "workspace:*",
-    "jotai": "^2.5.0",
+    "jotai": "^2.5.1",
     "jotai-inject": "workspace:*",
     "next": "14.0.0",
     "nextra": "^2.13.2",

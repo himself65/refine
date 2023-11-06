@@ -32,10 +32,10 @@
     "@blocksuite/global": "0.0.0-20231101080734-aa27dc89-nightly",
     "@blocksuite/lit": "0.0.0-20231101080734-aa27dc89-nightly",
     "@blocksuite/store": "0.0.0-20231101080734-aa27dc89-nightly",
-    "@toeverything/theme": "^0.7.20",
-    "@toeverything/y-indexeddb": "^0.10.0-canary.0",
-    "jotai": "^2.5.0",
-    "jotai-effect": "^0.2.1",
+    "@toeverything/theme": "^0.7.21",
+    "@toeverything/y-indexeddb": "0.10.0-canary.9",
+    "jotai": "^2.5.1",
+    "jotai-effect": "^0.2.2",
     "jotai-inject": "^0.1.0",
     "nanoid": "^4.0.2",
     "react": "18.3.0-canary-8039e6d0b-20231026",
@@ -51,7 +51,7 @@
     "@vitest/ui": "^0.34.6",
     "happy-dom": "^12.10.3",
     "vite": "^4.5.0",
-    "vite-plugin-dts": "^3.6.2",
+    "vite-plugin-dts": "^3.6.3",
     "vitest": "^0.34.6"
   }
 }
