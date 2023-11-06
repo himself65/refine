@@ -2,6 +2,7 @@
   "name": "jotai-inject",
   "version": "0.1.0",
   "type": "module",
+  "license": "MIT",
   "keywords": [
     "jotai",
     "react"

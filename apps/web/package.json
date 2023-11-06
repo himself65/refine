@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "license": "MIT",
   "dependencies": {
     "@refine/core": "workspace:*",
     "yjs": "^13.6.8",
