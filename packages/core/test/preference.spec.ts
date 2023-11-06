@@ -44,3 +44,28 @@ test('settingAtom', async () => {
   store.set(testValueAtom, RESET)
   expect(store.get(testValueAtom)).toBe('test-value')
 })
+
+test('settingAtom with defaultValue', () => {
+  const workspace = new Workspace({
+    id: 'test-workspace',
+    schema: new Schema()
+  })
+  const testValueAtom = settingAtom(
+    workspace,
+    'test-user',
+    'test-key',
+    'test-value'
+  )
+  const settingDoc = workspace.doc.getMap('settings').get('test-user') as Doc
+  const kv = new YKeyValue(settingDoc.getArray('setting') as YArray<{
+    key: string,
+    val: unknown
+  }>)
+  const store = getDefaultStore()
+  expect(kv.get('test-key')).toBe(undefined)
+  expect(store.get(testValueAtom)).toBe('test-value')
+  const unsub = store.sub(testValueAtom, vi.fn())
+  expect(kv.get('test-key')).toBe(undefined)
+  expect(store.get(testValueAtom)).toBe('test-value')
+  unsub()
+})
