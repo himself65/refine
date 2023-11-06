@@ -1,12 +1,25 @@
 import { type Server } from 'socket.io'
 import { decodeUpdate, mergeUpdates } from 'yjs'
 
+interface ServerToClientEvents {
+  diff: (guid: string, update?: Uint8Array) => void;
+  update: (guid: string, update: Uint8Array) => void;
+}
+
+interface ClientToServerEvents {
+  update: (guid: string, update: Uint8Array) => void;
+}
+
+interface ServerSideEvents {}
+
+interface SocketData {}
+
 export function bindSyncServer (
-  io: Server
+  io: Server<ServerToClientEvents, ClientToServerEvents, ServerSideEvents, SocketData>
 ) {
   const docUpdateMap = new Map<string, Uint8Array>()
   io.on('connection', (socket) => {
-    socket.on('diff', (guid: string, update?: Uint8Array) => {
+    socket.on('diff', (guid, update) => {
       try {
         update && decodeUpdate(update)
       } catch {
@@ -37,7 +50,7 @@ export function bindSyncServer (
       }
     })
 
-    socket.on('update', async (guid: string, update: Uint8Array) => {
+    socket.on('update', async (guid, update) => {
       try {
         decodeUpdate(update)
       } catch {
