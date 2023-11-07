@@ -6,7 +6,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        app: './src/app.tsx',
+        components: './src/components.tsx',
         store: './src/store.ts',
         'store/preference': './src/store/preference.ts',
       },
@@ -22,7 +22,8 @@ export default defineConfig({
         /^jotai/,
         /^yjs/,
         /^jotai-effect/,
-        /^y-utility/
+        /^y-utility/,
+        'uuid'
       ]
     }
   },

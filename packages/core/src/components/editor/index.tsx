@@ -3,7 +3,7 @@ import type { EditorContainer } from '@blocksuite/editor'
 import { assertExists } from '@blocksuite/global/utils'
 import type { Page } from '@blocksuite/store'
 import type { CSSProperties, ReactElement } from 'react'
-import { memo, useEffect, useRef, use, Suspense } from 'react'
+import { memo, useEffect, useRef, use } from 'react'
 
 const EditorContainerPromise = import('@blocksuite/editor').then(
   m => m.EditorContainer)
@@ -70,21 +70,11 @@ const BlockSuiteEditorImpl = (props: EditorProps): ReactElement => {
   )
 }
 
-export const EditorFallback = () => {
-  return (
-    <div>
-      Loading...
-    </div>
-  )
-}
-
 export const BlockSuiteEditor = memo(function BlockSuiteEditor (
   props: EditorProps
 ): ReactElement {
   return (
-    <Suspense fallback={<EditorFallback/>}>
-      <BlockSuiteEditorImpl {...props} />
-    </Suspense>
+    <BlockSuiteEditorImpl {...props} />
   )
 })
 

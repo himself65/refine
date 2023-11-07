@@ -8,7 +8,13 @@ import { Provider } from './provider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'refine'
+  title: 'refine',
+  description: 'note-taking app',
+  authors: [
+    {
+      name: 'Alex Yang',
+    }
+  ]
 }
 
 export default function RootLayout ({

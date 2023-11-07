@@ -49,8 +49,6 @@ test.afterAll(async () => {
 
 test.describe('app basic functionality', () => {
   test('should create new page success success', async () => {
-    await expect(page.getByText('Page not found')).toBeVisible()
-    await page.getByTestId('create-page').click()
     await expect(page.getByText('Untitled')).toBeVisible()
   })
 })

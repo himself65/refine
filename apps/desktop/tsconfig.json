@@ -10,5 +10,13 @@
   "include": [
     "vite.config.ts",
     "rollup.config.ts"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.src.json"
+    },
+    {
+      "path": "./tsconfig.web.json"
+    }
   ]
 }

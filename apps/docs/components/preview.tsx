@@ -37,7 +37,7 @@ const NoSsr: FC<PropsWithChildren> = ({
 }
 
 export const Preview = (): ReactElement => {
-  const { App } = use(importAppPromise)
+  const { Editor } = use(importAppPromise)
   return (
     <NoSsr>
       <App

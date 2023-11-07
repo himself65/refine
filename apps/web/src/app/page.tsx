@@ -1,25 +1,33 @@
 'use client'
-import {
+import React, {
   type FC,
   type PropsWithChildren,
-  use,
   useEffect,
-  useState
+  useState,
+  type ReactElement,
+  Suspense
 } from 'react'
-import { io } from 'socket.io-client'
 import { workspaceManager } from '@refine/core/store'
 import { useAtomValue } from 'jotai/react'
+import { workspaceIdAtom, pageIdAtom } from '../store'
+import dynamic from 'next/dynamic'
 
-let importAppPromise: Promise<typeof import('@refine/core/app')>
-if (typeof window !== 'undefined') {
-  importAppPromise = import('@refine/core/app')
-} else {
-  importAppPromise = Promise.resolve({
-    App: () => <></>
-  })
+const Editor = dynamic(() => import('@refine/core/components').then(
+  ({ Editor }) => ({ default: Editor })), {
+  ssr: false
+})
+
+const PageList = dynamic(() => import('@refine/core/components').then(
+  ({ PageList }) => ({ default: PageList })), {
+  ssr: false
+})
+
+declare global {
+  interface Window {
+    workspace: unknown
+    page: unknown
+  }
 }
-
-const socket = io('http://localhost:3030')
 
 const NoSsr: FC<PropsWithChildren> = ({
   children
@@ -35,38 +43,39 @@ const NoSsr: FC<PropsWithChildren> = ({
   )
 }
 
-let injectPromise = Promise.resolve()
-if (typeof window !== 'undefined' && !workspaceManager.injected) {
-  injectPromise = workspaceManager.withLocalProvider().then(async () => {
-    const { createSyncProvider } = await import('y-io/sync-provider')
-    await workspaceManager.with(undefined, (
-      workspace
-    ) => createSyncProvider(socket, workspace.doc))
-  }).then(workspaceManager.inject)
+function HomeImpl () {
+  const workspaceId = useAtomValue(workspaceIdAtom)
+  const pageId = useAtomValue(pageIdAtom)
+  const pageAtom = workspaceManager.getWorkspacePageAtom(workspaceId, pageId)
+  const page = useAtomValue(pageAtom)
+  useEffect(() => {
+    window.page = page
+  }, [page])
+  return (
+    <main>
+      <Suspense
+        fallback="loading editor"
+      >
+        <Editor workspaceId={workspaceId} pageId={pageId}/>
+      </Suspense>
+    </main>
+  )
 }
 
-declare global {
-  interface Window {
-    workspace: unknown
-  }
-}
-
-export default function Home () {
-  const { App } = use(importAppPromise)
-  use(injectPromise)
-  const workspaceId = 'workspace:0'
-  const workspaceAtom = workspaceManager.getWorkspaceAtom(workspaceId)
+export default function Home (): ReactElement {
+  const workspaceId = useAtomValue(workspaceIdAtom)
+  const workspace = useAtomValue(workspaceManager.getWorkspaceAtom(workspaceId))
   const effectAtom = workspaceManager.getWorkspaceEffectAtom(workspaceId)
-  const workspace = useAtomValue(workspaceAtom)
+  useAtomValue(effectAtom)
   useEffect(() => {
     window.workspace = workspace
   }, [workspace])
-  useAtomValue(effectAtom)
   return (
-    <main>
+    <Suspense fallback="loading workspace">
+      <PageList workspace={workspace}/>
       <NoSsr>
-        <App className=""/>
+        <HomeImpl/>
       </NoSsr>
-    </main>
+    </Suspense>
   )
 }
