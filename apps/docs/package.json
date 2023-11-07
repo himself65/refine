@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "@refine/core": "workspace:*",
+    "foxact": "^0.2.24",
     "jotai": "^2.5.1",
     "jotai-inject": "workspace:*",
     "next": "14.0.0",

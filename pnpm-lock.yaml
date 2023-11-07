@@ -87,6 +87,9 @@ importers:
       '@refine/core':
         specifier: workspace:*
         version: link:../../packages/core
+      foxact:
+        specifier: ^0.2.24
+        version: 0.2.24(react@18.3.0-canary-8039e6d0b-20231026)
       jotai:
         specifier: ^2.5.1
         version: 2.5.1(@types/react@18.2.36)(react@18.3.0-canary-8039e6d0b-20231026)
@@ -171,8 +174,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/core
       foxact:
-        specifier: ^0.2.22
-        version: 0.2.22(react@18.3.0-canary-8039e6d0b-20231026)
+        specifier: ^0.2.24
+        version: 0.2.24(react@18.3.0-canary-8039e6d0b-20231026)
       jotai:
         specifier: ^2.5.1
         version: 2.5.1(@types/react@18.2.36)(react@18.3.0-canary-8039e6d0b-20231026)
@@ -5095,8 +5098,8 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
-  /foxact@0.2.22(react@18.3.0-canary-8039e6d0b-20231026):
-    resolution: {integrity: sha512-RQd5+XSqWbRNYc4Un5eS6+P6oFrZxqOIb7xVw71SXWNnRlHoFqSuGDOt3bShrvQPmBXSw60We+tX5Gf6naxxGA==}
+  /foxact@0.2.24(react@18.3.0-canary-8039e6d0b-20231026):
+    resolution: {integrity: sha512-dl/qboQZHlhA5AtKipykVqB2eTjMlXhPIsS5ixs5Uo2TRuF27lIaULsWFNDkAmH5XinGpjSdMduWnPb261pvtA==}
     peerDependencies:
       react: '*'
     peerDependenciesMeta:
