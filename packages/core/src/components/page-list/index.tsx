@@ -20,6 +20,7 @@ export const PageList = (
     <>
       <div>
         <button
+          data-testid='create-page'
           onClick={() => {
             workspace.createPage({
               id: v4()
@@ -37,7 +38,7 @@ export const PageList = (
           <th>Create Date</th>
         </tr>
         {pageList.map((page) => (
-          <tr key={page.id}>
+          <tr data-testid='page-item' key={page.id}>
             <td>{page.title}</td>
             <td>{page.id}</td>
             <td>{page.createDate}</td>
