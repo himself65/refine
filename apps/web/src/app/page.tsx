@@ -1,9 +1,6 @@
 'use client'
 import React, {
-  type FC,
-  type PropsWithChildren,
   useEffect,
-  useState,
   type ReactElement,
   Suspense
 } from 'react'
@@ -11,6 +8,7 @@ import { workspaceManager } from '@refine/core/store'
 import { useAtomValue } from 'jotai/react'
 import { workspaceIdAtom, pageIdAtom } from '../store'
 import dynamic from 'next/dynamic'
+import { noSSR } from 'foxact/no-ssr'
 
 const Editor = dynamic(() => import('@refine/core/components').then(
   ({ Editor }) => ({ default: Editor })), {
@@ -29,21 +27,8 @@ declare global {
   }
 }
 
-const NoSsr: FC<PropsWithChildren> = ({
-  children
-}) => {
-  const [mounted, setMounted] = useState(false)
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-  return (
-    <>
-      {mounted ? children : null}
-    </>
-  )
-}
-
 function HomeImpl () {
+  noSSR()
   const workspaceId = useAtomValue(workspaceIdAtom)
   const pageId = useAtomValue(pageIdAtom)
   const pageAtom = workspaceManager.getWorkspacePageAtom(workspaceId, pageId)
@@ -73,9 +58,7 @@ export default function Home (): ReactElement {
   return (
     <Suspense fallback="loading workspace">
       <PageList workspace={workspace}/>
-      <NoSsr>
-        <HomeImpl/>
-      </NoSsr>
+      <HomeImpl/>
     </Suspense>
   )
 }

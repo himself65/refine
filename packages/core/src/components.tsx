@@ -8,7 +8,8 @@ import { PageList } from './components/page-list'
 
 export type EditorProps = {
   className?: string
-  workspaceId: string,
+  mode?: 'page' | 'edgeless'
+  workspaceId: string
   pageId: string
 }
 
@@ -24,11 +25,7 @@ export const Editor = (props: EditorProps): ReactElement => {
   }
 
   return (
-    <div
-      className={props.className}
-    >
-      <BlockSuiteEditor mode="page" page={page}/>
-    </div>
+    <BlockSuiteEditor className={props.className} mode={props.mode || 'page'} page={page}/>
   )
 }
 
