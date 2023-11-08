@@ -106,7 +106,6 @@ class WorkspaceManager {
       const workspace = await get(workspaceAtom)
       const page = workspace.getPage(pageId)
       if (page === null) {
-        console.trace('error')
         throw new Error(`page ${pageId} not found`)
       }
       if (!page.loaded) {
