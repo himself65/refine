@@ -44,9 +44,23 @@ test('should inject works', async () => {
     })
   await workspaceManager.inject()
   const workspace = await store.get(workspaceAtom)
-  expect(workspace.getPage('page0')).toBeDefined()
-  expect(workspace.getPage('page1')).toBeNull()
-  const unsub = store.sub(workspaceAtom, vi.fn())
-  expect(workspace.getPage('page1')).toBeDefined()
-  unsub()
+  {
+    expect(workspace.getPage('page0')?.id).toEqual('page0')
+    expect(workspace.getPage('page1')).toBeNull()
+    const unsub = store.sub(workspaceAtom, vi.fn())
+    expect(workspace.getPage('page1')).toBeNull()
+    unsub()
+  }
+
+  {
+    const effectAtom = workspaceManager.getWorkspaceEffectAtom('test-workspace')
+    const unsub = store.sub(effectAtom, vi.fn())
+    await vi.waitFor(() => {
+      expect(workspace.getPage('page1')?.id).toEqual('page1')
+    })
+    unsub()
+    await vi.waitFor(() => {
+      expect(workspace.getPage('page1')).toBeNull()
+    })
+  }
 })
