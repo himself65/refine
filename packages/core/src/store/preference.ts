@@ -71,6 +71,8 @@ export function settingAtom<Value> (
       kv.on('change', onChange)
       abortController.signal.addEventListener('abort', () => {
         kv.off('change', onChange)
+      }, {
+        once: true
       })
     })
 
@@ -81,7 +83,7 @@ export function settingAtom<Value> (
 
   return atom<
     Value | Promise<Value>,
-    [Value | ((prev: Value) => Value) | typeof RESET],
+    [Value | ((prev: Value) => Value | typeof RESET) | typeof RESET],
     Promise<void>
   >(
     async (get) => {
