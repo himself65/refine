@@ -227,6 +227,7 @@ class WorkspaceManager {
     }
 
     function unreachable () {
+      /* istanbul ignore next */
       throw new Error('unreachable')
     }
 

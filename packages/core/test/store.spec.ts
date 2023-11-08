@@ -63,4 +63,6 @@ test('should inject works', async () => {
       expect(workspace.getPage('page1')).toBeNull()
     })
   }
+
+  await workspaceManager.inject()
 })

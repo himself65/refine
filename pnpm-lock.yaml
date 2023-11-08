@@ -44,6 +44,9 @@ importers:
       '@blocksuite/editor':
         specifier: 0.0.0-20231101080734-aa27dc89-nightly
         version: 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/blocks@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.21)
+      '@blocksuite/store':
+        specifier: 0.0.0-20231101080734-aa27dc89-nightly
+        version: 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
       '@refine/core':
         specifier: workspace:*
         version: link:../../packages/core

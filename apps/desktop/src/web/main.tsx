@@ -4,6 +4,7 @@ import '@blocksuite/editor/themes/affine.css'
 import './index.css'
 import { workspaceManager } from '@refine/core/store'
 import { getDefaultStore } from 'jotai/vanilla'
+import { Workspace } from '@blocksuite/store'
 
 declare global {
   interface Window {
@@ -11,6 +12,7 @@ declare global {
       getTheme (): Promise<'light' | 'dark'>
       changeTheme (theme: 'light' | 'dark'): Promise<void>
     }
+    workspace: Workspace
   }
 }
 
@@ -21,6 +23,7 @@ const promise = workspaceManager.withLocalProvider().
   then(workspaceManager.inject).
   then(
     () => store.get(workspaceAtom).then(async workspace => {
+      window.workspace = workspace
       const page = workspace.getPage('page0')
       if (!page) {
         const page = workspace.createPage({
