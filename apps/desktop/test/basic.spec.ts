@@ -93,7 +93,7 @@ const test = baseTest.extend<{
 })
 
 test.describe('app basic functionality', () => {
-  test('should create new page success success', async ({ page }) => {
+  test('should editor basic functionality works', async ({ page }) => {
     await expect(page.getByText('Untitled')).toBeVisible()
     await page.evaluate(async () => {
       const workspace = window.workspace
