@@ -5,9 +5,12 @@
     "tsBuildInfoFile": "./dist/node/.tsbuildinfo",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "lib": ["DOM"],
     "types": ["node"]
   },
   "include": [
+    "./test",
+    "package.json",
     "vite.config.ts",
     "rollup.config.ts"
   ],
