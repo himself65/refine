@@ -4,6 +4,7 @@ import istanbul from 'vite-plugin-istanbul';
 
 export default defineConfig({
   build: {
+    sourcemap: true,
     lib: {
       entry: {
         index: './src/index.ts'
