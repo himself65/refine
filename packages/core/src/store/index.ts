@@ -106,7 +106,7 @@ class WorkspaceManager {
       const workspace = await get(workspaceAtom)
       const page = workspace.getPage(pageId)
       if (page === null) {
-        throw new Error(`page ${pageId} not found`)
+        throw new Error(`page(id: ${pageId}) not found`)
       }
       if (!page.loaded) {
         await page.waitForLoaded()
@@ -226,8 +226,7 @@ class WorkspaceManager {
       return
     }
 
-    function unreachable () {
-      /* istanbul ignore next */
+    function unreachable () /* istanbul ignore next */ /* c8 ignore next */ {
       throw new Error('unreachable')
     }
 
