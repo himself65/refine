@@ -16,11 +16,12 @@ beforeEach(() => {
 
 describe('correct usage', () => {
   test('should always pending when page not found', async () => {
-    const workspaceAtom = workspaceManager.getWorkspaceAtom('test-workspace')
+    const randomId = crypto.randomUUID()
+    const workspaceAtom = workspaceManager.getWorkspaceAtom(randomId)
     const store = getDefaultStore()
 
     const workspace = await store.get(workspaceAtom)
-    const pageAtom = workspaceManager.getWorkspacePageAtom('test-workspace',
+    const pageAtom = workspaceManager.getWorkspacePageAtom(randomId,
       'test-page')
     const pendingPromise = store.get(pageAtom)
     const unsub = store.sub(pageAtom, vi.fn())
@@ -35,11 +36,12 @@ describe('correct usage', () => {
   })
 
   test('should set page on mount', async () => {
-    const workspaceAtom = workspaceManager.getWorkspaceAtom('test-workspace')
+    const randomId = crypto.randomUUID()
+    const workspaceAtom = workspaceManager.getWorkspaceAtom(randomId)
     const store = getDefaultStore()
 
     const workspace = await store.get(workspaceAtom)
-    const pageAtom = workspaceManager.getWorkspacePageAtom('test-workspace',
+    const pageAtom = workspaceManager.getWorkspacePageAtom(randomId,
       'test-page')
     workspace.createPage({
       id: 'test-page'
