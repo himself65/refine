@@ -11,6 +11,12 @@ export type ProviderCreator = (workspace: Workspace) => {
   disconnect: () => void
 }
 
+function assertExists<T> (value: T | null | undefined, message?: string): asserts value is T {
+  if (value === null || value === undefined) {
+    throw new Error(message ?? 'value is null or undefined')
+  }
+}
+
 /**
  * @internal
  */
@@ -106,10 +112,7 @@ export class WorkspaceManager {
     })
     primitivePageAtom.onMount = (setSelf) => {
       const workspace = globalWorkspaceMap.get(workspaceId)
-      if (!workspace) {
-        console.error(`workspace ${workspaceId} not found`)
-        return
-      }
+      assertExists(workspace)
       if (workspace.getPage(pageId) !== null) {
         setSelf(workspace.getPage(pageId))
       }
