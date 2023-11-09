@@ -103,8 +103,8 @@ describe('edge cases', () => {
     await workspaceManager.inject()
     expect(workspaceManager.injected).toBe(true)
     const originalOpen = indexedDB.open
-    indexedDB.open = vi.fn(function (...args: unknown[]) {
-      return originalOpen.call(indexedDB, ...args)
+    indexedDB.open = vi.fn(function (...args) {
+      return originalOpen.apply(indexedDB, args)
     })
     await store.get(workspaceAtom)
     const unsub = store.sub(workspaceAtom, vi.fn())
