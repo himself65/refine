@@ -89,7 +89,9 @@ export class WorkspaceManager {
     }
 
     const primitivePageAtom = atom<Page | null>(null)
-    const pageAtom = atom(async (get) => {
+    const pageAtom = atom(async (get, {
+      signal
+    }) => {
       const primitivePage = get(primitivePageAtom)
       if (primitivePage !== null) {
         return primitivePage
@@ -97,7 +99,7 @@ export class WorkspaceManager {
       const workspace = await get(workspaceAtom)
       const page = workspace.getPage(pageId)
       if (page === null) {
-        throw new Error(`page(id: ${pageId}) not found`)
+        return new Promise<Page>(() => {})
       }
       if (!page.loaded) {
         await page.waitForLoaded()

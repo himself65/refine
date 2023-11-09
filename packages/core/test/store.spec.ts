@@ -15,14 +15,22 @@ beforeEach(() => {
 })
 
 describe('correct usage', () => {
-  test('should throw error when page not found', async () => {
+  test('should always pending when page not found', async () => {
     const workspaceAtom = workspaceManager.getWorkspaceAtom('test-workspace')
     const store = getDefaultStore()
 
-    await store.get(workspaceAtom)
+    const workspace = await store.get(workspaceAtom)
     const pageAtom = workspaceManager.getWorkspacePageAtom('test-workspace',
       'test-page')
-    await expect(async () => await store.get(pageAtom)).rejects.toThrow()
+    const pendingPromise = store.get(pageAtom)
+    const unsub = store.sub(pageAtom, vi.fn())
+    const page = workspace.createPage({
+      id: 'test-page'
+    })
+    await sleep()
+    expect(await store.get(pageAtom)).toBe(page)
+    expect(await pendingPromise).toBe(page)
+    unsub()
   })
 
   test('should run effect success', async () => {
