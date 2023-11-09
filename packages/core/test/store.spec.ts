@@ -4,7 +4,7 @@ import { WorkspaceManager } from '../src/store/index'
 import { getDefaultStore } from 'jotai/vanilla'
 import { indexedDB } from 'fake-indexeddb'
 import * as crypto from 'node:crypto'
-import { promisify  } from 'node:util'
+import { promisify } from 'node:util'
 
 const sleep = promisify(setTimeout)
 
@@ -23,6 +23,37 @@ describe('correct usage', () => {
     const pageAtom = workspaceManager.getWorkspacePageAtom('test-workspace',
       'test-page')
     await expect(async () => await store.get(pageAtom)).rejects.toThrow()
+  })
+
+  test('should run effect success', async () => {
+    await workspaceManager.with(
+      async (workspace) => {
+        workspace.createPage({ id: 'page0' })
+      },
+      (workspace) => {
+        return {
+          connect: () => {
+            workspace.createPage({
+              id: 'page1'
+            })
+          },
+          disconnect: () => {
+            workspace.removePage('page1')
+          }
+        }
+      })
+    await workspaceManager.inject()
+    const randomId = crypto.randomUUID()
+    const effectAtom = workspaceManager.getWorkspaceEffectAtom(randomId)
+    const store = getDefaultStore()
+    const unsub = store.sub(effectAtom, vi.fn())
+    await sleep()
+    const workspaceAtom = workspaceManager.getWorkspaceAtom(randomId)
+    const workspace = await store.get(workspaceAtom)
+    expect(workspace.getPage('page1')?.id).toEqual('page1')
+    unsub()
+    await sleep()
+    expect(workspace.getPage('page1')).toBeNull()
   })
 
   test('should get page when page exist', async () => {
@@ -69,13 +100,10 @@ describe('correct usage', () => {
     {
       const effectAtom = workspaceManager.getWorkspaceEffectAtom(randomId)
       const unsub = store.sub(effectAtom, vi.fn())
-      await vi.waitFor(() => {
-        expect(workspace.getPage('page1')?.id).toEqual('page1')
-      })
+      await sleep()
+      expect(workspace.getPage('page1')?.id).toEqual('page1')
       unsub()
-      await vi.waitFor(() => {
-        expect(workspace.getPage('page1')).toBeNull()
-      })
+      expect(workspace.getPage('page1')).toBeNull()
     }
   })
 })
