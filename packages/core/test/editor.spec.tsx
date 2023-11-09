@@ -26,10 +26,28 @@ describe('Editor', () => {
     })
     const app = render(
       <BlockSuiteEditor
-        className='editor'
+        className="editor"
         mode="page"
         page={page}
         onLoad={onLoad}
+      />
+    )
+    await sleep()
+    app.unmount()
+  })
+
+  test('should render correctly without onLoad', async () => {
+    const store = getDefaultStore()
+    const workspaceAtom = workspaceManager.getWorkspaceAtom('workspace:0')
+    const workspace = await store.get(workspaceAtom)
+    const page = workspace.createPage({
+      id: 'page0'
+    })
+    const app = render(
+      <BlockSuiteEditor
+        className="editor"
+        mode="page"
+        page={page}
       />
     )
     await sleep()
