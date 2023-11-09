@@ -61,7 +61,7 @@ const BlockSuiteEditorImpl = (props: EditorProps): ReactElement => {
         } else {
           (containerRef.current as HTMLDivElement).removeChild(editor)
         }
-      }, [])}
+      }, [editorRef])}
     />
   )
 }
