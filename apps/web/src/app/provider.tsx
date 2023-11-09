@@ -1,23 +1,25 @@
 'use client'
-import { ThemeProvider, useTheme } from 'next-themes'
+import { ThemeProvider } from 'next-themes'
+import { Provider as JotaiProvider } from 'jotai/react'
 import type { FC, PropsWithChildren } from 'react'
-import { themeAtom } from '@refine/core/store'
-import { useInject } from 'jotai-inject'
+import { injectPromise } from '../store'
+import { use } from 'react'
 
-const ThemeProviderInner: FC<PropsWithChildren> = ({
+const ProviderInner: FC<PropsWithChildren> = ({
   children
 }) => {
-  const { setTheme: setUpstreamTheme, theme: upstreamTheme } = useTheme()
-  useInject(themeAtom, upstreamTheme === 'dark' ? 'dark' : 'light', setUpstreamTheme)
+  use(injectPromise)
   return children
 }
 
 export const Provider: FC<PropsWithChildren> = function Providers ({ children }) {
   return (
-    <ThemeProvider storageKey="next-theme">
-      <ThemeProviderInner>
-        {children}
-      </ThemeProviderInner>
-    </ThemeProvider>
+    <JotaiProvider>
+      <ThemeProvider storageKey="next-theme">
+        <ProviderInner>
+          {children}
+        </ProviderInner>
+      </ThemeProvider>
+    </JotaiProvider>
   )
 }

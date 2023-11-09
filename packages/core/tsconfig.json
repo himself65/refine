@@ -5,6 +5,7 @@
     "tsBuildInfoFile": "./dist/node/.tsbuildinfo",
     "module": "ESNext",
     "moduleResolution": "bundler",
+    "lib": ["DOM"],
     "types": [
       "node"
     ]

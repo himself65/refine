@@ -1,12 +1,14 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
+import istanbul from 'vite-plugin-istanbul';
 
 export default defineConfig({
   build: {
+    sourcemap: true,
     lib: {
       entry: {
-        app: './src/app.tsx',
+        components: './src/components.tsx',
         store: './src/store.ts',
         'store/preference': './src/store/preference.ts',
       },
@@ -22,11 +24,16 @@ export default defineConfig({
         /^jotai/,
         /^yjs/,
         /^jotai-effect/,
-        /^y-utility/
+        /^y-utility/,
+        'uuid',
+        /^foxact/
       ]
     }
   },
   plugins: [
+    istanbul({
+      forceBuildInstrument: process.env.COVERAGE === 'true'
+    }),
     react(),
     dts({
       include: [
