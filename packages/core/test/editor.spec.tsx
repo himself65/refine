@@ -1,4 +1,4 @@
-import { describe, expect, test, vi } from 'vitest'
+import { describe, test, vi } from 'vitest'
 import { BlockSuiteEditor } from '../src/components/editor'
 import { render } from '@testing-library/react'
 import { workspaceManager } from '../src/store'
