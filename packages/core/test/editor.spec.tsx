@@ -15,8 +15,9 @@ vi.mock('@blocksuite/editor', () => {
 
 describe('Editor', () => {
   test('should render correctly', async () => {
+    const randomId = crypto.randomUUID()
     const store = getDefaultStore()
-    const workspaceAtom = workspaceManager.getWorkspaceAtom('workspace:0')
+    const workspaceAtom = workspaceManager.getWorkspaceAtom(randomId)
     const workspace = await store.get(workspaceAtom)
     const page = workspace.createPage({
       id: 'page0'
@@ -37,8 +38,9 @@ describe('Editor', () => {
   })
 
   test('should render correctly without onLoad', async () => {
+    const randomId = crypto.randomUUID()
     const store = getDefaultStore()
-    const workspaceAtom = workspaceManager.getWorkspaceAtom('workspace:0')
+    const workspaceAtom = workspaceManager.getWorkspaceAtom(randomId)
     const workspace = await store.get(workspaceAtom)
     const page = workspace.createPage({
       id: 'page0'

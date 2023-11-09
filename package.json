@@ -9,7 +9,6 @@
   "packageManager": "pnpm@8.10.0",
   "scripts": {
     "build:packages": "pnpm run --filter \"./packages/*\" build",
-    "test": "pnpm playwright test",
     "typecheck": "tsc -b tsconfig.json --diagnostics",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
