@@ -19,7 +19,7 @@ export const globalWorkspaceMap = new Map<string, Workspace>()
 export class WorkspaceManager {
   #workspaceAtomWeakMap = new WeakMap<Workspace, Atom<Promise<Workspace>>>()
   #workspacePageAtomWeakMap = new WeakMap<
-    Workspace,
+    Atom<Promise<Workspace>>,
     Map<string, Atom<Promise<Page>>>
   >()
   #workspaceEffectAtomWeakMap = new WeakMap<
@@ -72,31 +72,22 @@ export class WorkspaceManager {
     workspaceId: string,
     pageId: string
   ): Atom<Promise<Page>> => {
-    let workspace = globalWorkspaceMap.get(workspaceId)
+    const workspaceAtom = this.getWorkspaceAtom(workspaceId)
     let map: Map<string, Atom<Promise<Page>>>
-    if (workspace && this.#workspacePageAtomWeakMap.has(workspace)) {
-      map = this.#workspacePageAtomWeakMap.get(workspace) as Map<
+    if (this.#workspacePageAtomWeakMap.has(workspaceAtom)) {
+      map = this.#workspacePageAtomWeakMap.get(workspaceAtom) as Map<
         string,
         Atom<Promise<Page>>
       >
-    } else if (!workspace) {
-      workspace = new Workspace({
-        id: workspaceId,
-        schema: this.#schema
-      })
-      globalWorkspaceMap.set(workspaceId, workspace)
-      map = new Map()
-      this.#workspacePageAtomWeakMap.set(workspace, map)
     } else {
       map = new Map()
-      this.#workspacePageAtomWeakMap.set(workspace, map)
+      this.#workspacePageAtomWeakMap.set(workspaceAtom, map)
     }
 
     if (map.has(pageId)) {
       return map.get(pageId) as Atom<Promise<Page>>
     }
 
-    const workspaceAtom = this.getWorkspaceAtom(workspaceId)
     const primitivePageAtom = atom<Page | null>(null)
     const pageAtom = atom(async (get) => {
       const primitivePage = get(primitivePageAtom)

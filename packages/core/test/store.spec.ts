@@ -4,13 +4,17 @@ import { WorkspaceManager } from '../src/store/index'
 import { getDefaultStore } from 'jotai/vanilla'
 import { indexedDB } from 'fake-indexeddb'
 import * as crypto from 'node:crypto'
+import { promisify  } from 'node:util'
+
+const sleep = promisify(setTimeout)
 
 let workspaceManager: WorkspaceManager
 
+beforeEach(() => {
+  workspaceManager = new WorkspaceManager()
+})
+
 describe('correct usage', () => {
-  beforeEach(() => {
-    workspaceManager = new WorkspaceManager()
-  })
   test('should throw error when page not found', async () => {
     const workspaceAtom = workspaceManager.getWorkspaceAtom('test-workspace')
     const store = getDefaultStore()
@@ -77,9 +81,6 @@ describe('correct usage', () => {
 })
 
 describe('edge cases', () => {
-  beforeEach(() => {
-    workspaceManager = new WorkspaceManager()
-  })
   test('call page before workspace should works', async () => {
     const randomId = crypto.randomUUID()
     const pageAtom = workspaceManager.getWorkspacePageAtom(randomId, 'page0')
@@ -108,9 +109,10 @@ describe('edge cases', () => {
     })
     await store.get(workspaceAtom)
     const unsub = store.sub(workspaceAtom, vi.fn())
-    unsub()
     expect(indexedDB.open).toBeCalled()
     indexedDB.open = originalOpen
+    await sleep()
+    unsub()
   })
 
   test('run inject twice won\'t update the preloads and providers',
