@@ -16,9 +16,6 @@ export type ProviderCreator = (workspace: Workspace) => {
  */
 export const globalWorkspaceMap = new Map<string, Workspace>()
 
-/**
- * @internal
- */
 export class WorkspaceManager {
   #workspaceAtomWeakMap = new WeakMap<Workspace, Atom<Promise<Workspace>>>()
   #workspacePageAtomWeakMap = new WeakMap<
