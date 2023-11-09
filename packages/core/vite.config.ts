@@ -25,7 +25,8 @@ export default defineConfig({
         /^yjs/,
         /^jotai-effect/,
         /^y-utility/,
-        'uuid'
+        'uuid',
+        /^foxact/
       ]
     }
   },

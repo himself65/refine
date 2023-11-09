@@ -35,6 +35,7 @@
     "@blocksuite/store": "0.0.0-20231101080734-aa27dc89-nightly",
     "@toeverything/theme": "^0.7.21",
     "@toeverything/y-indexeddb": "0.10.0-canary.9",
+    "foxact": "^0.2.24",
     "jotai": "^2.5.1",
     "jotai-effect": "^0.2.2",
     "jotai-inject": "^0.1.0",

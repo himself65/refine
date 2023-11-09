@@ -270,6 +270,9 @@ importers:
       '@toeverything/y-indexeddb':
         specifier: 0.10.0-canary.9
         version: 0.10.0-canary.9(yjs@13.6.8)
+      foxact:
+        specifier: ^0.2.24
+        version: 0.2.24(react@18.3.0-canary-8039e6d0b-20231026)
       jotai:
         specifier: ^2.5.1
         version: 2.5.1(@types/react@18.2.36)(react@18.3.0-canary-8039e6d0b-20231026)

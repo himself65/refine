@@ -6,9 +6,7 @@ import { atom, getDefaultStore } from 'jotai/vanilla'
 let injectPromise: Promise<void>
 if (typeof window !== 'undefined' && !workspaceManager.injected) {
   injectPromise = workspaceManager.withLocalProvider().
-    then(workspaceManager.inject).then(() => {
-      console.log('workspaceManager.injected')
-    })
+    then(workspaceManager.inject)
 } else {
   injectPromise = Promise.resolve()
 }

@@ -55,9 +55,6 @@ export function settingAtom<Value> (
     get(kvAtom).then(kv => {
       const value = (kv.get(key) as Value) || defaultValue
       set(primitiveAtom, value)
-      if (abortController.signal.aborted) {
-        return
-      }
       const onChange = (changes: Changes<unknown>) => {
         if (changes.has(key)) {
           const change = changes.get(key)!

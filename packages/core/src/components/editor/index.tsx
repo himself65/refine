@@ -3,7 +3,8 @@ import type { EditorContainer } from '@blocksuite/editor'
 import { assertExists } from '@blocksuite/global/utils'
 import type { Page } from '@blocksuite/store'
 import type { CSSProperties, ReactElement } from 'react'
-import { memo, useEffect, useRef, use } from 'react'
+import { memo, useEffect, useRef, use, useCallback } from 'react'
+import { useSingleton } from 'foxact/use-singleton'
 
 const EditorContainerPromise = import('@blocksuite/editor').then(
   m => m.EditorContainer)
@@ -19,14 +20,13 @@ export type EditorProps = {
 const BlockSuiteEditorImpl = (props: EditorProps): ReactElement => {
   const { onLoad, page, mode, style } = props
   assertExists(page, 'page should not be null')
-  const editorRef = useRef<EditorContainer | null>(null)
-  if (editorRef.current === null) {
+  const editorRef = useSingleton(() => {
     const EditorContainer = use(EditorContainerPromise)
-    editorRef.current = new EditorContainer()
-    editorRef.current.autofocus = true
-  }
+    const editor = new EditorContainer()
+    editor.autofocus = true
+    return editor
+  })
   const editor = editorRef.current
-  assertExists(editorRef, 'editorRef.current should not be null')
   if (editor.mode !== mode) {
     editor.mode = mode
   }
@@ -47,25 +47,21 @@ const BlockSuiteEditorImpl = (props: EditorProps): ReactElement => {
     return
   }, [editor, editor.page, page, onLoad])
 
-  const ref = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>()
 
-  useEffect(() => {
-    const editor = editorRef.current
-    assertExists(editor)
-    const container = ref.current
-    if (!container) {
-      return
-    }
-    container.appendChild(editor)
-    return () => {
-      container.removeChild(editor)
-    }
-  }, [editor])
   return (
     <div
       className={props.className}
       style={style}
-      ref={ref}
+      ref={useCallback((container: HTMLDivElement | null) => {
+        const editor = editorRef.current
+        if (container && editor) {
+          container.appendChild(editor)
+          containerRef.current = container
+        } else {
+          (containerRef.current as HTMLDivElement).removeChild(editor)
+        }
+      }, [])}
     />
   )
 }
