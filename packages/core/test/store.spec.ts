@@ -1,10 +1,16 @@
 import 'fake-indexeddb/auto'
-import { describe, expect, test, vi } from 'vitest'
-import { workspaceManager } from '../src/store/index'
+import { beforeEach, describe, expect, test, vi } from 'vitest'
+import { WorkspaceManager } from '../src/store/index'
 import { getDefaultStore } from 'jotai/vanilla'
 import { indexedDB } from 'fake-indexeddb'
+import * as crypto from 'node:crypto'
+
+let workspaceManager: WorkspaceManager
 
 describe('correct usage', () => {
+  beforeEach(() => {
+    workspaceManager = new WorkspaceManager()
+  })
   test('should throw error when page not found', async () => {
     const workspaceAtom = workspaceManager.getWorkspaceAtom('test-workspace')
     const store = getDefaultStore()
@@ -27,7 +33,8 @@ describe('correct usage', () => {
   })
 
   test('should inject works', async () => {
-    const workspaceAtom = workspaceManager.getWorkspaceAtom('test-workspace')
+    const randomId = crypto.randomUUID()
+    const workspaceAtom = workspaceManager.getWorkspaceAtom(randomId)
     const store = getDefaultStore()
     await workspaceManager.with(
       async (workspace) => {
@@ -56,8 +63,7 @@ describe('correct usage', () => {
     }
 
     {
-      const effectAtom = workspaceManager.getWorkspaceEffectAtom(
-        'test-workspace')
+      const effectAtom = workspaceManager.getWorkspaceEffectAtom(randomId)
       const unsub = store.sub(effectAtom, vi.fn())
       await vi.waitFor(() => {
         expect(workspace.getPage('page1')?.id).toEqual('page1')
@@ -71,11 +77,15 @@ describe('correct usage', () => {
 })
 
 describe('edge cases', () => {
+  beforeEach(() => {
+    workspaceManager = new WorkspaceManager()
+  })
   test('call page before workspace should works', async () => {
-    const pageAtom = workspaceManager.getWorkspacePageAtom('test-workspace', 'page0')
+    const randomId = crypto.randomUUID()
+    const pageAtom = workspaceManager.getWorkspacePageAtom(randomId, 'page0')
     const store = getDefaultStore()
     // await expect(async () => await store.get(pageAtom)).rejects.toThrow()
-    const workspaceAtom = workspaceManager.getWorkspaceAtom('test-workspace')
+    const workspaceAtom = workspaceManager.getWorkspaceAtom(randomId)
     const workspace = await store.get(workspaceAtom)
     workspace.createPage({ id: 'page0' })
     const unsub = store.sub(workspaceAtom, vi.fn())
@@ -84,7 +94,8 @@ describe('edge cases', () => {
   })
 
   test('local indexeddb should works', async () => {
-    const workspaceAtom = workspaceManager.getWorkspaceAtom('test-workspace')
+    const randomId = crypto.randomUUID()
+    const workspaceAtom = workspaceManager.getWorkspaceAtom(randomId)
     const store = getDefaultStore()
     expect(workspaceManager.injected).toBe(false)
     await workspaceManager.withLocalProvider()
@@ -104,8 +115,9 @@ describe('edge cases', () => {
 
   test('run inject twice won\'t update the preloads and providers',
     async () => {
+      const randomId = crypto.randomUUID()
       const store = getDefaultStore()
-      const workspaceAtom = workspaceManager.getWorkspaceAtom('test-workspace')
+      const workspaceAtom = workspaceManager.getWorkspaceAtom(randomId)
       await store.get(workspaceAtom)
       await workspaceManager.inject()
       await workspaceManager.with(async () => {
@@ -117,8 +129,9 @@ describe('edge cases', () => {
       await workspaceManager.inject()
       const workspace = await store.get(workspaceAtom)
       expect(workspace.doc.store.clients.size).toBe(0)
+      const randomId2 = crypto.randomUUID()
       const secondWorkspaceAtom = workspaceManager.getWorkspaceAtom(
-        'test-workspace-2')
+        randomId2)
       await store.get(secondWorkspaceAtom)
       expect(workspace.doc.store.clients.size).toBe(0)
     }

@@ -16,7 +16,10 @@ export type ProviderCreator = (workspace: Workspace) => {
  */
 export const globalWorkspaceMap = new Map<string, Workspace>()
 
-class WorkspaceManager {
+/**
+ * @internal
+ */
+export class WorkspaceManager {
   #workspaceAtomWeakMap = new WeakMap<Workspace, Atom<Promise<Workspace>>>()
   #workspacePageAtomWeakMap = new WeakMap<
     Workspace,
@@ -195,7 +198,8 @@ class WorkspaceManager {
       downloadBinary
     } = await import('@toeverything/y-indexeddb')
     this.#preloads.push(async (workspace) => {
-      const binary = await downloadBinary(workspace.doc.guid, 'refine-indexeddb')
+      const binary = await downloadBinary(workspace.doc.guid,
+        'refine-indexeddb')
       if (binary) {
         // only download root doc
         applyUpdate(workspace.doc, binary)
@@ -238,7 +242,6 @@ class WorkspaceManager {
 }
 
 export const workspaceManager = new WorkspaceManager()
-
 
 type PageMeta = {
   id: string;
