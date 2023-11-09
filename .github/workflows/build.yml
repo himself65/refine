@@ -145,7 +145,6 @@ jobs:
         with:
           name: refine-server
           flags: server
-          root_dir: apps/server
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./coverage
           working-directory: ./apps/server
