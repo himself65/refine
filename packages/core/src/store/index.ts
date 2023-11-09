@@ -89,9 +89,7 @@ export class WorkspaceManager {
     }
 
     const primitivePageAtom = atom<Page | null>(null)
-    const pageAtom = atom(async (get, {
-      signal
-    }) => {
+    const pageAtom = atom(async (get) => {
       const primitivePage = get(primitivePageAtom)
       if (primitivePage !== null) {
         return primitivePage
