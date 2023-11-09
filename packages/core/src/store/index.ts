@@ -227,12 +227,8 @@ export class WorkspaceManager {
       return
     }
 
-    function unreachable () /* istanbul ignore next */ /* c8 ignore next */ {
-      throw new Error('unreachable')
-    }
-
-    inject(this.preloadAtom, () => this.#preloads, unreachable)
-    inject(this.providerAtom, () => this.#providers, unreachable)
+    inject(this.preloadAtom, () => this.#preloads)
+    inject(this.providerAtom, () => this.#providers)
 
     this.#injected = true
   }
