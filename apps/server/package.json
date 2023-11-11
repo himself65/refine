@@ -34,8 +34,8 @@
   },
   "devDependencies": {
     "@blocksuite/store": "0.0.0-20231101080734-aa27dc89-nightly",
-    "@types/express": "^4.17.20",
-    "@types/node": "^20.8.10",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.9.0",
     "ava": "^5.3.1",
     "c8": "^8.0.1"
   },

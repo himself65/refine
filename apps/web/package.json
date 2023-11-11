@@ -13,9 +13,9 @@
   "dependencies": {
     "@blocksuite/editor": "0.0.0-20231101080734-aa27dc89-nightly",
     "@refine/core": "workspace:*",
-    "foxact": "^0.2.24",
+    "foxact": "^0.2.25",
     "jotai": "^2.5.1",
-    "jotai-effect": "^0.2.2",
+    "jotai-effect": "^0.2.3",
     "jotai-inject": "workspace:*",
     "next": "14.0.2",
     "next-themes": "^0.2.1",
