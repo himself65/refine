@@ -1,19 +1,53 @@
-import { type Meta } from '@storybook/react'
+import type { Meta, StoryFn } from '@storybook/react'
 
-import { PageList } from '../components/page-list'
+import { PageList, type PageListProps } from '../components/page-list'
 import { workspaceManager } from '../store'
-import { getDefaultStore } from 'jotai/vanilla'
+import {
+  within,
+  userEvent,
+  waitForElementToBeRemoved
+} from '@storybook/testing-library'
+import { expect } from '@storybook/jest'
+import { Suspense, useId } from 'react'
+import { useAtomValue } from 'jotai/react'
 
-const meta: Meta<typeof PageList> = {
+const Impl = (props: PageListProps) => {
+  const workspaceAtom = workspaceManager.getWorkspaceAtom(useId())
+  const workspace = useAtomValue(workspaceAtom)
+  return (
+    <PageList {...props} workspace={workspace}/>
+  )
+}
+
+const App = (props: PageListProps) => {
+  return (
+    <Suspense fallback={
+      <div role="progressbar">Loading...</div>
+    }>
+      <Impl {...props}/>
+    </Suspense>
+  )
+}
+
+const meta: Meta<PageListProps> = {
   title: 'Page List',
-  component: PageList
+  component: App
 }
 
 export default meta
 
-const workspaceAtom = workspaceManager.getWorkspaceAtom('workspace0')
-const store = getDefaultStore()
+export const Default: StoryFn<PageListProps> = (props) => (<App {...props}/>)
 
-const workspace = await store.get(workspaceAtom)
-
-export const Default = () => <PageList workspace={workspace}/>
+Default.play = async ({
+  canvasElement
+}) => {
+  const canvas = within(canvasElement)
+  await waitForElementToBeRemoved(
+    canvasElement.querySelector('div[role="progressbar"]')
+  )
+  const createButton = canvas.getByTestId('create-page')
+  await userEvent.click(createButton)
+  expect(canvas.getAllByTestId('page-item').length).toBe(1)
+  await userEvent.click(createButton)
+  expect(canvas.getAllByTestId('page-item').length).toBe(2)
+}
