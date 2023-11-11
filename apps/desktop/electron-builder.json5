@@ -3,9 +3,9 @@
  */
 {
   "$schema": "https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json",
-  "appId": "com.himself65.affine",
+  "appId": "com.himself65.refine",
   "asar": true,
-  "productName": "MiniAffine",
+  "productName": "refine",
   "directories": {
     "output": "release"
   },
@@ -17,7 +17,7 @@
     "target": [
       "dmg"
     ],
-    "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
+    "artifactName": "${productName}-Mac-Installer.${ext}"
   },
   "win": {
     "target": [
@@ -28,7 +28,7 @@
         ]
       }
     ],
-    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+    "artifactName": "${productName}-Windows-Setup.${ext}"
   },
   "nsis": {
     "oneClick": false,
@@ -40,6 +40,6 @@
     "target": [
       "AppImage"
     ],
-    "artifactName": "${productName}-Linux-${version}.${ext}"
+    "artifactName": "${productName}-Linux-.${ext}"
   }
 }
