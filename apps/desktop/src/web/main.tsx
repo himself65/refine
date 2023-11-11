@@ -59,9 +59,26 @@ if (window.playground === false) {
 
   const div = document.getElementById('root')
   if (!div) throw new Error('Root element not found')
-
   const root = createRoot(div)
+
+  workspaceManager.upgradeAbortSignal.addEventListener('abort', () => {
+    root.render(
+      <StrictMode>
+        <div>
+          <h1>Upgrade aborted</h1>
+          <p>
+            Current workspace data
+            is not compatible with the current version of Editor.
+          </p>
+        </div>
+      </StrictMode>
+    )
+  }, {
+    once: true
+  })
+
   promise.then(() => {
+    if (workspaceManager.upgradeAbortSignal.aborted) return
     root.render(
       <StrictMode>
         <Editor
