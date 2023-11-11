@@ -54,9 +54,9 @@ jobs:
   build-docker:
     runs-on: ubuntu-latest
     name: Build Docker
+    if: github.ref == 'refs/heads/main'
     needs:
       - build-server
-    #    if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
       - name: Download server dist
