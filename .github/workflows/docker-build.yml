@@ -107,4 +107,4 @@ jobs:
           platforms: linux/amd64
           provenance: true
           file: .github/deployment/server/Dockerfile
-          tags: ghcr.io/himself65/refine:${{ env.GIT_SHORT_HASH }},ghcr.io/himself/refine:latest
+          tags: ghcr.io/himself65/refine:${{ env.GIT_SHORT_HASH }},ghcr.io/himself65/refine:latest
