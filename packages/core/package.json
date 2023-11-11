@@ -24,7 +24,10 @@
     "dev": "vite build --watch",
     "test": "vitest",
     "test:ui": "vitest --ui --coverage.enabled=true",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "test-storybook": "test-storybook"
   },
   "dependencies": {
     "@blocksuite/block-std": "0.0.0-20231101080734-aa27dc89-nightly",
@@ -47,6 +50,16 @@
     "yjs": "^13.6.8"
   },
   "devDependencies": {
+    "@storybook/addon-coverage": "^0.0.9",
+    "@storybook/addon-essentials": "^7.5.3",
+    "@storybook/addon-interactions": "^7.5.3",
+    "@storybook/addon-links": "^7.5.3",
+    "@storybook/addon-onboarding": "^1.0.8",
+    "@storybook/blocks": "^7.5.3",
+    "@storybook/react": "^7.5.3",
+    "@storybook/react-vite": "^7.5.3",
+    "@storybook/test-runner": "^0.14.0",
+    "@storybook/testing-library": "^0.2.2",
     "@testing-library/react": "^14.1.0",
     "@testing-library/user-event": "^14.5.1",
     "@types/uuid": "^9.0.7",
@@ -55,6 +68,8 @@
     "@vitest/ui": "^0.34.6",
     "fake-indexeddb": "^5.0.1",
     "happy-dom": "^12.10.3",
+    "prop-types": "^15.8.1",
+    "storybook": "^7.5.3",
     "vite": "^4.5.0",
     "vite-plugin-dts": "^3.6.3",
     "vite-plugin-istanbul": "^5.0.0",
