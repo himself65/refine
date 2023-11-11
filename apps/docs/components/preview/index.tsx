@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react'
 import {
-  use
+  use, useEffect
 } from 'react'
+import { useTheme } from 'next-themes'
 import { useIsClient } from 'foxact/use-is-client'
 import { workspaceManager } from '@refine/core/store'
 import { atom, getDefaultStore } from 'jotai/vanilla'
@@ -64,6 +65,18 @@ const ModeSwitch = () => {
 }
 
 export const Preview = (): ReactElement => {
+  const { resolvedTheme } = useTheme()
+  useEffect(() => {
+    const html = document.querySelector('html')
+    if (!html) {
+      return
+    }
+    if (resolvedTheme === 'dark') {
+      html.setAttribute('data-theme', 'dark')
+    } else {
+      html.removeAttribute('data-theme')
+    }
+  }, [resolvedTheme])
   const isClient = useIsClient()
   const pageMode = useAtomValue(pageModeAtom)
   if (!isClient) {
