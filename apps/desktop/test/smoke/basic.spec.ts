@@ -23,7 +23,7 @@ test.describe('workspaceManager', () => {
         const workspaceAtom = manager.getWorkspaceAtom(randomId)
         const effectAtom = manager.getWorkspaceEffectAtom(randomId)
         const workspace = await store.get(workspaceAtom)
-        store.sub(effectAtom, () => void 0)
+        const unsub = store.sub(effectAtom, () => void 0)
         const page = workspace.createPage('page0')
         await page.waitForLoaded()
         const pageBlockId = page.addBlock('affine:page', {
@@ -35,8 +35,12 @@ test.describe('workspaceManager', () => {
         page.addBlock('affine:paragraph', {
           text: new page.Text('test')
         }, noteBlockId)
+        return await new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(unsub)
+          }, 200)
+        })
       }, [randomId])
-      await page.waitForTimeout(200)
       await page.reload()
       await page.evaluate(async ([randomId]) => {
         const store = window.store
