@@ -2,7 +2,7 @@ import { test, expect, vi } from 'vitest'
 import { inject, useInject } from '../src'
 import { atom, getDefaultStore } from 'jotai/vanilla'
 import { render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { userEvent } from '@testing-library/user-event'
 import { useState } from 'react'
 import { useAtomValue } from 'jotai/react'
 

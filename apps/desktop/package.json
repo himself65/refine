@@ -19,6 +19,9 @@
     "react": "18.3.0-canary-8039e6d0b-20231026",
     "react-dom": "18.3.0-canary-8039e6d0b-20231026"
   },
+  "peerDependencies": {
+    "electron": "*"
+  },
   "devDependencies": {
     "@playwright/test": "^1.39.0",
     "@vitejs/plugin-react": "^4.1.1",

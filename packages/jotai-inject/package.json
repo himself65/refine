@@ -32,6 +32,9 @@
     "jotai": "^2.5.1",
     "jotai-effect": "^0.2.2"
   },
+  "peerDependencies": {
+    "react": "^18"
+  },
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.5.1",
