@@ -4,15 +4,11 @@ import {
 } from 'react'
 import { useTheme } from 'next-themes'
 import { useIsClient } from 'foxact/use-is-client'
+import { EditorHeader } from '@refine/core/components/editor-header'
 import { workspaceManager } from '@refine/core/store'
 import { atom, getDefaultStore } from 'jotai/vanilla'
-import * as ToggleGroup from '@radix-ui/react-toggle-group'
-import {
-  LayersIcon,
-  RowsIcon
-} from '@radix-ui/react-icons'
 
-import { useAtomValue, useSetAtom } from 'jotai/react'
+import { useAtom } from 'jotai/react'
 
 let importAppPromise: Promise<typeof import('@refine/core/components')>
 let promise: Promise<void>
@@ -38,31 +34,7 @@ if (typeof window !== 'undefined') {
     })
 }
 
-const pageModeAtom = atom<'page' | 'edgeless'>('page')
-const toggleGroupItemClasses =
-  'hover:bg-violet3 dark:hover:bg-violet9 color-mauve11 dark:color-mauve1 data-[state=on]:bg-violet6 dark:data-[state=on]:bg-violet9 data-[state=on]:text-violet12 dark:data-[state=on]:text-white flex h-[35px] w-[35px] items-center justify-center bg-white dark:bg-gray-800 text-base leading-4 first:rounded-l last:rounded-r focus:z-10 focus:shadow-[0_0_0_2px] focus:shadow-black dark:focus:shadow-white focus:outline-none'
-
-const ModeSwitch = () => {
-  const setPageMode = useSetAtom(pageModeAtom)
-  return (
-    <ToggleGroup.Root
-      className="inline-flex bg-mauve6 rounded space-x-px"
-      type="single"
-      defaultValue="center"
-      aria-label="Text alignment"
-      onValueChange={value => setPageMode(value as 'page' | 'edgeless')}
-    >
-      <ToggleGroup.Item className={toggleGroupItemClasses} value="page"
-                        aria-label="Left aligned">
-        <RowsIcon/>
-      </ToggleGroup.Item>
-      <ToggleGroup.Item className={toggleGroupItemClasses} value="edgeless"
-                        aria-label="Center aligned">
-        <LayersIcon/>
-      </ToggleGroup.Item>
-    </ToggleGroup.Root>
-  )
-}
+const pageModeAtom = atom('page' as 'page' | 'edgeless')
 
 export const Preview = (): ReactElement => {
   const { resolvedTheme } = useTheme()
@@ -78,7 +50,7 @@ export const Preview = (): ReactElement => {
     }
   }, [resolvedTheme])
   const isClient = useIsClient()
-  const pageMode = useAtomValue(pageModeAtom)
+  const [pageMode, setPageMode] = useAtom(pageModeAtom)
   if (!isClient) {
     return (
       <div>
@@ -90,7 +62,10 @@ export const Preview = (): ReactElement => {
   use(promise)
   return (
     <>
-      <ModeSwitch/>
+      <EditorHeader
+        value={pageMode}
+        onValueChange={setPageMode}
+      />
       <Editor
         className="h-96 overflow-scroll border-solid border-2 border-gray-200 dark:border-gray-800"
         workspaceId="workspace:0"

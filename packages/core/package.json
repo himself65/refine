@@ -7,6 +7,11 @@
       "import": "./dist/components.js",
       "require": "./dist/components.cjs"
     },
+    "./components/*": {
+      "types": "./dist/src/components/*.d.ts",
+      "import": "./dist/components/*.js",
+      "require": "./dist/components/*.cjs"
+    },
     "./store": {
       "types": "./dist/src/store.d.ts",
       "import": "./dist/store.js",
@@ -33,6 +38,8 @@
     "@blocksuite/global": "0.0.0-20231101080734-aa27dc89-nightly",
     "@blocksuite/lit": "0.0.0-20231101080734-aa27dc89-nightly",
     "@blocksuite/store": "0.0.0-20231101080734-aa27dc89-nightly",
+    "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/react-toggle-group": "^1.0.4",
     "@toeverything/theme": "^0.7.21",
     "@toeverything/y-indexeddb": "0.10.0-canary.9",
     "foxact": "^0.2.24",

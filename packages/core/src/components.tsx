@@ -5,6 +5,7 @@ import { workspaceManager } from './store'
 import { BlockSuiteEditor } from './components/editor'
 import { useAtomValue } from 'jotai/react'
 import { PageList } from './components/page-list'
+import { EditorHeader } from './components/editor-header'
 
 export type EditorProps = {
   className?: string
@@ -32,5 +33,6 @@ export const Editor = (props: EditorProps): ReactElement => {
 Editor.displayName = 'RefineEditor'
 
 export {
+  EditorHeader,
   PageList
 }

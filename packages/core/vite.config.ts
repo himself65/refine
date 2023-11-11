@@ -9,6 +9,7 @@ export default defineConfig({
     lib: {
       entry: {
         components: './src/components.tsx',
+        'components/editor-header': './src/components/editor-header/index.tsx',
         store: './src/store.ts',
         'store/preference': './src/store/preference.ts',
       },
