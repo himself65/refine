@@ -30,6 +30,8 @@ declare global {
 function HomeImpl () {
   noSSR()
   const workspaceId = useAtomValue(workspaceIdAtom)
+  const workspaceAtom = workspaceManager.getWorkspaceAtom(workspaceId)
+  const workspace = useAtomValue(workspaceAtom)
   const pageId = useAtomValue(pageIdAtom)
   const pageAtom = workspaceManager.getWorkspacePageAtom(workspaceId, pageId)
   const page = useAtomValue(pageAtom)
@@ -38,6 +40,7 @@ function HomeImpl () {
   }, [page])
   return (
     <main>
+      <PageList workspace={workspace}/>
       <Suspense
         fallback="loading editor"
       >
@@ -49,15 +52,10 @@ function HomeImpl () {
 
 export default function Home (): ReactElement {
   const workspaceId = useAtomValue(workspaceIdAtom)
-  const workspace = useAtomValue(workspaceManager.getWorkspaceAtom(workspaceId))
   const effectAtom = workspaceManager.getWorkspaceEffectAtom(workspaceId)
   useAtomValue(effectAtom)
-  useEffect(() => {
-    window.workspace = workspace
-  }, [workspace])
   return (
     <Suspense fallback="loading workspace">
-      <PageList workspace={workspace}/>
       <HomeImpl/>
     </Suspense>
   )
