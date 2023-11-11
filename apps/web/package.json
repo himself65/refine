@@ -11,6 +11,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@blocksuite/editor": "0.0.0-20231101080734-aa27dc89-nightly",
     "@refine/core": "workspace:*",
     "foxact": "^0.2.24",
     "jotai": "^2.5.1",
