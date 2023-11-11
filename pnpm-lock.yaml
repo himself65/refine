@@ -120,6 +120,9 @@ importers:
       next:
         specifier: 14.0.2
         version: 14.0.2(@babel/core@7.23.2)(react-dom@18.3.0-canary-8039e6d0b-20231026)(react@18.3.0-canary-8039e6d0b-20231026)
+      next-themes:
+        specifier: ^0.2.1
+        version: 0.2.1(next@14.0.2)(react-dom@18.3.0-canary-8039e6d0b-20231026)(react@18.3.0-canary-8039e6d0b-20231026)
       nextra:
         specifier: ^2.13.2
         version: 2.13.2(next@14.0.2)(react-dom@18.3.0-canary-8039e6d0b-20231026)(react@18.3.0-canary-8039e6d0b-20231026)

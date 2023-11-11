@@ -1,3 +1,5 @@
+@import '@toeverything/theme/style.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
