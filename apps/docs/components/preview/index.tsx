@@ -67,7 +67,6 @@ const ModeSwitch = () => {
 export const Preview = (): ReactElement => {
   const { resolvedTheme } = useTheme()
   useEffect(() => {
-    console.log(window.matchMedia('(prefers-color-scheme: dark)'))
     const html = document.querySelector('html')
     if (!html) {
       return
