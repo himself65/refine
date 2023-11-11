@@ -2,11 +2,7 @@
   "name": "refine",
   "private": true,
   "version": "0.0.0",
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
-  "packageManager": "pnpm@8.10.0",
+  "packageManager": "pnpm@8.10.2",
   "scripts": {
     "build:packages": "pnpm run --filter \"./packages/*\" build",
     "typecheck": "tsc -b tsconfig.json --diagnostics",

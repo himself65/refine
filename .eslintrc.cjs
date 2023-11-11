@@ -34,6 +34,7 @@ module.exports = {
           '**/*.spec.ts',
           '**/vite.config.ts',
           '**/vitest.config.ts',
+          '**/*.stories.tsx'
         ]
       }
     ],
