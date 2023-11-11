@@ -1,4 +1,19 @@
-import { decodeUpdate, decodeUpdateV2, Doc } from 'yjs'
+import {
+  decodeUpdate,
+  decodeUpdateV2,
+  Doc,
+  encodeStateAsUpdate,
+  encodeStateVector
+} from 'yjs'
+
+export function dumpDoc (doc: Doc): Map<string, Uint8Array> {
+  const map = new Map<string, Uint8Array>()
+  map.set(doc.guid, encodeStateAsUpdate(doc, encodeStateVector(doc)))
+  for (const subdoc of doc.subdocs) {
+    dumpDoc(subdoc).forEach((v, k) => map.set(k, v))
+  }
+  return map
+}
 
 function willMissingUpdateImpl (
   doc: Doc,

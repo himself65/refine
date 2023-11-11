@@ -29,6 +29,9 @@ function createWindow () {
   const window = new BrowserWindow({
     icon: path.join(VITE_PUBLIC, 'electron-vite.svg'),
     webPreferences: {
+      additionalArguments: [
+        '--playground',
+      ],
       preload: path.join(__dirname, 'preload.js')
     }
   })

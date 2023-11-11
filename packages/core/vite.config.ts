@@ -26,7 +26,8 @@ export default defineConfig({
         /^jotai-effect/,
         /^y-utility/,
         'uuid',
-        /^foxact/
+        /^foxact/,
+        'idb'
       ]
     }
   },

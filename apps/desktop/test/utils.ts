@@ -1,5 +1,4 @@
 import {
-  expect,
   _electron as electron,
   type ConsoleMessage,
   type ElectronApplication
@@ -9,8 +8,6 @@ import { main } from '../package.json'
 import { test as baseTest } from '@playwright/test'
 import crypto from 'node:crypto'
 import fs from 'node:fs/promises'
-import type { Workspace } from '@blocksuite/store'
-import { Page } from '@blocksuite/store'
 
 const istanbulTempDir = path.join(__dirname, '..', '..', '..', '.nyc_output')
 
@@ -19,11 +16,10 @@ declare global {
     __coverage__: Record<string, unknown>
 
     collectIstanbulCoverage (coverageJson: string): Promise<void>
-    workspace: Workspace
   }
 }
 
-const test = baseTest.extend<{
+export const test = baseTest.extend<{
   electronApp: ElectronApplication,
   firstWindow: Awaited<ReturnType<ElectronApplication['firstWindow']>>,
   context: never
@@ -87,25 +83,8 @@ const test = baseTest.extend<{
       console.log(`${msg.type()}: ${msg.text()}`)
     }
     page.on('console', callback)
+    await page.waitForEvent('load')
     await use(page)
     page.off('console', callback)
   }
-})
-
-test.describe('app basic functionality', () => {
-  test('should editor basic functionality works', async ({ page }) => {
-    await expect(page.getByText('Untitled')).toBeVisible()
-    await page.evaluate(async () => {
-      const workspace = window.workspace
-      const pageId = [...workspace.pages.keys()][0]
-      const page = workspace.getPage(pageId) as Page
-      const noteId = page.getBlockByFlavour('affine:note')[0].id
-      page.addBlock('affine:paragraph', {
-        text: new page.Text('test')
-      }, noteId)
-    })
-    await expect(page.getByText('test')).toBeVisible()
-    await page.reload()
-    await expect(page.getByText('test')).toBeVisible()
-  })
 })

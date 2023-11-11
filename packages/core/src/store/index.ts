@@ -2,8 +2,11 @@ import { Page, Schema, Workspace } from '@blocksuite/store'
 import { atom, type Atom } from 'jotai/vanilla'
 import { atomEffect } from 'jotai-effect'
 import { AffineSchemas, __unstableSchemas } from '@blocksuite/blocks/models'
-import { applyUpdate } from 'yjs'
+import { applyUpdate, Doc } from 'yjs'
 import { inject } from 'jotai-inject'
+import { requestIdleCallback } from 'foxact/request-idle-callback'
+import { dumpDoc } from 'y-utils'
+import type { DBSchema } from 'idb'
 
 export type Preload = (workspace: Workspace) => Promise<void>
 export type ProviderCreator = (workspace: Workspace) => {
@@ -11,7 +14,8 @@ export type ProviderCreator = (workspace: Workspace) => {
   disconnect: () => void
 }
 
-function assertExists<T> (value: T | null | undefined, message?: string): asserts value is T {
+function assertExists<T> (
+  value: T | null | undefined, message?: string): asserts value is T {
   if (value === null || value === undefined) {
     throw new Error(message ?? 'value is null or undefined')
   }
@@ -33,6 +37,12 @@ export class WorkspaceManager {
     Atom<unknown>
   >()
 
+  #upgradeAbortController = new AbortController()
+
+  get upgradeAbortSignal () {
+    return this.#upgradeAbortController.signal
+  }
+
   readonly #schema = new Schema()
 
   #preloads: Preload[] = []
@@ -43,6 +53,22 @@ export class WorkspaceManager {
 
   constructor () {
     this.#schema.register(AffineSchemas).register(__unstableSchemas)
+  }
+
+  private checkIfUpgradeNeeded = async (workspace: Workspace) => {
+    const blockVersions = workspace.meta.blockVersions
+    if (blockVersions) {
+      this.#schema.flavourSchemaMap.forEach((schema, flavour) => {
+        const version = blockVersions[flavour]
+        if (schema.version !== version) {
+          this.#upgradeAbortController.abort()
+        }
+      })
+    } else {
+      console.warn(
+        'blockVersions not found.\n' +
+        'This may be caused by data not loaded yet.')
+    }
   }
 
   getWorkspaceAtom = (workspaceId: string): Atom<Promise<Workspace>> => {
@@ -66,6 +92,7 @@ export class WorkspaceManager {
         const preloads = get(this.preloadAtom)
         for (const preload of preloads) {
           await preload(ensureWorkspace)
+          await this.checkIfUpgradeNeeded(ensureWorkspace)
         }
         return ensureWorkspace
       })
@@ -181,6 +208,62 @@ export class WorkspaceManager {
 
   get injected () {
     return this.#injected
+  }
+
+  /**
+   * Backup preloader is used to back up the workspace to the local storage
+   * every time the workspace is loaded by previous preloader.
+   */
+  public withLocalProviderBackup = async () => {
+    const {
+      downloadBinary
+    } = await import('@toeverything/y-indexeddb')
+    this.#preloads.push(async (workspace) => {
+      requestIdleCallback(async () => {
+        const idb = await import('idb')
+
+        interface DB extends DBSchema {
+          backup: {
+            key: string;
+            value: {
+              id: string;
+              binaries: [string, Uint8Array][];
+            };
+          };
+        }
+
+        const db = await idb.openDB<DB>('refine-backup', 1, {
+          upgrade (db) {
+            db.createObjectStore('backup', {
+              keyPath: 'id'
+            })
+          }
+        })
+
+        async function downloadRecursive (doc: Doc) {
+          const binary = await downloadBinary(doc.guid, 'refine-indexeddb')
+          if (binary) {
+            applyUpdate(doc, binary)
+          }
+          for (const subDoc of doc.subdocs) {
+            await downloadRecursive(subDoc)
+          }
+        }
+
+        const fakeDoc = new Doc({
+          guid: workspace.doc.guid
+        })
+        await downloadRecursive(fakeDoc)
+        const binaries = dumpDoc(fakeDoc)
+        const updates = [...binaries.entries()]
+        const t = db.transaction('backup', 'readwrite')
+        t.objectStore('backup').put({
+          id: workspace.doc.guid,
+          binaries: updates
+        })
+        await t.done
+      })
+    })
   }
 
   public withLocalProvider = async () => {
