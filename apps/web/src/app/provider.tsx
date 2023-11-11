@@ -21,7 +21,7 @@ const ProviderInner: FC<PropsWithChildren> = ({
     return () => {
       signal.removeEventListener('abort', onAbort)
     }
-  }, [])
+  }, [triggerErrorBoundary])
   return children
 }
 
