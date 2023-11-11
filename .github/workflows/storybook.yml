@@ -41,8 +41,10 @@ jobs:
         working-directory: packages/core
       - name: Build Packages
         run: pnpm run build:packages
+        working-directory: packages/core
       - name: Build Storybook
         run: pnpm run build-storybook --quiet
+        working-directory: packages/core
       - name: Test
         run: |
           pnpm exec concurrently -k -s first -n "SB,TEST" -c "magenta,blue" \
