@@ -26,11 +26,11 @@ export const EditorHeader = ({
       onValueChange={onValueChange}
     >
       <ToggleGroup.Item className={toggleGroupItemClasses} value="page"
-                        aria-label="Left aligned">
+                        aria-label="Page Mode">
         <RowsIcon/>
       </ToggleGroup.Item>
       <ToggleGroup.Item className={toggleGroupItemClasses} value="edgeless"
-                        aria-label="Center aligned">
+                        aria-label="Edgeless Mode">
         <LayersIcon/>
       </ToggleGroup.Item>
     </ToggleGroup.Root>
