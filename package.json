@@ -2,11 +2,7 @@
   "name": "refine",
   "private": true,
   "version": "0.0.0",
-  "workspaces": [
-    "packages/*",
-    "apps/*"
-  ],
-  "packageManager": "pnpm@8.10.0",
+  "packageManager": "pnpm@8.10.2",
   "scripts": {
     "build:packages": "pnpm run --filter \"./packages/*\" build",
     "typecheck": "tsc -b tsconfig.json --diagnostics",
@@ -14,9 +10,9 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@types/node": "^20.8.10",
-    "@types/react": "^18.2.36",
-    "@types/react-dom": "^18.2.14",
+    "@types/node": "^20.9.0",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "eslint": "^8.53.0",
