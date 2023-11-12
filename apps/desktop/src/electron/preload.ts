@@ -6,3 +6,6 @@ contextBridge.exposeInMainWorld('apis', {
     await ipcRenderer.invoke('change-theme', theme)
   }
 })
+
+contextBridge.exposeInMainWorld('playground',
+  process.argv.some(arg => arg === '--playground'))

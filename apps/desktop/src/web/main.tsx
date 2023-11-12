@@ -4,60 +4,88 @@ import '@blocksuite/editor/themes/affine.css'
 import './index.css'
 import { workspaceManager } from '@refine/core/store'
 import { getDefaultStore } from 'jotai/vanilla'
-import { Workspace } from '@blocksuite/store'
+import { Page, Workspace } from '@blocksuite/store'
 
 declare global {
   interface Window {
+    playground: boolean
     apis: {
       getTheme (): Promise<'light' | 'dark'>
       changeTheme (theme: 'light' | 'dark'): Promise<void>
     }
+    store: ReturnType<typeof getDefaultStore>
     workspace: Workspace
+    workspaceManager: typeof workspaceManager
+    page: Page
   }
 }
 
-const workspaceAtom = workspaceManager.getWorkspaceAtom('workspace:0')
-const store = getDefaultStore()
+window.workspaceManager = workspaceManager
+window.store = getDefaultStore()
+const store = window.store
 
-const promise = workspaceManager.withLocalProvider().
-  then(workspaceManager.inject).
-  then(
-    () => store.get(workspaceAtom).then(async workspace => {
-      window.workspace = workspace
-      const page = workspace.getPage('page0')
-      if (!page) {
-        const page = workspace.createPage({
-          id: 'page0'
-        })
-        await page.waitForLoaded()
-        const pageBlockId = page.addBlock('affine:page', {
-          children: [],
-          title: new page.Text('Untitled')
-        })
-        page.addBlock('affine:surface', {}, pageBlockId)
-        const noteBlockId = page.addBlock('affine:note', {}, pageBlockId)
-        page.addBlock('affine:paragraph', {}, noteBlockId)
-      } else {
-        await page.waitForLoaded()
-      }
-    })
-  )
+if (window.playground === false) {
+  const workspaceAtom = workspaceManager.getWorkspaceAtom('workspace:0')
 
-export const Editor = lazy(
-  () => import('@refine/core/components').then(
-    ({ Editor }) => ({ default: Editor })))
+  const promise = workspaceManager.withLocalProvider().
+    then(workspaceManager.inject).
+    then(
+      () => store.get(workspaceAtom).then(async workspace => {
+        window.workspace = workspace
+        const page = workspace.getPage('page0')
+        if (!page) {
+          const page = workspace.createPage({
+            id: 'page0'
+          })
+          window.page = page
+          await page.waitForLoaded()
+          const pageBlockId = page.addBlock('affine:page', {
+            children: [],
+            title: new page.Text('Untitled')
+          })
+          page.addBlock('affine:surface', {}, pageBlockId)
+          const noteBlockId = page.addBlock('affine:note', {}, pageBlockId)
+          page.addBlock('affine:paragraph', {}, noteBlockId)
+        } else {
+          window.page = page
+          await page.waitForLoaded()
+        }
+      })
+    )
 
-const div = document.getElementById('root')
-if (!div) throw new Error('Root element not found')
+  const Editor = lazy(
+    () => import('@refine/core/components').then(
+      ({ Editor }) => ({ default: Editor })))
 
-const root = createRoot(div)
-promise.then(() => {
-  root.render(
-    <StrictMode>
-      <Editor
-        workspaceId="workspace:0"
-        pageId="page0"
-      />
-    </StrictMode>
-  )
-})
+  const div = document.getElementById('root')
+  if (!div) throw new Error('Root element not found')
+  const root = createRoot(div)
+
+  workspaceManager.upgradeAbortSignal.addEventListener('abort', () => {
+    root.render(
+      <StrictMode>
+        <div>
+          <h1>Upgrade aborted</h1>
+          <p>
+            Current workspace data
+            is not compatible with the current version of Editor.
+          </p>
+        </div>
+      </StrictMode>
+    )
+  }, {
+    once: true
+  })
+
+  promise.then(() => {
+    if (workspaceManager.upgradeAbortSignal.aborted) return
+    root.render(
+      <StrictMode>
+        <Editor
+          workspaceId="workspace:0"
+          pageId="page0"
+        />
+      </StrictMode>
+    )
+  })
+}

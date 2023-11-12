@@ -11,7 +11,8 @@ export type ProviderCreator = (workspace: Workspace) => {
   disconnect: () => void
 }
 
-function assertExists<T> (value: T | null | undefined, message?: string): asserts value is T {
+function assertExists<T> (
+  value: T | null | undefined, message?: string): asserts value is T {
   if (value === null || value === undefined) {
     throw new Error(message ?? 'value is null or undefined')
   }
@@ -33,6 +34,12 @@ export class WorkspaceManager {
     Atom<unknown>
   >()
 
+  #upgradeAbortController = new AbortController()
+
+  get upgradeAbortSignal () {
+    return this.#upgradeAbortController.signal
+  }
+
   readonly #schema = new Schema()
 
   #preloads: Preload[] = []
@@ -43,6 +50,22 @@ export class WorkspaceManager {
 
   constructor () {
     this.#schema.register(AffineSchemas).register(__unstableSchemas)
+  }
+
+  private checkIfUpgradeNeeded = async (workspace: Workspace) => {
+    const blockVersions = workspace.meta.blockVersions
+    if (blockVersions) {
+      this.#schema.flavourSchemaMap.forEach((schema, flavour) => {
+        const version = blockVersions[flavour]
+        if (schema.version !== version) {
+          this.#upgradeAbortController.abort()
+        }
+      })
+    } else {
+      console.warn(
+        'blockVersions not found.\n' +
+        'This may be caused by data not loaded yet.')
+    }
   }
 
   getWorkspaceAtom = (workspaceId: string): Atom<Promise<Workspace>> => {
@@ -66,6 +89,7 @@ export class WorkspaceManager {
         const preloads = get(this.preloadAtom)
         for (const preload of preloads) {
           await preload(ensureWorkspace)
+          await this.checkIfUpgradeNeeded(ensureWorkspace)
         }
         return ensureWorkspace
       })

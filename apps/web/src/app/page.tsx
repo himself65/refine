@@ -36,8 +36,9 @@ function HomeImpl () {
   const pageAtom = workspaceManager.getWorkspacePageAtom(workspaceId, pageId)
   const page = useAtomValue(pageAtom)
   useEffect(() => {
+    window.workspace = workspace
     window.page = page
-  }, [page])
+  }, [workspace, page])
   return (
     <main>
       <PageList workspace={workspace}/>

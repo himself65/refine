@@ -32,6 +32,7 @@ module.exports = {
           '**/*.test.ts',
           '**/*.spec.tsx',
           '**/*.spec.ts',
+          '**/test/**/*.ts',
           '**/vite.config.ts',
           '**/vitest.config.ts',
         ]

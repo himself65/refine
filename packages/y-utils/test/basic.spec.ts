@@ -1,6 +1,30 @@
 import { describe, test, vi, expect } from 'vitest'
 import { applyUpdate, Doc } from 'yjs'
-import { willMissingUpdate, willMissingUpdateV2 } from '../src'
+import { dumpDoc, willMissingUpdate, willMissingUpdateV2 } from '../src'
+
+describe('function dumpDoc', () => {
+  test('should dump the doc', () => {
+    const doc = new Doc({
+      guid: '1'
+    })
+    doc.getMap().set('1', 2)
+    const updates = dumpDoc(doc)
+    expect(updates.size).toBe(1)
+  })
+
+  test('should dump the subdoc', () => {
+    const doc = new Doc({
+      guid: '1'
+    })
+    doc.getMap().set('1', 2)
+    const subdoc = doc.getMap().set('a', new Doc({
+      guid: '2'
+    }))
+    subdoc.getMap().set('1', 2)
+    const updates = dumpDoc(doc)
+    expect(updates.size).toBe(2)
+  })
+})
 
 describe('function willLostData', () => {
   test('should will not lost data in the update itself', () => {
@@ -47,7 +71,7 @@ describe('function willLostData', () => {
     map.set('a', 2)
     map.set('b', 3)
     expect(willMissingUpdate(remoteDoc, updates[3])).toEqual(new Map([
-      [doc.clientID, 3],
+      [doc.clientID, 3]
     ]))
     applyUpdate(remoteDoc, updates[3])
     expect(remoteDoc.getMap().get('a')).toBe(1)
