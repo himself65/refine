@@ -3,10 +3,14 @@
   "compilerOptions": {
     "rootDir": "./src/",
     "outDir": "./dist/src",
-    "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "lib": ["ESNext", "DOM"]
+    "tsBuildInfoFile": "./dist/.tsbuildinfo"
   },
   "include": [
     "./src"
+  ],
+  "references": [
+    {
+      "path": "../y-utils"
+    }
   ]
 }

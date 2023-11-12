@@ -57,6 +57,7 @@
       "@refine/core/*": ["./packages/core/src/*"],
       "@refine/server/*": ["./apps/server/src/*"],
       "jotai-inject": ["./packages/jotai-inject/src/index"],
+      "y-utils": ["./packages/y-utils/src/index"]
     }
   },
   "references": [
@@ -77,6 +78,9 @@
     },
     {
       "path": "./packages/jotai-inject/tsconfig.json"
+    },
+    {
+      "path": "./packages/y-sqlite/tsconfig.json"
     },
     {
       "path": "./packages/y-io/tsconfig.json"
