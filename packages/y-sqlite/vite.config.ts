@@ -7,7 +7,7 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: {
-        index: './src/index.ts'
+        server: './src/server.ts'
       },
       formats: ['es', 'cjs']
     },
@@ -15,7 +15,9 @@ export default defineConfig({
     rollupOptions: {
       external: [
         /^yjs/,
-        /^y-utils/
+        /^y-utils/,
+        /^drizzle-orm/,
+        /^better-sqlite3/
       ]
     }
   },

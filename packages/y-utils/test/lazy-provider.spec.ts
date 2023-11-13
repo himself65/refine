@@ -1,7 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { createLazyProvider } from '../src'
-import { Doc, encodeStateAsUpdate } from 'yjs'
-import { mergeUpdates } from 'yjs'
+import { Doc, encodeStateAsUpdate, mergeUpdates } from 'yjs'
 
 const emptyUpdate = new Uint8Array([0, 0])
 const localCache = new Map<string, Uint8Array>()
@@ -20,7 +19,7 @@ function createMemoryProvider (rootDoc: Doc) {
       }
     },
     sendDocUpdate: async (guid, update) => {
-      let cache = localCache.get(guid)
+      const cache = localCache.get(guid)
       if (cache) {
         update = mergeUpdates([cache, update])
       }

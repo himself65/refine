@@ -2,7 +2,7 @@ import {
   drizzle,
   type BetterSQLite3Database
 } from 'drizzle-orm/better-sqlite3'
-import Database from 'better-sqlite3'
+import * as Database from 'better-sqlite3'
 import {
   text,
   integer,
@@ -27,7 +27,7 @@ export const workspaceTable = sqliteTable('users', {
   }
 })
 
-export function createServerDataSource (filename: string) {
+export function createServerDataSource (filename: string): DataSourceAdapter {
   const sqlite = new Database(filename)
   const db: BetterSQLite3Database = drizzle(sqlite)
   return {
