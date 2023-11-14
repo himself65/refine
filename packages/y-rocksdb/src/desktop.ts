@@ -41,7 +41,7 @@ export async function findDocUpdate (
     lt: encodeStoreUpdateKey(guid, MAX)
   })
   const updates: Uint8Array[] = []
-  for await (const [_, value] of iterator) {
+  for await (const [, value] of iterator) {
     const buffer = Buffer.from(value, 'base64')
     updates.push(new Uint8Array(buffer))
   }
