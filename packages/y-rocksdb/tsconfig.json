@@ -11,8 +11,10 @@
   },
   "include": [
     "./test",
+    "./types.d.ts",
     "vite.config.ts",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    "drizzle.config.ts"
   ],
   "references": [
     {

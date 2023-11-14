@@ -7,7 +7,7 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: {
-        server: './src/server.ts'
+        desktop: './src/desktop.ts'
       },
       formats: ['es', 'cjs']
     },
@@ -16,8 +16,9 @@ export default defineConfig({
       external: [
         /^yjs/,
         /^y-utils/,
-        /^drizzle-orm/,
-        /^better-sqlite3/
+        /^@nxtedition\/rocksdb/,
+        /^abstract-level/,
+        /^uuid/
       ]
     }
   },
