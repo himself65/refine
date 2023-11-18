@@ -7,6 +7,11 @@
       "import": "./dist/components.js",
       "require": "./dist/components.cjs"
     },
+    "./workspace-manager": {
+      "types": "./dist/src/workspace-manager.d.ts",
+      "import": "./dist/workspace-manager.js",
+      "require": "./dist/workspace-manager.cjs"
+    },
     "./store": {
       "types": "./dist/src/store.d.ts",
       "import": "./dist/store.js",

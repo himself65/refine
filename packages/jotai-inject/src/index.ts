@@ -2,21 +2,10 @@ import type { PrimitiveAtom } from 'jotai/vanilla'
 import { useHydrateAtoms } from 'jotai/utils'
 import { useState } from 'react'
 import { useSetAtom } from 'jotai/react'
+import { inject } from './vanilla'
 
-export function inject<
-  Value
-> (
-  injectAtom: PrimitiveAtom<Value> & { init: Value | Promise<Value> },
-  accessor: () => (Value | Promise<Value>),
-  updateValue?: (apply: Value) => void
-) {
-  const originalWrite = injectAtom.write.bind(injectAtom)
-  injectAtom.init = accessor()
-  injectAtom.write = function (get, set, apply) {
-    originalWrite(get, set, apply)
-    updateValue?.(get(injectAtom))
-    return
-  }
+export {
+  inject
 }
 
 type UpdateValue<Value> = (newValue: Value) => void

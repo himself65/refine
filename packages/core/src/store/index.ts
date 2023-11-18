@@ -3,7 +3,7 @@ import { atom, type Atom } from 'jotai/vanilla'
 import { atomEffect } from 'jotai-effect'
 import { AffineSchemas, __unstableSchemas } from '@blocksuite/blocks/models'
 import { applyUpdate } from 'yjs'
-import { inject } from 'jotai-inject'
+import { inject } from 'jotai-inject/vanilla'
 
 export type Preload = (workspace: Workspace) => Promise<void>
 export type ProviderCreator = (workspace: Workspace) => {
@@ -50,6 +50,10 @@ export class WorkspaceManager {
 
   constructor () {
     this.#schema.register(AffineSchemas).register(__unstableSchemas)
+  }
+
+  get schema () {
+    return this.#schema
   }
 
   private checkIfUpgradeNeeded = async (workspace: Workspace) => {
