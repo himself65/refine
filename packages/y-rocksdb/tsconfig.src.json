@@ -4,9 +4,20 @@
     "rootDir": "./src/",
     "outDir": "./dist/src",
     "tsBuildInfoFile": "./dist/.tsbuildinfo",
-    "lib": ["ESNext", "DOM"]
+    "lib": [
+      "ESNext"
+    ],
+    "types": [
+      "node"
+    ]
   },
   "include": [
-    "./src"
+    "./src",
+    "./types.d.ts"
+  ],
+  "references": [
+    {
+      "path": "../y-utils"
+    }
   ]
 }

@@ -1,0 +1,45 @@
+{
+  "name": "y-rocksdb",
+  "version": "0.0.1",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    "./desktop": {
+      "types": "./dist/src/desktop.d.ts",
+      "import": "./dist/desktop.js",
+      "require": "./dist/desktop.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "./types.d.ts"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "test": "vitest",
+    "test:ui": "vitest --ui --coverage.enabled=true",
+    "test:coverage": "vitest --coverage"
+  },
+  "dependencies": {
+    "@nxtedition/rocksdb": "^9.0.1",
+    "uuid": "^9.0.1",
+    "y-utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@blocksuite/store": "0.0.0-20231101080734-aa27dc89-nightly",
+    "@types/uuid": "^9.0.7",
+    "@vitest/coverage-v8": "^0.34.6",
+    "@vitest/ui": "^0.34.6",
+    "abstract-level": "^1.0.3",
+    "vite": "^4.5.0",
+    "vite-plugin-dts": "^3.6.3",
+    "vite-plugin-istanbul": "^5.0.0",
+    "vitest": "^0.34.6",
+    "yjs": "^13.6.8"
+  },
+  "peerDependencies": {
+    "yjs": "^13"
+  }
+}

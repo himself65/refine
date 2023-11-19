@@ -94,7 +94,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        packages: [jotai-inject, core, y-io, y-utils]
+        packages: [jotai-inject, core, y-io, y-utils, y-rocksdb]
     name: Test ${{ matrix.packages }}
     runs-on: ubuntu-latest
     steps:
