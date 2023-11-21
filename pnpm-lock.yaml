@@ -213,7 +213,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/core
       ai:
-        specifier: ^2.2.24
+        specifier: ^2.2.25
         version: 2.2.25(react@18.3.0-canary-8039e6d0b-20231026)(solid-js@1.8.5)(svelte@4.2.7)(vue@3.3.8)
       foxact:
         specifier: ^0.2.25
@@ -221,6 +221,9 @@ importers:
       jotai:
         specifier: ^2.5.1
         version: 2.5.1(@types/react@18.2.37)(react@18.3.0-canary-8039e6d0b-20231026)
+      jotai-ai:
+        specifier: ^0.0.6
+        version: 0.0.6(ai@2.2.25)(jotai@2.5.1)
       jotai-effect:
         specifier: ^0.2.3
         version: 0.2.3(jotai@2.5.1)
@@ -6810,6 +6813,16 @@ packages:
   /jju@1.4.0:
     resolution: {integrity: sha512-8wb9Yw966OSxApiCt0K3yNJL8pnNeIv+OEq2YMidz4FKP6nonSRoOXc80iXY4JaN2FC11B9qsNmDsm+ZOfMROA==}
     dev: true
+
+  /jotai-ai@0.0.6(ai@2.2.25)(jotai@2.5.1):
+    resolution: {integrity: sha512-uxmIS5hbYG1JqcWIlNGungnucKGDvzoV8fZwnFhEEOW6fczp6JK/1aYIycjcxh0pDviZeRI9w5DdcoUB7YCqpw==}
+    peerDependencies:
+      ai: '>=2.2.24'
+      jotai: '>=2.5.1'
+    dependencies:
+      ai: 2.2.25(react@18.3.0-canary-8039e6d0b-20231026)(solid-js@1.8.5)(svelte@4.2.7)(vue@3.3.8)
+      jotai: 2.5.1(@types/react@18.2.37)(react@18.3.0-canary-8039e6d0b-20231026)
+    dev: false
 
   /jotai-effect@0.2.3(jotai@2.5.1):
     resolution: {integrity: sha512-Ecs40W4Y+SI1EqbvPdoLDvbyic5eMyD5ifJIQrrr+hWz1GEjmijVWyKw6TzmYzO2+++CkYPF+fYsWzsWsR0AAQ==}

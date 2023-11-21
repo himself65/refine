@@ -1,21 +1,28 @@
-import { useChat } from 'ai/react'
+import { chatAtoms } from 'jotai-ai'
 import type { Page } from '@blocksuite/store'
 import { encodeStateAsUpdate } from 'yjs'
 import { encodeBase64 } from '@endo/base64'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai/react'
 
 export type ChatButtonProps = {
   page: Page
 }
 
+const {
+  messagesAtom,
+  inputAtom,
+  isLoadingAtom,
+  submitAtom
+} = chatAtoms({
+  api: process.env.NEXT_PUBLIC_CHAT_API
+})
+
 export const ChatButton = (props: ChatButtonProps) => {
   const { page } = props
-  const {
-    messages,
-    input,
-    isLoading,
-    handleSubmit,
-    handleInputChange
-  } = useChat({ api: process.env.NEXT_PUBLIC_CHAT_API })
+  const messages = useAtomValue(messagesAtom)
+  const [input, handleInputChange] = useAtom(inputAtom)
+  const isLoading = useAtomValue(isLoadingAtom)
+  const handleSubmit = useSetAtom(submitAtom)
 
   return (
     <>
@@ -28,7 +35,7 @@ export const ChatButton = (props: ChatButtonProps) => {
           const pageUpdate = encodeStateAsUpdate(page.spaceDoc)
           const workspaceId = page.workspace.id
           const pageId = page.id
-          handleSubmit(e, {
+          await handleSubmit(e, {
             data: {
               workspaceId,
               pageId,
