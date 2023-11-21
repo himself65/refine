@@ -1,5 +1,6 @@
 import { createServer, type Server as HTTPServer } from 'node:http'
-import express from 'express'
+import { createAdaptorServer } from '@hono/node-server'
+import { Hono } from 'hono'
 import { Server } from 'socket.io'
 import { bindSyncServer } from 'y-io/server'
 
@@ -21,13 +22,16 @@ export function createApp (): {
   io: Server
   server: HTTPServer
 } {
-  const app = express()
+  const app = new Hono()
+  const server = createAdaptorServer({
+    createServer,
+    fetch: app.fetch
+  }) as HTTPServer
 
-  app.get('/', (_, res) => {
-    res.json({ message: 'Hello world' }).end()
-  })
+  app.get('/', (context) => context.json({
+    message: 'Hello world'
+  }))
 
-  const server = createServer(app)
   const io = new Server(server, {
     cors: {
       origin: '*'
