@@ -10,6 +10,7 @@ export default defineConfig({
       entry: {
         components: './src/components.tsx',
         store: './src/store.ts',
+        'workspace-manager': './src/workspace-manager.ts',
         'store/preference': './src/store/preference.ts',
       },
       formats: ['es', 'cjs']

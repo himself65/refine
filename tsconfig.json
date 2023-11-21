@@ -57,6 +57,7 @@
       "@refine/core/*": ["./packages/core/src/*"],
       "@refine/server/*": ["./apps/server/src/*"],
       "jotai-inject": ["./packages/jotai-inject/src/index"],
+      "jotai-inject/*": ["./packages/jotai-inject/src/*"],
     }
   },
   "references": [

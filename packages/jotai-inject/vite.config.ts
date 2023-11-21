@@ -7,7 +7,8 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       entry: {
-        index: './src/index.ts'
+        index: './src/index.ts',
+        vanilla: './src/vanilla.ts'
       },
       formats: ['es', 'cjs']
     },

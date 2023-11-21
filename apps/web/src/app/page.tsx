@@ -9,6 +9,7 @@ import { useAtomValue } from 'jotai/react'
 import { workspaceIdAtom, pageIdAtom } from '../store'
 import dynamic from 'next/dynamic'
 import { noSSR } from 'foxact/no-ssr'
+import { ChatButton } from './components/chat-button'
 
 const Editor = dynamic(() => import('@refine/core/components').then(
   ({ Editor }) => ({ default: Editor })), {
@@ -42,6 +43,9 @@ function HomeImpl () {
   return (
     <main>
       <PageList workspace={workspace}/>
+      <Suspense fallback='loading chat'>
+        <ChatButton page={page}/>
+      </Suspense>
       <Suspense
         fallback="loading editor"
       >

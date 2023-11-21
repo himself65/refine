@@ -1,3 +1,4 @@
+'use client';
 import type { Theme, ThemeAtom } from './store/api'
 import { userInfoAtom } from './store/api'
 import { getPageListAtom, workspaceManager } from './store/index'
