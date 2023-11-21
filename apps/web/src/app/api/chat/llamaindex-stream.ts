@@ -5,7 +5,7 @@ import {
   type AIStreamCallbacksAndOptions
 } from 'ai'
 
-function createParser (res: AsyncGenerator<any>) {
+function createParser (res: AsyncGenerator<string>) {
   const trimStartOfStream = trimStartOfStreamHelper()
   return new ReadableStream<string>({
     async pull (controller): Promise<void> {
@@ -24,7 +24,7 @@ function createParser (res: AsyncGenerator<any>) {
 }
 
 export function LlamaIndexStream (
-  res: AsyncGenerator<any>,
+  res: AsyncGenerator<string>,
   callbacks?: AIStreamCallbacksAndOptions
 ): ReadableStream {
   return createParser(res).

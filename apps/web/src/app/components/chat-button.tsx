@@ -3,6 +3,7 @@ import type { Page } from '@blocksuite/store'
 import { encodeStateAsUpdate } from 'yjs'
 import { encodeBase64 } from '@endo/base64'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai/react'
+import type { ChatRequestData } from '../../type'
 
 export type ChatButtonProps = {
   page: Page
@@ -41,7 +42,7 @@ export const ChatButton = (props: ChatButtonProps) => {
               pageId,
               workspaceUpdate: encodeBase64(workspaceUpdate),
               pageUpdate: encodeBase64(pageUpdate)
-            }
+            } satisfies ChatRequestData
           })
         }}
         className="flex w-full items-start justify-between gap-4 rounded-xl bg-white p-4 shadow-xl dark:bg-black"

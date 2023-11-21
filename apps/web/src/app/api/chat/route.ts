@@ -7,6 +7,7 @@ import { decodeBase64 } from '@endo/base64'
 import { applyUpdate } from 'yjs'
 import { workspaceManager } from '@refine/core/workspace-manager'
 import { getDefaultStore } from 'jotai/vanilla'
+import type { ChatRequestData } from '../../../type'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -14,7 +15,10 @@ export const dynamic = 'force-dynamic'
 export async function POST (request: NextRequest) {
   try {
     const body = await request.json()
-    const { messages, data }: { messages: Message[], data: any } = body
+    const { messages, data }: {
+      messages: Message[],
+      data: ChatRequestData
+    } = body
     const {
       workspaceId,
       pageId,
@@ -31,7 +35,8 @@ export async function POST (request: NextRequest) {
     const page = await store.get(pageAtom)
     await page.waitForLoaded()
     applyUpdate(page.spaceDoc, decodeBase64(pageUpdate))
-    const blocks = page.spaceDoc.toJSON()['blocks'] as Record<string, any>
+    const blocks = page.spaceDoc.getMap('blocks').
+      toJSON() as Record<string, Record<string, unknown>>
     let markdown = ''
     for (const blockId in blocks) {
       const block = blocks[blockId]
