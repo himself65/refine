@@ -37,6 +37,7 @@ import {
   array,
   decoding
 } from 'lib0'
+import type { EncryptedData, EncryptedField } from './utils'
 
 const floatTestBed = new DataView(new ArrayBuffer(4))
 const isFloat32 = (num: number) => {
@@ -75,7 +76,7 @@ export class EncryptedEncoderV1 extends UpdateEncoderV1 {
   //  but undefined, null, boolean will be reserved.
   override async writeAny (data: undefined | null | number | bigint | boolean | string | Record<string, any> | Array<any> | Uint8Array) {
     this.#pending = new Promise<void>(async resolve => {
-      let type: number | undefined = undefined
+      let type: EncryptedField | undefined = undefined
       switch (typeof data) {
         case 'string': {
           // TYPE 119: STRING
@@ -112,8 +113,7 @@ export class EncryptedEncoderV1 extends UpdateEncoderV1 {
             }
           } else if (data instanceof Uint8Array) {
             // TYPE 116: ArrayBuffer
-            encoding.write(this.restEncoder, 116)
-            encoding.writeVarUint8Array(this.restEncoder, data)
+            type = 116
           } else {
             // TYPE 118: Object
             encoding.write(this.restEncoder, 118)
@@ -139,7 +139,7 @@ export class EncryptedEncoderV1 extends UpdateEncoderV1 {
         const toEncrypt = JSON.stringify({
           type,
           data
-        })
+        } as EncryptedData)
         const encrypted = await crypto.subtle.encrypt({
           name: 'AES-GCM',
           iv: this.iv
@@ -163,7 +163,6 @@ export class EncryptedEncoderV1 extends UpdateEncoderV1 {
   }
 }
 
-//#region copy from yjs source code, please keep the logic same as yjs
 const readContentDeleted = (
   decoder: UpdateDecoderV1 | UpdateDecoderV2
 ) => new ContentDeleted(decoder.readLen())
@@ -234,7 +233,7 @@ const createDocFromOpts = (guid: string, opts: {
 const readContentDoc = (decoder: UpdateDecoderV1 | UpdateDecoderV2) => new ContentDoc(
   createDocFromOpts(decoder.readString(), decoder.readAny()))
 
-export const contentRefs = [
+const contentRefs = [
   () => { error.unexpectedCase() }, // GC is not ItemContent
   readContentDeleted, // 1
   readContentJSON, // 2
@@ -299,7 +298,7 @@ function * lazyStructReaderGenerator (
   }
 }
 
-export class LazyStructReader {
+class LazyStructReader {
   gen: Generator<Item | GC | Skip, void>
   curr: null | Item | Skip | GC
   done: boolean
@@ -327,7 +326,7 @@ export class LazyStructReader {
   }
 }
 
-export class LazyStructWriter {
+class LazyStructWriter {
   currClient: number
   startClock: number
   written: number
@@ -509,12 +508,8 @@ const writeDeleteSet = (
     })
 }
 
-//#endregion
-
-const f = <T> (v: T): T => v
-
 export const encryptUpdateV1 = async (
-  cryptoKey: CryptoKey,
+  encryptKey: CryptoKey,
   update: Uint8Array
 ): Promise<{
   iv: Uint8Array
@@ -526,12 +521,12 @@ export const encryptUpdateV1 = async (
     decoding.createDecoder(update)
   )
   const lazyDecoder = new LazyStructReader(updateDecoder, false)
-  const updateEncoder = new EncryptedEncoderV1(cryptoKey, iv)
+  const updateEncoder = new EncryptedEncoderV1(encryptKey, iv)
 
   const lazyWriter = new LazyStructWriter(updateEncoder)
 
   for (let curr = lazyDecoder.curr; curr !== null; curr = lazyDecoder.next()) {
-    await writeStructToLazyStructWriter(lazyWriter, f(curr), 0)
+    await writeStructToLazyStructWriter(lazyWriter, curr, 0)
   }
   finishLazyStructWriting(lazyWriter)
   const ds = readDeleteSet(updateDecoder)

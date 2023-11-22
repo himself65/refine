@@ -4,6 +4,7 @@ import { dumpDoc, willMissingUpdate, willMissingUpdateV2 } from '../src'
 import { Array as YArray } from 'yjs'
 import { encryptUpdateV1 } from '../src/encrypt'
 import * as crypto from 'node:crypto'
+import { decryptUpdateV1 } from '../src/decrypt'
 
 describe('function dumpDoc', () => {
   test('should dump the doc', () => {
@@ -85,12 +86,11 @@ describe('function willLostData', () => {
   })
 })
 
-test('encrypt', async () => {
+test('encrypt and decrypt should works', async () => {
   const doc = new Doc()
   const arr = new YArray()
   arr.insert(0, [1, 2, 3])
   doc.getArray().insert(0, [1, 2, 3, arr])
-  const update = encodeStateAsUpdate(doc)
   const deriveKeyPair = await crypto.subtle.generateKey({
     name: 'ECDH',
     namedCurve: 'P-256'
@@ -99,14 +99,17 @@ test('encrypt', async () => {
     name: 'ECDSA',
     namedCurve: 'P-256'
   }, true, ['sign', 'verify'])
-  const encryptKey = await crypto.subtle.deriveKey({
+  const encryptDecryptKey = await crypto.subtle.deriveKey({
     name: 'ECDH',
     public: deriveKeyPair.publicKey
   }, deriveKeyPair.privateKey, {
     name: 'AES-GCM',
     length: 256
   }, true, ['encrypt', 'decrypt'])
-  const { iv, encryptedUpdate } = await encryptUpdateV1(encryptKey, update)
+  const { iv, encryptedUpdate } = await encryptUpdateV1(
+    encryptDecryptKey,
+    encodeStateAsUpdate(doc)
+  )
   const signature = await crypto.subtle.sign({
     name: 'ECDSA',
     hash: 'SHA-256'
@@ -129,4 +132,13 @@ test('encrypt', async () => {
     }, signKeyPair.publicKey, dataChunk.signature.buffer,
     dataChunk.encryptedUpdate
   )).resolves.toBe(true)
+
+  const update = await decryptUpdateV1(encryptDecryptKey, dataChunk.iv,
+    dataChunk.encryptedUpdate)
+  expect(() => decodeUpdate(update)).not.toThrow()
+  const secondDoc = new Doc()
+  applyUpdate(secondDoc, update)
+  encodeStateAsUpdate(secondDoc)
+  expect(secondDoc.getArray().toJSON()).toEqual([1, 2, 3, [1, 2, 3]])
+  expect(encodeStateAsUpdate(secondDoc)).toEqual(encodeStateAsUpdate(doc))
 })
