@@ -1,6 +1,10 @@
 import { describe, test, vi, expect } from 'vitest'
-import { applyUpdate, Doc } from 'yjs'
+import { applyUpdate, decodeUpdate, Doc, encodeStateAsUpdate } from 'yjs'
 import { dumpDoc, willMissingUpdate, willMissingUpdateV2 } from '../src'
+import { Array as YArray } from 'yjs'
+import { encryptUpdateV1 } from '../src/encrypt'
+import * as crypto from 'node:crypto'
+import { decryptUpdateV1 } from '../src/decrypt'
 
 describe('function dumpDoc', () => {
   test('should dump the doc', () => {
@@ -80,4 +84,61 @@ describe('function willLostData', () => {
     applyUpdate(remoteDoc, updates[2])
     expect(willMissingUpdate(remoteDoc, updates[3])).toBe(false)
   })
+})
+
+test('encrypt and decrypt should works', async () => {
+  const doc = new Doc()
+  const arr = new YArray()
+  arr.insert(0, [1, 2, 3])
+  doc.getArray().insert(0, [1, 2, 3, arr])
+  const deriveKeyPair = await crypto.subtle.generateKey({
+    name: 'ECDH',
+    namedCurve: 'P-256'
+  }, true, ['deriveKey'])
+  const signKeyPair = await crypto.subtle.generateKey({
+    name: 'ECDSA',
+    namedCurve: 'P-256'
+  }, true, ['sign', 'verify'])
+  const encryptDecryptKey = await crypto.subtle.deriveKey({
+    name: 'ECDH',
+    public: deriveKeyPair.publicKey
+  }, deriveKeyPair.privateKey, {
+    name: 'AES-GCM',
+    length: 256
+  }, true, ['encrypt', 'decrypt'])
+  const { iv, encryptedUpdate } = await encryptUpdateV1(
+    encryptDecryptKey,
+    encodeStateAsUpdate(doc)
+  )
+  const signature = await crypto.subtle.sign({
+    name: 'ECDSA',
+    hash: 'SHA-256'
+  }, signKeyPair.privateKey, encryptedUpdate)
+  type DataChunk = {
+    iv: Uint8Array
+    encryptedUpdate: Uint8Array
+    signature: Uint8Array
+  }
+  const dataChunk = {
+    iv,
+    encryptedUpdate,
+    signature: new Uint8Array(signature)
+  } satisfies DataChunk
+  expect(() => decodeUpdate(dataChunk.encryptedUpdate)).not.toThrow()
+  await expect(crypto.subtle.verify(
+    {
+      name: 'ECDSA',
+      hash: 'SHA-256'
+    }, signKeyPair.publicKey, dataChunk.signature.buffer,
+    dataChunk.encryptedUpdate
+  )).resolves.toBe(true)
+
+  const update = await decryptUpdateV1(encryptDecryptKey, dataChunk.iv,
+    dataChunk.encryptedUpdate)
+  expect(() => decodeUpdate(update)).not.toThrow()
+  const secondDoc = new Doc()
+  applyUpdate(secondDoc, update)
+  encodeStateAsUpdate(secondDoc)
+  expect(secondDoc.getArray().toJSON()).toEqual([1, 2, 3, [1, 2, 3]])
+  expect(encodeStateAsUpdate(secondDoc)).toEqual(encodeStateAsUpdate(doc))
 })
