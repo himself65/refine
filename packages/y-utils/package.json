@@ -8,6 +8,16 @@
       "types": "./dist/src/index.d.ts",
       "import": "./dist/index.js",
       "require": "./dist/index.cjs"
+    },
+    "./encrypt": {
+      "types": "./dist/src/encrypt.d.ts",
+      "import": "./dist/encrypt.js",
+      "require": "./dist/encrypt.cjs"
+    },
+    "./decrypt": {
+      "types": "./dist/src/decrypt.d.ts",
+      "import": "./dist/decrypt.js",
+      "require": "./dist/decrypt.cjs"
     }
   },
   "files": [

@@ -9,7 +9,7 @@ export default defineConfig({
       entry: {
         index: './src/index.ts',
         decrypt: './src/decrypt.ts',
-        encrypt: './src/encrypt.ts',
+        encrypt: './src/encrypt.ts'
       },
       formats: ['es', 'cjs']
     },
@@ -17,8 +17,8 @@ export default defineConfig({
     rollupOptions: {
       external: [
         'yjs',
-        // yjs/src/internals.js will be inlined
-        'lib0'
+        'lib0',
+        '@endo/base64'
       ]
     }
   },

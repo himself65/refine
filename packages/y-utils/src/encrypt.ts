@@ -46,7 +46,7 @@ const isFloat32 = (num: number) => {
 
 export class EncryptedEncoderV1 extends UpdateEncoderV1 {
   constructor (
-    private readonly cryptoKey: InstanceType<typeof window.CryptoKey>,
+    private readonly cryptoKey: CryptoKey,
     private readonly iv: Uint8Array
   ) {
     super()
@@ -514,7 +514,7 @@ const writeDeleteSet = (
 const f = <T> (v: T): T => v
 
 export const encryptUpdateV1 = async (
-  cryptoKey: InstanceType<typeof window.CryptoKey>,
+  cryptoKey: CryptoKey,
   update: Uint8Array
 ): Promise<{
   iv: Uint8Array

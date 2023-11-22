@@ -4,7 +4,7 @@ import { createID } from 'yjs'
 
 export class EncryptedDecoderV1 {
   constructor (
-    private readonly cryptoKey: InstanceType<typeof window.CryptoKey>,
+    private readonly cryptoKey: CryptoKey,
     private readonly iv: Uint8Array,
     private readonly restDecoder: decoding.Decoder
   ) {}
@@ -41,7 +41,7 @@ export class EncryptedDecoderV1 {
 
   async readString (): Promise<string> {
     const encrypted = decoding.readVarString(this.restDecoder)
-    const decrypted = await window.crypto.subtle.decrypt(
+    const decrypted = await crypto.subtle.decrypt(
       {
         name: 'AES-GCM',
         iv: this.iv
