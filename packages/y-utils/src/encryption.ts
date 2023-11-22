@@ -1,7 +1,6 @@
 import {
   UpdateEncoderV1,
   UpdateDecoderV1,
-  UpdateEncoderV2,
   Skip,
   createID,
   Item,
@@ -332,13 +331,13 @@ export class LazyStructWriter {
   currClient: number
   startClock: number
   written: number
-  encoder: UpdateEncoderV1 | UpdateEncoderV2
+  encoder: EncryptedEncoderV1
   clientStructs: {
     written: number,
     restEncoder: Uint8Array
   }[]
 
-  constructor (encoder: UpdateEncoderV1 | UpdateEncoderV2) {
+  constructor (encoder: EncryptedEncoderV1) {
     this.currClient = 0
     this.startClock = 0
     this.written = 0
@@ -481,10 +480,7 @@ function readDeleteSet (decoder: UpdateDecoderV2 | UpdateDecoderV1) {
       const dsField = map.setIfUndefined(ds.clients, client,
         () => [] as unknown[])
       for (let i = 0; i < numberOfDeletes; i++) {
-        dsField.push({
-          clock: decoder.readDsClock(),
-          len: decoder.readDsLen()
-        })
+        dsField.push(createID(decoder.readDsClock(), decoder.readDsLen()))
       }
     }
   }
@@ -492,7 +488,7 @@ function readDeleteSet (decoder: UpdateDecoderV2 | UpdateDecoderV1) {
 }
 
 const writeDeleteSet = (
-  encoder: UpdateEncoderV1 | UpdateEncoderV2,
+  encoder: EncryptedEncoderV1,
   ds: ReturnType<typeof createDeleteSet>
 ) => {
   encoding.writeVarUint(encoder.restEncoder, ds.clients.size)

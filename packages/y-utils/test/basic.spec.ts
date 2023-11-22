@@ -91,17 +91,39 @@ test('encrypt', async () => {
   arr.insert(0, [1, 2, 3])
   doc.getArray().insert(0, [1, 2, 3, arr])
   const update = encodeStateAsUpdate(doc)
-  const keyPair = await crypto.subtle.generateKey({
+  const deriveKeyPair = await crypto.subtle.generateKey({
     name: 'ECDH',
     namedCurve: 'P-256'
   }, true, ['deriveKey'])
+  const signKeyPair = await crypto.subtle.generateKey({
+    name: 'ECDSA',
+    namedCurve: 'P-256'
+  }, true, ['sign', 'verify'])
   const encryptKey = await crypto.subtle.deriveKey({
     name: 'ECDH',
-    public: keyPair.publicKey
-  }, keyPair.privateKey, {
+    public: deriveKeyPair.publicKey
+  }, deriveKeyPair.privateKey, {
     name: 'AES-GCM',
     length: 256
   }, true, ['encrypt', 'decrypt'])
-  const { encryptedUpdate } = await encryptUpdateV1(encryptKey, update)
+  const { iv, encryptedUpdate } = await encryptUpdateV1(encryptKey, update)
+  const signature = await crypto.subtle.sign({
+    name: 'ECDSA',
+    hash: 'SHA-256'
+  }, signKeyPair.privateKey, encryptedUpdate)
   expect(() => decodeUpdate(encryptedUpdate)).not.toThrow()
+  await expect(crypto.subtle.verify({
+    name: 'ECDSA',
+    hash: 'SHA-256'
+  }, signKeyPair.publicKey, signature, encryptedUpdate)).resolves.toBe(true)
+  type DataChunk = {
+    iv: Uint8Array
+    encryptedUpdate: Uint8Array
+    signature: Uint8Array
+  }
+  const dataChunk = {
+    iv,
+    encryptedUpdate,
+    signature: new Uint8Array(signature)
+  } satisfies DataChunk
 })
