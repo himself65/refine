@@ -2,7 +2,7 @@ import { describe, test, vi, expect } from 'vitest'
 import { applyUpdate, decodeUpdate, Doc, encodeStateAsUpdate } from 'yjs'
 import { dumpDoc, willMissingUpdate, willMissingUpdateV2 } from '../src'
 import { Array as YArray } from 'yjs'
-import { encryptUpdateV1 } from '../src/encryption'
+import { encryptUpdateV1 } from '../src/encrypt'
 import * as crypto from 'node:crypto'
 
 describe('function dumpDoc', () => {
@@ -111,11 +111,6 @@ test('encrypt', async () => {
     name: 'ECDSA',
     hash: 'SHA-256'
   }, signKeyPair.privateKey, encryptedUpdate)
-  expect(() => decodeUpdate(encryptedUpdate)).not.toThrow()
-  await expect(crypto.subtle.verify({
-    name: 'ECDSA',
-    hash: 'SHA-256'
-  }, signKeyPair.publicKey, signature, encryptedUpdate)).resolves.toBe(true)
   type DataChunk = {
     iv: Uint8Array
     encryptedUpdate: Uint8Array
@@ -126,4 +121,12 @@ test('encrypt', async () => {
     encryptedUpdate,
     signature: new Uint8Array(signature)
   } satisfies DataChunk
+  expect(() => decodeUpdate(dataChunk.encryptedUpdate)).not.toThrow()
+  await expect(crypto.subtle.verify(
+    {
+      name: 'ECDSA',
+      hash: 'SHA-256'
+    }, signKeyPair.publicKey, dataChunk.signature.buffer,
+    dataChunk.encryptedUpdate
+  )).resolves.toBe(true)
 })

@@ -3,16 +3,13 @@ import dts from 'vite-plugin-dts'
 import istanbul from 'vite-plugin-istanbul'
 
 export default defineConfig({
-  resolve: {
-    alias: {
-      'yjs/src/internals.js': './node_modules/yjs/src/internals.js'
-    }
-  },
   build: {
     sourcemap: true,
     lib: {
       entry: {
-        index: './src/index.ts'
+        index: './src/index.ts',
+        decrypt: './src/decrypt.ts',
+        encrypt: './src/encrypt.ts',
       },
       formats: ['es', 'cjs']
     },
