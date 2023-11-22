@@ -49,7 +49,7 @@ importers:
         version: 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/blocks@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.24)
       '@blocksuite/store':
         specifier: 0.0.0-20231101080734-aa27dc89-nightly
-        version: 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
+        version: 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.9)
       '@refine/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -182,12 +182,12 @@ importers:
         specifier: workspace:*
         version: link:../../packages/y-io
       yjs:
-        specifier: ^13.6.8
-        version: 13.6.8
+        specifier: ^13.6.9
+        version: 13.6.9
     devDependencies:
       '@blocksuite/store':
         specifier: 0.0.0-20231101080734-aa27dc89-nightly
-        version: 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
+        version: 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.9)
       '@types/node':
         specifier: ^20.9.0
         version: 20.9.0
@@ -205,7 +205,7 @@ importers:
         version: 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/blocks@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.24)
       '@blocksuite/store':
         specifier: 0.0.0-20231101080734-aa27dc89-nightly
-        version: 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
+        version: 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.9)
       '@endo/base64':
         specifier: ^0.2.35
         version: 0.2.35
@@ -252,8 +252,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/y-io
       yjs:
-        specifier: ^13.6.8
-        version: 13.6.8
+        specifier: ^13.6.9
+        version: 13.6.9
     devDependencies:
       autoprefixer:
         specifier: ^10.4.16
@@ -275,7 +275,7 @@ importers:
         version: 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)
       '@blocksuite/blocks':
         specifier: 0.0.0-20231101080734-aa27dc89-nightly
-        version: 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.24)(nanoid@4.0.2)(yjs@13.6.8)
+        version: 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.24)(nanoid@4.0.2)(yjs@13.6.9)
       '@blocksuite/editor':
         specifier: 0.0.0-20231101080734-aa27dc89-nightly
         version: 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/blocks@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.24)
@@ -284,16 +284,16 @@ importers:
         version: 0.0.0-20231101080734-aa27dc89-nightly
       '@blocksuite/lit':
         specifier: 0.0.0-20231101080734-aa27dc89-nightly
-        version: 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(yjs@13.6.8)
+        version: 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(yjs@13.6.9)
       '@blocksuite/store':
         specifier: 0.0.0-20231101080734-aa27dc89-nightly
-        version: 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
+        version: 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.9)
       '@toeverything/theme':
         specifier: ^0.7.24
         version: 0.7.24
       '@toeverything/y-indexeddb':
         specifier: 0.10.0-canary.9
-        version: 0.10.0-canary.9(yjs@13.6.8)
+        version: 0.10.0-canary.9(yjs@13.6.9)
       foxact:
         specifier: ^0.2.25
         version: 0.2.25(react@18.3.0-canary-8039e6d0b-20231026)
@@ -323,13 +323,13 @@ importers:
         version: 9.0.1
       y-utility:
         specifier: ^0.1.3
-        version: 0.1.3(yjs@13.6.8)
+        version: 0.1.3(yjs@13.6.9)
       y-utils:
         specifier: workspace:*
         version: link:../y-utils
       yjs:
-        specifier: ^13.6.8
-        version: 13.6.8
+        specifier: ^13.6.9
+        version: 13.6.9
     devDependencies:
       '@testing-library/react':
         specifier: ^14.1.0
@@ -439,10 +439,17 @@ importers:
         specifier: ^0.34.6
         version: 0.34.6(@vitest/ui@0.34.6)(happy-dom@12.10.3)
       yjs:
-        specifier: ^13.6.8
-        version: 13.6.8
+        specifier: ^13.6.9
+        version: 13.6.9
 
   packages/y-utils:
+    dependencies:
+      '@endo/base64':
+        specifier: ^0.2.35
+        version: 0.2.35
+      lib0:
+        specifier: ^0.2.87
+        version: 0.2.87
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^0.34.6
@@ -463,8 +470,8 @@ importers:
         specifier: ^0.34.6
         version: 0.34.6(@vitest/ui@0.34.6)(happy-dom@12.10.3)
       yjs:
-        specifier: ^13.6.8
-        version: 13.6.8
+        specifier: ^13.6.9
+        version: 13.6.9
 
 packages:
 
@@ -720,13 +727,13 @@ packages:
       '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly
     dependencies:
       '@blocksuite/global': 0.0.0-20231101080734-aa27dc89-nightly
-      '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
+      '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.9)
       lz-string: 1.5.0
       w3c-keyname: 2.2.8
       zod: 3.22.4
     dev: false
 
-  /@blocksuite/blocks@0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.24)(nanoid@4.0.2)(yjs@13.6.8):
+  /@blocksuite/blocks@0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.24)(nanoid@4.0.2)(yjs@13.6.9):
     resolution: {integrity: sha512-9fn+nWx8gHZAfLjG0vWYRaSRwN1ZlDpRQbvuDCsSCKHf1hbLlE+kd0W+FOc1JaW6nbI3+Tp0otY0Adsx2Q3imQ==}
     peerDependencies:
       '@blocksuite/block-std': 0.0.0-20231101080734-aa27dc89-nightly
@@ -737,9 +744,9 @@ packages:
     dependencies:
       '@blocksuite/block-std': 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)
       '@blocksuite/global': 0.0.0-20231101080734-aa27dc89-nightly
-      '@blocksuite/lit': 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(yjs@13.6.8)
-      '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
-      '@blocksuite/virgo': 0.0.0-20231101080734-aa27dc89-nightly(lit@2.8.0)(yjs@13.6.8)
+      '@blocksuite/lit': 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(yjs@13.6.9)
+      '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.9)
+      '@blocksuite/virgo': 0.0.0-20231101080734-aa27dc89-nightly(lit@2.8.0)(yjs@13.6.9)
       '@floating-ui/dom': 1.5.3
       '@toeverything/theme': 0.7.24
       '@types/webfontloader': 1.6.36
@@ -769,10 +776,10 @@ packages:
       '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly
       '@toeverything/theme': ^0.7.16
     dependencies:
-      '@blocksuite/blocks': 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.24)(nanoid@4.0.2)(yjs@13.6.8)
+      '@blocksuite/blocks': 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(@toeverything/theme@0.7.24)(nanoid@4.0.2)(yjs@13.6.9)
       '@blocksuite/global': 0.0.0-20231101080734-aa27dc89-nightly
-      '@blocksuite/lit': 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(yjs@13.6.8)
-      '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
+      '@blocksuite/lit': 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(yjs@13.6.9)
+      '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.9)
       '@toeverything/theme': 0.7.24
       lit: 2.8.0
     dev: false
@@ -782,7 +789,7 @@ packages:
     dependencies:
       zod: 3.22.4
 
-  /@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(yjs@13.6.8):
+  /@blocksuite/lit@0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/block-std@0.0.0-20231101080734-aa27dc89-nightly)(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)(yjs@13.6.9):
     resolution: {integrity: sha512-nh403KeusMW8q54NUcLilci0oJuWSURGQqHOyctVb/WtdY/CPzvAOqN2OjuJXzLTuebMkV76ugnuh/LownH0Qg==}
     peerDependencies:
       '@blocksuite/block-std': 0.0.0-20231101080734-aa27dc89-nightly
@@ -790,21 +797,21 @@ packages:
     dependencies:
       '@blocksuite/block-std': 0.0.0-20231101080734-aa27dc89-nightly(@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly)
       '@blocksuite/global': 0.0.0-20231101080734-aa27dc89-nightly
-      '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8)
-      '@blocksuite/virgo': 0.0.0-20231101080734-aa27dc89-nightly(lit@2.8.0)(yjs@13.6.8)
+      '@blocksuite/store': 0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.9)
+      '@blocksuite/virgo': 0.0.0-20231101080734-aa27dc89-nightly(lit@2.8.0)(yjs@13.6.9)
       lit: 2.8.0
     transitivePeerDependencies:
       - yjs
     dev: false
 
-  /@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.8):
+  /@blocksuite/store@0.0.0-20231101080734-aa27dc89-nightly(async-call-rpc@6.3.1)(lit@2.8.0)(yjs@13.6.9):
     resolution: {integrity: sha512-pngGQlwKeBDmxyPuR80wtJX/QSW4jrKyYTIrY+s2hnbO/ihj2xsCsKJFojaFI3h+RIkW1jd3OSyMFR/gHlB9PA==}
     peerDependencies:
       async-call-rpc: ^6
       yjs: ^13
     dependencies:
       '@blocksuite/global': 0.0.0-20231101080734-aa27dc89-nightly
-      '@blocksuite/virgo': 0.0.0-20231101080734-aa27dc89-nightly(lit@2.8.0)(yjs@13.6.8)
+      '@blocksuite/virgo': 0.0.0-20231101080734-aa27dc89-nightly(lit@2.8.0)(yjs@13.6.9)
       '@types/flexsearch': 0.7.4
       '@types/mdast': 4.0.2
       async-call-rpc: 6.3.1
@@ -820,14 +827,14 @@ packages:
       remark-parse: 11.0.0
       remark-stringify: 11.0.0
       unified: 11.0.4
-      y-protocols: 1.0.6(yjs@13.6.8)
-      yjs: 13.6.8
+      y-protocols: 1.0.6(yjs@13.6.9)
+      yjs: 13.6.9
       zod: 3.22.4
     transitivePeerDependencies:
       - lit
       - supports-color
 
-  /@blocksuite/virgo@0.0.0-20231101080734-aa27dc89-nightly(lit@2.8.0)(yjs@13.6.8):
+  /@blocksuite/virgo@0.0.0-20231101080734-aa27dc89-nightly(lit@2.8.0)(yjs@13.6.9):
     resolution: {integrity: sha512-O9CkkWVFMCxyIi2z79h50isv24j93MLOMQczzHe4QfXXJ2GIzxLUpk5awS9SCBrhkRcff5MBhytCJbUtkufqTA==}
     peerDependencies:
       lit: ^2.7
@@ -835,7 +842,7 @@ packages:
     dependencies:
       '@blocksuite/global': 0.0.0-20231101080734-aa27dc89-nightly
       lit: 2.8.0
-      yjs: 13.6.8
+      yjs: 13.6.9
       zod: 3.22.4
 
   /@braintree/sanitize-url@6.0.4:
@@ -2227,15 +2234,15 @@ packages:
     resolution: {integrity: sha512-DbQv2/I5MvdES0EaATmP1aU5llX8PfEJEamzKN3Ahiu2FoYOXiE99xkfKPD0c7x/XTiLYQsIv1EsOqwzXR6gPA==}
     dev: false
 
-  /@toeverything/y-indexeddb@0.10.0-canary.9(yjs@13.6.8):
+  /@toeverything/y-indexeddb@0.10.0-canary.9(yjs@13.6.9):
     resolution: {integrity: sha512-3hzktNuOaXut/RgRjKNeqQura1zeYF+tSLSlWDc0rDBOrEpwD/1EOpKVCbgtl8ke7f4oinLfgBNk4HcwqaQUYQ==}
     peerDependencies:
       yjs: ^13
     dependencies:
       idb: 7.1.1
       nanoid: 5.0.1
-      y-provider: 0.10.0-canary.9(yjs@13.6.8)
-      yjs: 13.6.8
+      y-provider: 0.10.0-canary.9(yjs@13.6.9)
+      yjs: 13.6.9
     dev: false
 
   /@tokenizer/token@0.3.0:
@@ -11576,31 +11583,31 @@ packages:
     resolution: {integrity: sha512-QKxVRxiRACQcVuQEYFsI1hhkrMlrXHPegbbd1yn9UHOmRxY+si12nQYzri3vbzt8VdTTRviqcKxcyllFas5z2A==}
     engines: {node: '>=0.4.0'}
 
-  /y-protocols@1.0.6(yjs@13.6.8):
+  /y-protocols@1.0.6(yjs@13.6.9):
     resolution: {integrity: sha512-vHRF2L6iT3rwj1jub/K5tYcTT/mEYDUppgNPXwp8fmLpui9f7Yeq3OEtTLVF012j39QnV+KEQpNqoN7CWU7Y9Q==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
     peerDependencies:
       yjs: ^13.0.0
     dependencies:
       lib0: 0.2.87
-      yjs: 13.6.8
+      yjs: 13.6.9
 
-  /y-provider@0.10.0-canary.9(yjs@13.6.8):
+  /y-provider@0.10.0-canary.9(yjs@13.6.9):
     resolution: {integrity: sha512-ImkLqCpxHK0lkxD12s7BE4p14NiAnQQSJGN5GONl4W4CyLBx6+tRop3yg66abg64N3JYX9EwXxnIVDziq6b8Dw==}
     peerDependencies:
       yjs: ^13
     dependencies:
-      yjs: 13.6.8
+      yjs: 13.6.9
     dev: false
 
-  /y-utility@0.1.3(yjs@13.6.8):
+  /y-utility@0.1.3(yjs@13.6.9):
     resolution: {integrity: sha512-o9aXG5ZG4c/QgiK1Bt9UDXGVCNwn0dLti/rZSPTsjtuvwH6sshslU2SfoW65pfZqjLJYEHclM/JtUPPjv05lLw==}
     engines: {node: '>=16'}
     peerDependencies:
       yjs: ^13.5.29
     dependencies:
       lib0: 0.2.87
-      yjs: 13.6.8
+      yjs: 13.6.9
     dev: false
 
   /y18n@4.0.3:
@@ -11678,8 +11685,8 @@ packages:
       fd-slicer: 1.1.0
     dev: true
 
-  /yjs@13.6.8:
-    resolution: {integrity: sha512-ZPq0hpJQb6f59B++Ngg4cKexDJTvfOgeiv0sBc4sUm8CaBWH7OQC4kcCgrqbjJ/B2+6vO49exvTmYfdlPtcjbg==}
+  /yjs@13.6.9:
+    resolution: {integrity: sha512-kn5QVWRdMrdfAs5DyhMB/1Yc038N7kpD4dianzwfsh2dShQgbN+UIq1c8eqbumwrdL6w5ersJLJ/pllL/N8KXA==}
     engines: {node: '>=16.0.0', npm: '>=8.0.0'}
     dependencies:
       lib0: 0.2.87

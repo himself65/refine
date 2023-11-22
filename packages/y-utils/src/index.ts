@@ -53,3 +53,5 @@ export function willMissingUpdateV2 (
   doc: Doc, update: Uint8Array): false | Map<number, number> {
   return willMissingUpdateImpl(doc, update, decodeUpdateV2)
 }
+
+export { encryptUpdate } from './encryption'

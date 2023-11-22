@@ -1,8 +1,13 @@
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import istanbul from 'vite-plugin-istanbul';
+import istanbul from 'vite-plugin-istanbul'
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      'yjs/src/internals.js': './node_modules/yjs/src/internals.js'
+    }
+  },
   build: {
     sourcemap: true,
     lib: {
@@ -14,7 +19,9 @@ export default defineConfig({
     outDir: './dist',
     rollupOptions: {
       external: [
-        /^yjs/
+        'yjs',
+        // yjs/src/internals.js will be inlined
+        'lib0'
       ]
     }
   },

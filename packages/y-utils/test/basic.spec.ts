@@ -1,6 +1,7 @@
 import { describe, test, vi, expect } from 'vitest'
-import { applyUpdate, Doc } from 'yjs'
+import { applyUpdate, decodeUpdate, Doc, encodeStateAsUpdate } from 'yjs'
 import { dumpDoc, willMissingUpdate, willMissingUpdateV2 } from '../src'
+import { Array as YArray } from 'yjs'
 
 describe('function dumpDoc', () => {
   test('should dump the doc', () => {
@@ -80,4 +81,13 @@ describe('function willLostData', () => {
     applyUpdate(remoteDoc, updates[2])
     expect(willMissingUpdate(remoteDoc, updates[3])).toBe(false)
   })
+})
+
+test('contentany', () => {
+  const doc = new Doc()
+  const arr = new YArray()
+  arr.insert(0, [1, 2, 3])
+  doc.getArray().insert(0, [1, 2, 3, arr])
+  const decoded = decodeUpdate(encodeStateAsUpdate(doc))
+  console.log(decoded)
 })
