@@ -2,7 +2,6 @@ import {
   UpdateEncoderV1,
   UpdateDecoderV1,
   UpdateEncoderV2,
-  ID,
   Skip,
   createID,
   Item,
@@ -25,9 +24,9 @@ import {
   ContentDoc,
   Doc as YDoc,
   GC,
-  createDeleteSet
+  createDeleteSet, AbstractType, ID
 } from 'yjs'
-import { btoa, decodeBase64 } from '@endo/base64'
+import { btoa, decodeBase64, encodeBase64 } from '@endo/base64'
 
 import {
   encoding,
@@ -37,8 +36,7 @@ import {
   math,
   number,
   array,
-  decoding,
-  func
+  decoding
 } from 'lib0'
 
 const floatTestBed = new DataView(new ArrayBuffer(4))
@@ -55,129 +53,104 @@ export class EncryptedEncoderV1 extends UpdateEncoderV1 {
     super()
   }
 
-  override writeLeftID (id: ID) {
-    return super.writeLeftID(id)
-  }
+  #pending: Promise<unknown> | null = null
 
-  override writeRightID (id: ID) {
-    return super.writeRightID(id)
-  }
-
-  override writeClient (client: number) {
-    return super.writeClient(client)
-  }
-
-  override writeInfo (info: number) {
-    return super.writeInfo(info)
+  get pending (): Promise<unknown> | null {
+    return this.#pending
   }
 
   override async writeString (s: string) {
-    const encrypted = await crypto.subtle.encrypt({
-      name: 'AES-GCM',
-      iv: this.iv
-    }, this.cryptoKey, decodeBase64(btoa(s)))
-    encoding.writeUint8Array(this.restEncoder, new Uint8Array(encrypted))
-  }
-
-  override writeParentInfo (isYKey: boolean) {
-    return super.writeParentInfo(isYKey)
-  }
-
-  override writeTypeRef (info: number) {
-    return super.writeTypeRef(info)
-  }
-
-  override writeLen (len: number) {
-    return super.writeLen(len)
+    this.#pending = new Promise<void>(async resolve => {
+      const encrypted = await crypto.subtle.encrypt({
+        name: 'AES-GCM',
+        iv: this.iv
+      }, this.cryptoKey, decodeBase64(btoa(s)))
+      encoding.writeVarString(this.restEncoder,
+        encodeBase64(new Uint8Array(encrypted)))
+      resolve()
+    })
+    return this.#pending
   }
 
   // we can encrypt the string, number, buffer, object, array.
   //  but undefined, null, boolean will be reserved.
   override async writeAny (data: undefined | null | number | bigint | boolean | string | Record<string, any> | Array<any> | Uint8Array) {
-    switch (typeof data) {
-      case 'string': {
-        // TYPE 119: STRING
-        encoding.write(this.restEncoder, 119)
+    this.#pending = new Promise<void>(async resolve => {
+      let type: number | undefined = undefined
+      switch (typeof data) {
+        case 'string': {
+          // TYPE 119: STRING
+          type = 119
+          break
+        }
+        case 'number':
+          if (number.isInteger(data) && math.abs(data) <= binary.BITS31) {
+            // TYPE 125: INTEGER
+            type = 125
+          } else if (isFloat32(data)) {
+            // TYPE 124: FLOAT32
+            type = 124
+          } else {
+            // TYPE 123: FLOAT64
+            type = 123
+          }
+          break
+        case 'bigint': {
+          // TYPE 122: BigInt
+          type = 122
+          break
+        }
+        case 'object':
+          if (data === null) {
+            // TYPE 126: null
+            encoding.write(this.restEncoder, 126)
+          } else if (array.isArray(data)) {
+            // TYPE 117: Array
+            encoding.write(this.restEncoder, 117)
+            encoding.writeVarUint(this.restEncoder, data.length)
+            for (let i = 0; i < data.length; i++) {
+              await this.writeAny(data[i])
+            }
+          } else if (data instanceof Uint8Array) {
+            // TYPE 116: ArrayBuffer
+            encoding.write(this.restEncoder, 116)
+            encoding.writeVarUint8Array(this.restEncoder, data)
+          } else {
+            // TYPE 118: Object
+            encoding.write(this.restEncoder, 118)
+            const keys = Object.keys(data)
+            encoding.writeVarUint(this.restEncoder, keys.length)
+            for (let i = 0; i < keys.length; i++) {
+              const key = keys[i]
+              encoding.writeVarString(this.restEncoder, key)
+              await this.writeAny(data[key as keyof typeof data])
+            }
+          }
+          break
+        case 'boolean': {
+          // TYPE 120/121: boolean (true/false)
+          encoding.write(this.restEncoder, data ? 120 : 121)
+          break
+        }
+        default:
+          // TYPE 127: undefined
+          encoding.write(this.restEncoder, 127)
+      }
+      if (type) {
+        const toEncrypt = JSON.stringify({
+          type,
+          data
+        })
         const encrypted = await crypto.subtle.encrypt({
           name: 'AES-GCM',
           iv: this.iv
-        }, this.cryptoKey, decodeBase64(btoa(data)))
-        encoding.writeUint8Array(this.restEncoder, new Uint8Array(encrypted))
-        break
+        }, this.cryptoKey, decodeBase64(btoa(toEncrypt)))
+        encoding.write(this.restEncoder, 116)
+        encoding.writeVarUint8Array(this.restEncoder, new Uint8Array(encrypted))
       }
-      case 'number':
-        if (number.isInteger(data) && math.abs(data) <= binary.BITS31) {
-          // TYPE 125: INTEGER
-          encoding.write(this.restEncoder, 125)
-          const encrypted = await crypto.subtle.encrypt({
-            name: 'AES-GCM',
-            iv: this.iv
-          }, this.cryptoKey, decodeBase64(btoa(`${data}`)))
-          encoding.writeUint8Array(this.restEncoder, new Uint8Array(encrypted))
-        } else if (isFloat32(data)) {
-          // TYPE 124: FLOAT32
-          encoding.write(this.restEncoder, 124)
-          const encrypted = await crypto.subtle.encrypt({
-            name: 'AES-GCM',
-            iv: this.iv
-          }, this.cryptoKey, decodeBase64(btoa(`${data}`)))
-          encoding.writeUint8Array(this.restEncoder, new Uint8Array(encrypted))
-        } else {
-          // TYPE 123: FLOAT64
-          encoding.write(this.restEncoder, 123)
-          const encrypted = await crypto.subtle.encrypt({
-            name: 'AES-GCM',
-            iv: this.iv
-          }, this.cryptoKey, decodeBase64(btoa(`${data}`)))
-          encoding.writeUint8Array(this.restEncoder, new Uint8Array(encrypted))
-        }
-        break
-      case 'bigint': {
-        // TYPE 122: BigInt
-        encoding.write(this.restEncoder, 122)
-        const encrypted = await crypto.subtle.encrypt({
-          name: 'AES-GCM',
-          iv: this.iv
-        }, this.cryptoKey, decodeBase64(btoa(`${data}`)))
-        encoding.writeUint8Array(this.restEncoder, new Uint8Array(encrypted))
-        break
-      }
-      case 'object':
-        if (data === null) {
-          // TYPE 126: null
-          encoding.write(this.restEncoder, 126)
-        } else if (array.isArray(data)) {
-          // TYPE 117: Array
-          encoding.write(this.restEncoder, 117)
-          encoding.writeVarUint(this.restEncoder, data.length)
-          for (let i = 0; i < data.length; i++) {
-            await this.writeAny(data[i])
-          }
-        } else if (data instanceof Uint8Array) {
-          // TYPE 116: ArrayBuffer
-          encoding.write(this.restEncoder, 116)
-          encoding.writeVarUint8Array(this.restEncoder, data)
-        } else {
-          // TYPE 118: Object
-          encoding.write(this.restEncoder, 118)
-          const keys = Object.keys(data)
-          encoding.writeVarUint(this.restEncoder, keys.length)
-          for (let i = 0; i < keys.length; i++) {
-            const key = keys[i]
-            encoding.writeVarString(this.restEncoder, key)
-            await this.writeAny(data[key as keyof typeof data])
-          }
-        }
-        break
-      case 'boolean': {
-        // TYPE 120/121: boolean (true/false)
-        encoding.write(this.restEncoder, data ? 120 : 121)
-        break
-      }
-      default:
-        // TYPE 127: undefined
-        encoding.write(this.restEncoder, 127)
-    }
+      resolve()
+    })
+    return this.#pending
   }
 
   override writeBuf (buf: Uint8Array) {
@@ -188,10 +161,6 @@ export class EncryptedEncoderV1 extends UpdateEncoderV1 {
   override writeJSON (embed: any) {
     // todo: encrypt
     super.writeJSON(embed)
-  }
-
-  override writeKey (key: string) {
-    super.writeKey(key)
   }
 }
 
@@ -364,7 +333,10 @@ export class LazyStructWriter {
   startClock: number
   written: number
   encoder: UpdateEncoderV1 | UpdateEncoderV2
-  clientStructs: { written: number, restEncoder: Uint8Array }[]
+  clientStructs: {
+    written: number,
+    restEncoder: Uint8Array
+  }[]
 
   constructor (encoder: UpdateEncoderV1 | UpdateEncoderV2) {
     this.currClient = 0
@@ -386,7 +358,68 @@ const flushLazyStructWriter = (lazyWriter: LazyStructWriter) => {
   }
 }
 
-const writeStructToLazyStructWriter = (
+const findRootTypeKey = (type: AbstractType<unknown>): string => {
+  // @ts-ignore _y must be defined, otherwise unexpected case
+  for (const [key, value] of type.doc.share.entries()) {
+    if (value === type) {
+      return key
+    }
+  }
+  throw error.unexpectedCase()
+}
+
+async function itemWrite (
+  this: Item,
+  encoder: EncryptedEncoderV1,
+  offset: number
+) {
+  const origin = offset > 0 ? createID(this.id.client,
+    this.id.clock + offset - 1) : this.origin
+  const rightOrigin = this.rightOrigin
+  const parentSub = this.parentSub
+  const info = (this.content.getRef() & binary.BITS5) |
+    (origin === null ? 0 : binary.BIT8) | // origin is defined
+    (rightOrigin === null ? 0 : binary.BIT7) | // right origin is defined
+    (parentSub === null ? 0 : binary.BIT6) // parentSub is non-null
+  encoder.writeInfo(info)
+  if (origin !== null) {
+    encoder.writeLeftID(origin)
+  }
+  if (rightOrigin !== null) {
+    encoder.writeRightID(rightOrigin)
+  }
+  if (origin === null && rightOrigin === null) {
+    const parent = (this.parent) as AbstractType<unknown>
+    if (parent._item !== undefined) {
+      const parentItem = parent._item
+      if (parentItem === null) {
+        // parent type on y._map
+        // find the correct key
+        const ykey = findRootTypeKey(parent)
+        encoder.writeParentInfo(true) // write parentYKey
+        await encoder.writeString(ykey)
+      } else {
+        encoder.writeParentInfo(false) // write parent id
+        encoder.writeLeftID(parentItem.id)
+      }
+    } else if (parent.constructor === String) { // this edge case was added by differential updates
+      encoder.writeParentInfo(true) // write parentYKey
+      await encoder.writeString(parent)
+    } else if (parent.constructor === ID) {
+      encoder.writeParentInfo(false) // write parent id
+      encoder.writeLeftID(parent)
+    } else {
+      error.unexpectedCase()
+    }
+    if (parentSub !== null) {
+      await encoder.writeString(parentSub)
+    }
+  }
+  this.content.write(encoder, offset)
+  await encoder.pending
+}
+
+const writeStructToLazyStructWriter = async (
   lazyWriter: LazyStructWriter, struct: Item | GC, offset: number) => {
   // flush curr if we start another client
   if (lazyWriter.written > 0 && lazyWriter.currClient !== struct.id.client) {
@@ -400,7 +433,15 @@ const writeStructToLazyStructWriter = (
     encoding.writeVarUint(lazyWriter.encoder.restEncoder,
       struct.id.clock + offset)
   }
-  struct.write(lazyWriter.encoder, offset)
+  if (struct instanceof Item) {
+    await itemWrite.call(
+      struct,
+      lazyWriter.encoder as EncryptedEncoderV1,
+      offset
+    )
+  } else {
+    struct.write(lazyWriter.encoder, offset)
+  }
   lazyWriter.written++
 }
 const finishLazyStructWriting = (lazyWriter: LazyStructWriter) => {
@@ -450,16 +491,39 @@ function readDeleteSet (decoder: UpdateDecoderV2 | UpdateDecoderV1) {
   return ds
 }
 
-function writeDeleteSet () {
-  // todo
+const writeDeleteSet = (
+  encoder: UpdateEncoderV1 | UpdateEncoderV2,
+  ds: ReturnType<typeof createDeleteSet>
+) => {
+  encoding.writeVarUint(encoder.restEncoder, ds.clients.size)
+
+  // Ensure that the delete set is written in a deterministic order
+  array.from(ds.clients.entries()).
+    sort((a, b) => b[0] - a[0]).
+    forEach(([client, dsitems]) => {
+      encoder.resetDsCurVal()
+      encoding.writeVarUint(encoder.restEncoder, client)
+      const len = dsitems.length
+      encoding.writeVarUint(encoder.restEncoder, len)
+      for (let i = 0; i < len; i++) {
+        const item = dsitems[i]
+        encoder.writeDsClock(item.clock)
+        encoder.writeDsLen(item.len)
+      }
+    })
 }
 
 //#endregion
 
-export const covertUpdateV1ToEncryptedUpdate = async (
+const f = <T> (v: T): T => v
+
+export const encryptUpdateV1 = async (
   cryptoKey: InstanceType<typeof window.CryptoKey>,
   update: Uint8Array
-) => {
+): Promise<{
+  iv: Uint8Array
+  encryptedUpdate: Uint8Array
+}> => {
   const iv = crypto.getRandomValues(new Uint8Array(12))
 
   const updateDecoder = new UpdateDecoderV1(
@@ -470,13 +534,15 @@ export const covertUpdateV1ToEncryptedUpdate = async (
 
   const lazyWriter = new LazyStructWriter(updateEncoder)
 
-  const blockTransformer = func.id
-
   for (let curr = lazyDecoder.curr; curr !== null; curr = lazyDecoder.next()) {
-    writeStructToLazyStructWriter(lazyWriter, blockTransformer(curr), 0)
+    await writeStructToLazyStructWriter(lazyWriter, f(curr), 0)
   }
   finishLazyStructWriting(lazyWriter)
   const ds = readDeleteSet(updateDecoder)
   writeDeleteSet(updateEncoder, ds)
-  return updateEncoder.toUint8Array()
+
+  return {
+    iv,
+    encryptedUpdate: updateEncoder.toUint8Array()
+  }
 }

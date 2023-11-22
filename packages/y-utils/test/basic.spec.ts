@@ -2,6 +2,8 @@ import { describe, test, vi, expect } from 'vitest'
 import { applyUpdate, decodeUpdate, Doc, encodeStateAsUpdate } from 'yjs'
 import { dumpDoc, willMissingUpdate, willMissingUpdateV2 } from '../src'
 import { Array as YArray } from 'yjs'
+import { encryptUpdateV1 } from '../src/encryption'
+import * as crypto from 'node:crypto'
 
 describe('function dumpDoc', () => {
   test('should dump the doc', () => {
@@ -83,11 +85,23 @@ describe('function willLostData', () => {
   })
 })
 
-test('contentany', () => {
+test('encrypt', async () => {
   const doc = new Doc()
   const arr = new YArray()
   arr.insert(0, [1, 2, 3])
   doc.getArray().insert(0, [1, 2, 3, arr])
-  const decoded = decodeUpdate(encodeStateAsUpdate(doc))
-  console.log(decoded)
+  const update = encodeStateAsUpdate(doc)
+  const keyPair = await crypto.subtle.generateKey({
+    name: 'ECDH',
+    namedCurve: 'P-256'
+  }, true, ['deriveKey'])
+  const encryptKey = await crypto.subtle.deriveKey({
+    name: 'ECDH',
+    public: keyPair.publicKey
+  }, keyPair.privateKey, {
+    name: 'AES-GCM',
+    length: 256
+  }, true, ['encrypt', 'decrypt'])
+  const { encryptedUpdate } = await encryptUpdateV1(encryptKey, update)
+  expect(() => decodeUpdate(encryptedUpdate)).not.toThrow()
 })
