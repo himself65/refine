@@ -21,21 +21,21 @@
   },
   "dependencies": {
     "@hono/node-server": "^1.2.3",
-    "@prisma/client": "^5.5.2",
-    "hono": "^3.10.1",
-    "prisma": "^5.5.2",
+    "@prisma/client": "^5.6.0",
+    "hono": "^3.10.2",
+    "prisma": "^5.6.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2",
     "ts-node": "^10.9.1",
     "y-io": "workspace:*",
-    "yjs": "^13.6.8"
+    "yjs": "^13.6.10"
   },
   "peerDependencies": {
     "@blocksuite/store": "*"
   },
   "devDependencies": {
     "@blocksuite/store": "0.0.0-20231101080734-aa27dc89-nightly",
-    "@types/node": "^20.9.0",
+    "@types/node": "^20.9.5",
     "ava": "^5.3.1",
     "c8": "^8.0.1"
   },
@@ -48,8 +48,7 @@
       "--trace-sigint",
       "--loader",
       "ts-node/esm/transpile-only.mjs",
-      "--es-module-specifier-resolution",
-      "node"
+      "--es-module-specifier-resolution=node"
     ],
     "files": [
       "test/**/*.spec.ts"
