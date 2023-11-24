@@ -48,8 +48,7 @@
       "--trace-sigint",
       "--loader",
       "ts-node/esm/transpile-only.mjs",
-      "--es-module-specifier-resolution",
-      "node"
+      "--es-module-specifier-resolution=node"
     ],
     "files": [
       "test/**/*.spec.ts"
