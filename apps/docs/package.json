@@ -16,7 +16,7 @@
     "@radix-ui/react-switch": "^1.0.3",
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@refine/core": "workspace:*",
-    "foxact": "^0.2.25",
+    "foxact": "^0.2.26",
     "jotai": "^2.5.1",
     "jotai-inject": "workspace:*",
     "next": "14.0.2",

@@ -25,10 +25,10 @@
     "@vitest/coverage-v8": "^0.34.6",
     "@vitest/ui": "^0.34.6",
     "vite": "^4.5.0",
-    "vitest": "^0.34.6",
     "vite-plugin-dts": "^3.6.3",
     "vite-plugin-istanbul": "^5.0.0",
-    "yjs": "^13.6.8"
+    "vitest": "^0.34.6",
+    "yjs": "^13.6.10"
   },
   "peerDependencies": {
     "yjs": "^13"

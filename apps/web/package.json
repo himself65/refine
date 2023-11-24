@@ -16,7 +16,7 @@
     "@endo/base64": "^0.2.35",
     "@refine/core": "workspace:*",
     "ai": "^2.2.25",
-    "foxact": "^0.2.25",
+    "foxact": "^0.2.26",
     "jotai": "^2.5.1",
     "jotai-ai": "^0.0.6",
     "jotai-effect": "^0.2.3",
@@ -28,7 +28,7 @@
     "react-dom": "18.3.0-canary-8039e6d0b-20231026",
     "socket.io-client": "^4.7.2",
     "y-io": "workspace:*",
-    "yjs": "^13.6.8"
+    "yjs": "^13.6.10"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.16",
