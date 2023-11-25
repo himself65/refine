@@ -8,7 +8,7 @@
 ## Packages
 
 > [!WARNING]  
-> Packages are not stable yet, please do not use them at your own risk.
+> Packages are not stable yet, **use them at your own risk**.
 
 - [@refine/core](./packages/core): Core package for multiple distributions (desktop, web, mobile and browser extension).
 - [jotai-inject](./packages/jotai-inject): Dependency injection for multiple environments with Jotai.
