@@ -1,6 +1,14 @@
 {
   "index": {
-    "title": "Refine",
-    "display": "hidden"
+    "title": "refine",
+    "display": "hidden",
+    "theme": {
+      "layout": "full",
+      "breadcrumb": false,
+      "footer": true,
+      "sidebar": false,
+      "toc": false,
+      "pagination": false
+    }
   }
 }
