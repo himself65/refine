@@ -7,6 +7,9 @@
 
 ## Packages
 
+> [!WARNING]  
+> Packages are not stable yet, **use them at your own risk**.
+
 - [@refine/core](./packages/core): Core package for multiple distributions (desktop, web, mobile and browser extension).
 - [jotai-inject](./packages/jotai-inject): Dependency injection for multiple environments with Jotai.
 - [y-io](./packages/y-io): Socket.io provider for Yjs in both client and server side.
