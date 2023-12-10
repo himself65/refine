@@ -86,6 +86,9 @@
     },
     {
       "path": "./packages/y-utils/tsconfig.json"
+    },
+    {
+      "path": "./packages/y-idb/tsconfig.json"
     }
   ],
   "include": [],
