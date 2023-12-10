@@ -1,6 +1,6 @@
 import { StrictMode, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
-import '@blocksuite/editor/themes/affine.css'
+import '@blocksuite/presets/themes/affine.css'
 import './index.css'
 import { workspaceManager } from '@refine/core/store'
 import { getDefaultStore } from 'jotai/vanilla'

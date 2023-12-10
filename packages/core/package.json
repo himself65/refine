@@ -32,12 +32,12 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
-    "@blocksuite/block-std": "0.0.0-20231101080734-aa27dc89-nightly",
-    "@blocksuite/blocks": "0.0.0-20231101080734-aa27dc89-nightly",
-    "@blocksuite/editor": "0.0.0-20231101080734-aa27dc89-nightly",
-    "@blocksuite/global": "0.0.0-20231101080734-aa27dc89-nightly",
-    "@blocksuite/lit": "0.0.0-20231101080734-aa27dc89-nightly",
-    "@blocksuite/store": "0.0.0-20231101080734-aa27dc89-nightly",
+    "@blocksuite/block-std": "0.11.0-nightly-202312070955-2b5bb47",
+    "@blocksuite/blocks": "0.11.0-nightly-202312070955-2b5bb47",
+    "@blocksuite/presets": "0.11.0-nightly-202312070955-2b5bb47",
+    "@blocksuite/global": "0.11.0-nightly-202312070955-2b5bb47",
+    "@blocksuite/lit": "0.11.0-nightly-202312070955-2b5bb47",
+    "@blocksuite/store": "0.11.0-nightly-202312070955-2b5bb47",
     "@toeverything/theme": "0.7.24",
     "@toeverything/y-indexeddb": "0.10.0-canary.9",
     "foxact": "^0.2.26",

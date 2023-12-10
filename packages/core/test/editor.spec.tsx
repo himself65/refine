@@ -7,7 +7,7 @@ import { promisify } from 'node:util'
 
 const sleep = promisify(setTimeout)
 
-vi.mock('@blocksuite/editor', () => {
+vi.mock('@blocksuite/presets', () => {
   return {
     EditorContainer: class EditorContainer extends HTMLDivElement {}
   }

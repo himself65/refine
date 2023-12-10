@@ -1,12 +1,12 @@
 'use client'
-import type { EditorContainer } from '@blocksuite/editor'
+import type { EditorContainer } from '@blocksuite/presets'
 import { assertExists } from '@blocksuite/global/utils'
 import type { Page } from '@blocksuite/store'
 import type { CSSProperties, ReactElement } from 'react'
 import { memo, useEffect, useRef, use, useCallback } from 'react'
 import { useSingleton } from 'foxact/use-singleton'
 
-const EditorContainerPromise = import('@blocksuite/editor').then(
+const EditorContainerPromise = import('@blocksuite/presets').then(
   m => m.EditorContainer)
 
 export type EditorProps = {
