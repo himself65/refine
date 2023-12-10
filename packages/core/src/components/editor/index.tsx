@@ -3,11 +3,13 @@ import type { EditorContainer } from '@blocksuite/presets'
 import { assertExists } from '@blocksuite/global/utils'
 import type { Page } from '@blocksuite/store'
 import type { CSSProperties, ReactElement } from 'react'
-import { memo, useEffect, useRef, use, useCallback } from 'react'
+import { memo, useEffect, useRef, useCallback } from 'react'
 import { useSingleton } from 'foxact/use-singleton'
+import { atom } from 'jotai/vanilla'
+import { useAtomValue } from 'jotai/react'
 
-const EditorContainerPromise = import('@blocksuite/presets').then(
-  m => m.EditorContainer)
+const editorContainerAtom = atom(() => import('@blocksuite/presets').then(
+  m => m.EditorContainer))
 
 export type EditorProps = {
   page: Page;
@@ -20,8 +22,8 @@ export type EditorProps = {
 const BlockSuiteEditorImpl = (props: EditorProps): ReactElement => {
   const { onLoad, page, mode, style } = props
   assertExists(page, 'page should not be null')
+  const EditorContainer = useAtomValue(editorContainerAtom)
   const editorRef = useSingleton(() => {
-    const EditorContainer = use(EditorContainerPromise)
     const editor = new EditorContainer()
     editor.autofocus = true
     return editor
