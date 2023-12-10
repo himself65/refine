@@ -215,7 +215,7 @@ export class WorkspaceManager {
     const {
       createIndexedDBProvider,
       downloadBinary
-    } = await import('@toeverything/y-indexeddb')
+    } = await import('y-idb/browser')
     this.#preloads.push(async (workspace) => {
       const binary = await downloadBinary(workspace.doc.guid,
         'refine-indexeddb')

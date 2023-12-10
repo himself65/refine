@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ES2020",
+    "moduleResolution": "bundler",
+    "outDir": "./dist"
+  },
+  "include": [
+    "./src"
+  ]
+}

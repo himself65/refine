@@ -1,0 +1,41 @@
+{
+  "name": "y-idb",
+  "description": "yjs persistence",
+  "version": "0.0.1",
+  "type": "module",
+  "author": "himself65 <himself65@outlook.com>",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "yjs",
+    "provider",
+    "database",
+    "persistence"
+  ],
+  "exports": {
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.js",
+      "require": "./dist/browser.cjs",
+      "default": "./dist/browser.js"
+    }
+  },
+  "scripts": {
+    "build": "bunchee",
+    "dev": "bunchee --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "bunchee": "^3.9.3",
+    "yjs": "^13.6.10"
+  },
+  "dependencies": {
+    "idb": "^8.0.0"
+  },
+  "peerDependencies": {
+    "yjs": "^13"
+  }
+}
