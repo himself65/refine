@@ -5,7 +5,7 @@ import {
   encodeStateAsUpdate,
   encodeStateVector
 } from 'yjs'
-import {
+import type {
   DataSourceAdapter,
   ProviderAdapter,
   Status,
