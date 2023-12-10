@@ -1,9 +1,13 @@
 import {
   openDB,
-  DBSchema,
-  IDBPDatabase
+  type DBSchema,
+  type IDBPDatabase
 } from 'idb'
-import { Workspace, ProviderAdapter, StatusAdapter } from './shared/type.js'
+import type {
+  Workspace,
+  ProviderAdapter,
+  StatusAdapter
+} from './shared/type.js'
 import { createLazyProvider } from './shared/lazy-provider.js'
 import {
   applyUpdate,
@@ -122,9 +126,9 @@ export async function downloadBinary(
   const db = await getDB()
   const tx = db.transaction('workspace', 'readonly')
   const os = tx.objectStore('workspace')
-  if (await os.getKey(guid) === undefined) {
+  const workspace = await os.get(guid)
+  if (!workspace) {
     return false;
   }
-  const workspace = await os.get(guid)
   return workspace.updates.map(({ update }) => update).reduce((a, b) => mergeUpdates([a, b]))
 }
