@@ -28,7 +28,8 @@ export default defineConfig({
         /^y-utility/,
         'uuid',
         /^foxact/,
-        'idb'
+        'idb',
+        'y-idb/browser'
       ]
     }
   },
