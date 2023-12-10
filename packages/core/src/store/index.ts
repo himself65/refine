@@ -225,8 +225,7 @@ export class WorkspaceManager {
       }
     })
     this.#providers.push((workspace) => {
-      const provider = createIndexedDBProvider(workspace.doc,
-        'refine-indexeddb')
+      const provider = createIndexedDBProvider('refine-indexeddb', workspace.doc)
       return {
         connect: () => {
           provider.connect()

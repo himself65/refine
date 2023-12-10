@@ -33,10 +33,9 @@ interface YDB extends DBSchema {
   }
 }
 
-export function createIndexedDBProvider (
-  name: string, rootDoc: Doc): ProviderAdapter & StatusAdapter {
+function createLazyDB (name: string): () => Promise<IDBPDatabase<YDB>> {
   let lazyDBPromise: Promise<IDBPDatabase<YDB>> | null = null
-  const getDB = async (name: string): Promise<IDBPDatabase<YDB>> => {
+  return async () => {
     if (lazyDBPromise !== null) {
       return lazyDBPromise
     }
@@ -51,9 +50,14 @@ export function createIndexedDBProvider (
     })
     return lazyDBPromise
   }
+}
+
+export function createIndexedDBProvider (
+  name: string, rootDoc: Doc): ProviderAdapter & StatusAdapter {
+  const getDB = createLazyDB(name)
   return createLazyProvider(rootDoc, {
     queryDocState: async (guid, query) => {
-      const db = await getDB(name)
+      const db = await getDB()
       const tx = db.transaction('workspace', 'readonly')
       const os = tx.objectStore('workspace')
       const workspace = await os.get(guid)
@@ -74,7 +78,7 @@ export function createIndexedDBProvider (
       return { missingUpdate, stateVector: encodeStateVectorFromUpdate(update) }
     },
     sendDocUpdate: async (guid, update) => {
-      const db = await getDB(name)
+      const db = await getDB()
       const tx = db.transaction('workspace', 'readwrite')
       const os = tx.objectStore('workspace')
       const data = await os.get(guid)
@@ -108,4 +112,19 @@ export function createIndexedDBProvider (
   }, {
     author: 'ydb'
   })
+}
+
+export async function downloadBinary(
+  guid: string,
+  name: string
+): Promise<Uint8Array | false> {
+  const getDB = createLazyDB(name)
+  const db = await getDB()
+  const tx = db.transaction('workspace', 'readonly')
+  const os = tx.objectStore('workspace')
+  if (await os.getKey(guid) === undefined) {
+    return false;
+  }
+  const workspace = await os.get(guid)
+  return workspace.updates.map(({ update }) => update).reduce((a, b) => mergeUpdates([a, b]))
 }
