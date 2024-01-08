@@ -56,6 +56,8 @@
     "paths": {
       "@refine/core/*": ["./packages/core/src/*"],
       "@refine/server/*": ["./apps/server/src/*"],
+      "y-idb": ["./packages/y-idb/src/index"],
+      "y-idb/*": ["./packages/y-idb/src/*"],
       "jotai-inject": ["./packages/jotai-inject/src/index"],
       "jotai-inject/*": ["./packages/jotai-inject/src/*"],
     }
@@ -84,6 +86,9 @@
     },
     {
       "path": "./packages/y-utils/tsconfig.json"
+    },
+    {
+      "path": "./packages/y-idb/tsconfig.json"
     }
   ],
   "include": [],

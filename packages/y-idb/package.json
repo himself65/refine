@@ -1,0 +1,44 @@
+{
+  "name": "y-idb",
+  "description": "yjs persistence",
+  "version": "0.0.1",
+  "type": "module",
+  "author": "himself65 <himself65@outlook.com>",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "yjs",
+    "provider",
+    "database",
+    "persistence"
+  ],
+  "exports": {
+    "./browser": {
+      "types": "./dist/src/browser.d.ts",
+      "import": "./dist/browser.js",
+      "require": "./dist/browser.cjs"
+    }
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "vite": "^4.5.0",
+    "vite-plugin-dts": "^3.6.3",
+    "vite-plugin-istanbul": "^5.0.0",
+    "vitest": "^0.34.6",
+    "yjs": "^13.6.10"
+
+  },
+  "dependencies": {
+    "idb": "^8.0.0"
+  },
+  "peerDependencies": {
+    "yjs": "^13"
+  }
+}
