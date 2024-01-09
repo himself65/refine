@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import React from 'react'
 import { Inter } from 'next/font/google'
-import '@blocksuite/editor/themes/affine.css'
+import '@blocksuite/presets/themes/affine.css'
 import './globals.css'
 import { Provider } from './provider'
 
